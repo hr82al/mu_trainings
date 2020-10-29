@@ -18,7 +18,7 @@ public class MuTrainingsApplication {
 		SpringApplication.run(MuTrainingsApplication.class, args);
 	}
 
-	@Bean
+/*	@Bean
 	public CommandLineRunner demo(EmployeeRepository repository) {
 		return (args) -> {
 			// fetch all customers
@@ -29,6 +29,6 @@ public class MuTrainingsApplication {
 			}
 			log.info("");
 		};
-	}
+	}*/
 
 }

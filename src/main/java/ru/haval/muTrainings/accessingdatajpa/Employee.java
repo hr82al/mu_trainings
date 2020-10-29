@@ -2,25 +2,46 @@ package ru.haval.muTrainings.accessingdatajpa;
 
 
 import com.sun.istack.NotNull;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @RequiredArgsConstructor
-//@NoArgsConstructor(access=AccessLevel.PRIVATE, force=true)
+//@NoArgsConstructor(access=AccessLevel.PROTECTED, force=true)
 @Entity(name = "users")
 public class Employee {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private String first_name;
-    private String last_name;
+//first_name	varchar(50)	YES
+    @Column(name="first_name", length = 50)
+    private String firstNameRu;
+//last_name	varchar(50)	YES
+    @Column(name="last_name", length = 50)
+    private String lastNameRu;
+//login	varchar(17)	NO	UNI
+    @NotNull
+    @Column(unique = true,length = 17)
+    private String login;
+//passwd	varchar(17)	NO	UNI
+    @NotNull
+    @Column(name="passwd", length = 17)
+    private String password;
+//create_date	date	YES
+    @Column(name="create_date")
+    LocalDate createDate;
+//last_login	timestamp	NO		CURRENT_TIMESTAMP	DEFAULT_GENERATED
+//role	enum('Administrator','Group Lead','Team Lead','Engeneer','Technics')	NO
+//user_del	int	NO		0
+//Descript	char(255)	YES
+
+
+
     @Column(unique = true)
     @NotNull
     private String login;
@@ -32,7 +53,8 @@ public class Employee {
     private Timestamp last_login;
     private String role;
     @NotNull
-    private Integer user_del = 0;
+    @Column(name = "user_del")
+    private Integer userDel = 0;
     private String Descript;
 }
 

@@ -12,22 +12,13 @@ xmlns:th="http://www.thymeleaf.org">
     <tr>
         <th>Employee ID</th>
         <th>Name</th>
-        <th>Age</th>
-        <th>Department</th>
-        <th>Gender</th>
-        <th>Joining Date</th>
-        <th>Retiring Date</th>
+
     </tr>
     </thead>
     <tbody>
-    <tr th:each="employee:${listAll}">
-        <td th:text="${employee.id}">Product ID</td>
-        <td th:text="${employee.name}">Name</td>
-        <td th:text="${employee.age}">Age</td>
-        <td th:text="${employee.dept}">Department</td>
-        <td th:text="${employee.gender}">Gender</td>
-        <td th:text="${employee.joiningDate}">Joining Date</td>
-        <td th:text="${employee.retiringDate}">Retiring Date</td>
+    <tr th:each="employee:${employees}">
+        <td th:text="${employee.id}">Employee ID</td>
+        <td th:text="${employee.first_name} + ' ' +  ${employee.last_name}">Name</td>
     </tr>
     </tbody>
 </table>

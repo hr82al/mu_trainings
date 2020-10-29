@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.haval.muTrainings.accessingdatajpa.Employee;
 import ru.haval.muTrainings.accessingdatajpa.EmployeeRepository;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * @author 	Aleksandr Khomov. hr82al@gmail.com
@@ -34,8 +34,12 @@ public class MuTrainingsController {
 	}*/
 	@GetMapping
 	public String showMUTrainingsForm(Model model) {
-		Iterable<Employee> employeeStream = employeeRepository.findAll();
-		model.addAttribute("trainings", employeeStream);
+		List<Employee> employees = new ArrayList<>();
+
+		//employeeRepository.findByUser_del(0).forEach(employees::add);
+		model.addAttribute("employees", employeeRepository.findByUserDel(0));
 		return "muTrainings";
 	}
+
+
 }
