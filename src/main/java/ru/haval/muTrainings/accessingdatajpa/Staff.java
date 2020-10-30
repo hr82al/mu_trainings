@@ -43,10 +43,10 @@ public class Staff {
 //First_Name	varchar(12)	YES
     @Column(name="First_Name")
     private String firstName;
-    //Last_Name	varchar(12)	YES
+//Last_Name	varchar(12)	YES
     @Column(name = "Last_Name")
     String lastName;
-    //DoB	date	YES
+//DoB	date	YES
     @Column(name = "DoB")
     private LocalDate birthday;
 //Sec	varchar(5)	YES
@@ -111,4 +111,8 @@ public class Staff {
 //user_del	int	YES		0		0
     @Column(name="user_del")
     Integer isUserDel = 1;
+
+    @OneToOne/*(cascade = CascadeType.ALL)
+    @JoinColumn(name = "", referencedColumnName = "user_id")*/
+    private Employee employee;
 }

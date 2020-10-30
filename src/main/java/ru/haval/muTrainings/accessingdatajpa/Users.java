@@ -13,7 +13,9 @@ import java.sql.Timestamp;
 public class Users {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @Column(name="id_num")
+    private Long idNum;
+
     private String first_name;
     private String last_name;
     @Column(unique = true)
