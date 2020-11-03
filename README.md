@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS trainings_employees
 CREATE TABLE IF NOT EXISTS trainings_positions
 (
 		position_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-		position VARCHAR(255) NOT NULL
+		position VARCHAR(255) NOT NULL UNIQUE
 );
 
 
@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS trainings_positions
 CREATE TABLE IF NOT EXISTS trainings_departments
 (
 		department_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-		department VARCHAR(255) NOT NULL
+		department VARCHAR(255) NOT NULL UNIQUE
 );
 
-###### Виды
+##### Виды
 
 * Вид сотрудники
 CREATE VIEW employees AS SELECT 

@@ -3,54 +3,61 @@
  */
 package ru.haval.muTrainings.controllers;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import ru.haval.muTrainings.accessingdatajpa.Employee;
+import org.springframework.web.bind.annotation.*;
 import ru.haval.muTrainings.accessingdatajpa.EmployeeRepository;
 import ru.haval.muTrainings.accessingdatajpa.Position;
-
-import java.util.ArrayList;
-import java.util.List;
+import ru.haval.muTrainings.accessingdatajpa.PositionsRepository;
 
 /**
- * @author 	Aleksandr Khomov. hr82al@gmail.com
- *
+ * @author Aleksandr Khomov. hr82al@gmail.com
  */
 
 @Slf4j
 @Controller
-@RequestMapping("/mu_trainings")
+@RequestMapping
 public class MuTrainingsController {
 
 	@Autowired
 	EmployeeRepository employeeRepository;
+	@Autowired
+	PositionsRepository positionsRepository;
 
-/*	@GetMapping("/mu_trainings/")
-	public String muTrainings() {
-		return "muTrainings";
-	}*/
-	@GetMapping
+	/*	@GetMapping("/mu_trainings/")
+        public String muTrainings() {
+            return "muTrainings";
+        }*/
+	@GetMapping("/mu_trainings")
 	public String showMUTrainingsForm(Model model) {
-		model.addAttribute("position", new Position());
-		List<Employee> employees = new ArrayList<>();
-		System.out.println("000");
-		//employeeRepository.findByUser_del(0).forEach(employees::add);
+		model.addAttribute("pos", new Tmp());
 		model.addAttribute("employees", employeeRepository.findAll());
 		return "muTrainings";
 	}
 
-	@PostMapping
-	public String processMUTrainings(Position position) {
-		System.out.println("fds");
-		log.info("pos" + position.getPos());
+/*	@PostMapping("/mu_trainings")
+	public String processMUTrainings(Position position, Model model) {
+		model.addAttribute("employees", employeeRepository.findAll());
+		return "muTrainings";
+	}*/
+
+	@PostMapping("/change_position")
+	public String processPositions(Tmp tmp, Model model) {
+		//model.addAttribute("position", positionsRepository.findAll());
+		System.out.println("pos:");
+		System.out.println(tmp.getPos());
 		return "muTrainings";
 	}
+
+/*	@PostMapping(value = "/get_positions", produces = "application/json")
+	@ResponseBody
+	public String  getPositions() {
+		return "{x :\"x\"}";
+	}*/
 /*
 	@GetMapping("/greeting")
 	public String greetingForm(Model model) {
@@ -65,4 +72,9 @@ public class MuTrainingsController {
 	}
 */
 
+}
+@Data
+@RequiredArgsConstructor
+class Tmp {
+	private String pos;
 }
