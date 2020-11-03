@@ -19,21 +19,18 @@ xmlns:th="http://www.thymeleaf.org">
         <tr>
             <th>Фамилия Имя Отчество</th>
             <th>Должность</th>
-
+            <th>Департамент</th>
         </tr>
         </thead>
         <tbody>
 
         <tr th:id="'id' + ${employee.userId}" th:each="employee:${employees}" class="employee_id">
-            <td th:text="${employee.fio}">Фамилия Имя Отчество</td>
+            <td th:text="${employee.fio}"></td>
             <td>
-                <div class="employee_position"></div>
-<!--            <select th:field="*{pos}"  onchange="this.form.submit()">
-                <option value="">Nothing selected</option>
-                <option th:each="item : *{positions}"
-                        th:value="${item}"
-                        th:text="${item}"></option>
-            </select>-->
+                <div class="employee_position" th:text="${employee.position}"></div>
+            </td>
+            <td>
+                <div class="employee_department" th:text="${employee.department}"></div>
             </td>
         </tr>
         </tbody>
