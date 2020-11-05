@@ -32,7 +32,8 @@ public class MuTrainingsController {
         public String muTrainings() {
             return "muTrainings";
         }*/
-	@GetMapping("/mu_trainings")
+	//@GetMapping("/mu_trainings")
+	@GetMapping("/")
 	public String showMUTrainingsForm(Model model) {
 		model.addAttribute("pos", new Tmp());
 		model.addAttribute("employees", employeeRepository.findAll());

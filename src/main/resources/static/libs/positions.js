@@ -1,3 +1,13 @@
+$(function(){
+    $(".deletePosition").click(function(e) {
+        var id = $(this).parent().parent().attr("id").substr(2);
+        deletePosition(id);
+    });
+
+    $(".postPosition").click(function(e) {
+        postPosition();
+    })
+});
 var gl;
 $(function(){
     /*$(".employee_position").select2({
@@ -30,6 +40,36 @@ $(function(){
 
 
 });
+
+
+function deletePosition(id){
+    $.ajax({
+        url: '/position/delete/' + id,
+        type: 'DELETE',
+        data: {
+            _csrf: getCsrf(),
+        },
+        success: function () {
+            console.log("ok");
+        }
+    })
+}
+
+function postPosition(){
+    console.log("post position");
+    $.ajax({
+        url: '/position/post',
+        type: 'POST',
+        data: {
+            _csrf: $("input[name='_csrf']").val(),
+            id: 3,
+            text: "sdfa",
+        },
+        success: function () {
+            console.log("ok");
+        }
+    });
+}
 
 function getPositions() {
     var tmp
@@ -64,4 +104,8 @@ function positionSelect(e) {
         });
 
         $(this).off("click");
+}
+
+function getCsrf(){
+    return $("input[name='_csrf']").val();
 }
