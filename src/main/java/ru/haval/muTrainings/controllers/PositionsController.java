@@ -1,5 +1,7 @@
 package ru.haval.muTrainings.controllers;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,22 +21,34 @@ public class PositionsController {
 
     @GetMapping(path="/positions")
     public String showPositionForm(Model model) {
-        model.addAttribute("positions", positionsRepository.findByOrderByIdAsc());
+        model.addAttribute("positions", positionsRepository.findByOrderByTextAsc());
         return "positions";
     }
 
     @DeleteMapping("/position/delete/{id}")
     @ResponseStatus(code= HttpStatus.NO_CONTENT)
-    public void deletePosition(@PathVariable("id") Long id) {
+    public void deletePosition(@PathVariable("id") Long id, Model model) {
         System.out.println(id);
         try {
             positionsRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {}
+        //return "positions";
     }
 
-    @PostMapping(path="/position/post", consumes="application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void postPosition(@RequestBody String position) {
-        System.out.println(position);
+    @PostMapping(path="/positions")
+    //@ResponseStatus(HttpStatus.CREATED)
+    public String postPosition(@RequestParam String pos, Model model) {
+
+        System.out.println(pos);
+        Position position = new Position();
+        position.setText(pos);
+        positionsRepository.save(position);
+        return "positions";
     }
+
+/*    @PostMapping("/positions")
+    public String greetingSubmit(@ModelAttribute Greeting greeting, Model model) {
+        model.addAttribute("positions", greeting);
+        return "positions";
+    }*/
 }

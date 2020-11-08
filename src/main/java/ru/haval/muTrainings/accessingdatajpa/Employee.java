@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Subselect;
 
 import javax.persistence.*;
 
@@ -16,6 +17,7 @@ import javax.persistence.*;
 @Entity
 @Immutable
 @Table(name = "employees")
+@Subselect("SELECT * FROM hmmr_mu.employees;")
 public class Employee {
     @Id
     @Column(name = "user_id")
