@@ -109,3 +109,35 @@ function positionSelect(e) {
 function getCsrf(){
     return $("input[name='_csrf']").val();
 }
+
+function addPosition(){
+    console.log("add position");
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $.ajax({
+                url: "/positions",
+                type: "POST",
+                contentType:"application/json; charset=utf-8",
+                dataType:"json",
+                data: JSON.stringify({text: $("#inputPos").val()}),
+                beforeSend: function (jqXHR, settings) {
+                    jqXHR.setRequestHeader(header, token)
+                },
+                complete: function ( jqXHR, textStatus ) {
+                    console.log(jqXHR);
+                    if (textStatus == 'success'){
+                        addNewPositionToTable(jqXHR.responseJSON.id, jqXHR.responseJSON.text);
+                    }
+                },
+
+            });
+}
+
+var newRecord;
+function addNewPositionToTable(id, text){
+    $('tr').eq(-2).after($('tr').eq(-2).html());
+    var record = $('tr').eq(-2)
+    record.attr('id', 'id' + id);
+    console.log(record.html());
+    newRecord = record;
+}

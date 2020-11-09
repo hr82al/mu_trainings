@@ -2,6 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 xmlns:th="http://www.thymeleaf.org">
 <head>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <link rel="stylesheet" th:href="@{/styles/styles.css}">
     <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
 
@@ -24,8 +29,8 @@ xmlns:th="http://www.thymeleaf.org">
         </thead>
         <tbody>
 
-        <tr th:id="'id' + ${position.id}" th:each="position:${positions}" class="position_id">
-            <td th:text="${position.id}"></td>
+        <tr th:id="'id' + ${position.id}" th:each="position, count :${positions}" class="position_id">
+            <td th:text="${count.count}"></td>
             <td>
                 <div class="position" th:text="${position.text}"></div>
             </td>
@@ -33,12 +38,10 @@ xmlns:th="http://www.thymeleaf.org">
         </tr>
         <tr>
             <td>+</td>
-            <!-- <td id="addPosition" class="postPosition">Добавить должность</td> -->
-
             <td>
-                <input type="text" name="pos"></input>
+                <input type="text" name="pos" id="inputPos"></input>
             </td>
-            <td><input type="submit" value="Добавить"> </input>
+            <td><input type="button" value="Добавить" onclick="addPosition()"> </input>
             </td>
 
         </tr>
