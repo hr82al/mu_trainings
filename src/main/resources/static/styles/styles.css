@@ -4,3 +4,6 @@ td, th {
 table {
   border-collapse: collapse;
 }
+.deletePosition {
+  width: 100%;
+}

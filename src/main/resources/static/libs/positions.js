@@ -1,9 +1,4 @@
 $(function(){
-    $(".deletePosition").click(function(e) {
-        var id = $(this).parent().parent().attr("id").substr(2);
-        deletePosition(id);
-    });
-
     $(".postPosition").click(function(e) {
         postPosition();
     })
@@ -42,7 +37,10 @@ $(function(){
 });
 
 
-function deletePosition(id){
+function deletePosition(p){
+    console.log("delete");
+    console.log($(p).html());
+    var id = $(p).parent().parent().attr("id").substr(2);
     $.ajax({
         url: '/position/delete/' + id,
         type: 'DELETE',
@@ -124,20 +122,22 @@ function addPosition(){
                     jqXHR.setRequestHeader(header, token)
                 },
                 complete: function ( jqXHR, textStatus ) {
-                    console.log(jqXHR);
+                    tmp = jqXHR;
                     if (textStatus == 'success'){
                         addNewPositionToTable(jqXHR.responseJSON.id, jqXHR.responseJSON.text);
+                        $("#inputPos").val('');
+
+                    }
+                    if (jqXHR.status == 500) {
+                        $("#inputPos").val('');
                     }
                 },
-
             });
 }
 
 var newRecord;
 function addNewPositionToTable(id, text){
-    $('tr').eq(-2).after($('tr').eq(-2).html());
-    var record = $('tr').eq(-2)
-    record.attr('id', 'id' + id);
-    console.log(record.html());
-    newRecord = record;
+    var row = $('tr').eq(-2);
+    row.after("<tr id='id" + id + "' class=\"position_id\"><td>" + (parseInt($("tr").eq(-2).eq(0).children().eq(0).text()) + 1) + "</td><td>" + text + "</td><td><input type=\"button\" class=\"deletePosition\" value=\"Удалить\" onclick=\"deletePosition(this)\"></input></td></td></tr>");
 }
+var tmp;

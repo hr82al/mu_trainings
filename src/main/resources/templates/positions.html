@@ -34,7 +34,7 @@ xmlns:th="http://www.thymeleaf.org">
             <td>
                 <div class="position" th:text="${position.text}"></div>
             </td>
-            <td><input type="button" class="deletePosition" value="Удалить"></input></td>
+            <td><input type="button" class="deletePosition" value="Удалить" onclick="deletePosition(this)"></input></td>
         </tr>
         <tr>
             <td>+</td>
