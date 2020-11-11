@@ -11,42 +11,40 @@ xmlns:th="http://www.thymeleaf.org">
     <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
 
     <script type="text/javascript" th:src="@{/libs/jquery-3.5.1.min.js}"></script>
-    <script type="text/javascript" th:src="@{/libs/positions.js}"></script>
+    <script type="text/javascript" th:src="@{/libs/departments.js}"></script>
     <script type="text/javascript" th:src="@{/libs/select2.min.js}"></script>
     <title>Должности</title>
 </head>
 <body>
 <h1>Должности</h1>
 <img th:src="@{/images/haval_logo.jpg}"/>
- <form  action="#" th:action="@{/positions}" th:object="${positions}" method="post">
-    <table id="data-table" class="table table-striped table-bordered">
+    <table>
         <thead>
         <tr>
             <th>№</th>
-            <th>Должность</th>
+            <th>Департамент</th>
             <th>Удалить</th>
         </tr>
         </thead>
         <tbody>
 
-        <tr th:id="'id' + ${position.id}" th:each="position, count :${positions}" class="position_id">
+        <tr th:id="'id' + ${department.id}" th:each="department, count :${departments}" class="department_id">
             <td th:text="${count.count}"></td>
             <td>
-                <div class="position" th:text="${position.text}"></div>
+                <div class="department" th:text="${department.text}"></div>
             </td>
-            <td><input type="button" class="deletePosition" value="Удалить" onclick="deletePosition(this)"></input></td>
+            <td><input type="button" class="deleteDepartment" value="Удалить" onclick="deleteDepartment(this)"></input></td>
         </tr>
-        <tr>
+        <tr class="addDepartment">
             <td>+</td>
             <td>
-                <input type="text" name="pos" id="inputPos"></input>
+                <input type="text" name="pos" id="inputDepartment"></input>
             </td>
-            <td><input type="button" value="Добавить" onclick="addPosition()"> 
+            <td><input type="button" value="Добавить" onclick="addDepartment(this)">
             </td>
 
         </tr>
         </tbody>
     </table>
- </form>
 </body>
 </html>

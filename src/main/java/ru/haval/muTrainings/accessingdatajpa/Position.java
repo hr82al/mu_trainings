@@ -2,22 +2,20 @@ package ru.haval.muTrainings.accessingdatajpa;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 
 @Data
 @ToString
-@Slf4j
+
 @NoArgsConstructor
 @Entity
 @Table(name="trainings_positions")
 public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "positionId"/*, updatable = false, nullable = false*/)
+    @Column(name = "positionId")
     private Long id;
     @Column(name = "position", unique = true)
     private String text;

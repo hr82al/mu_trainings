@@ -5,20 +5,17 @@ package ru.haval.muTrainings.controllers;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.haval.muTrainings.accessingdatajpa.EmployeeRepository;
-import ru.haval.muTrainings.accessingdatajpa.Position;
 import ru.haval.muTrainings.accessingdatajpa.PositionsRepository;
 
 /**
  * @author Aleksandr Khomov. hr82al@gmail.com
  */
 
-@Slf4j
 @Controller
 @RequestMapping
 public class MuTrainingsController {

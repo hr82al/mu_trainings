@@ -8,14 +8,16 @@ CREATE TABLE IF NOT EXISTS trainings_employees
 (
 		user_id INT NOT NULL PRIMARY KEY,
 		position_id INT NOT NULL,
-		department_id INT NOT NULL
+		department_id INT NOT NULL,
+		del BOOL DEFAULT 0
 );
 
 # Должности (trainings_positions)
 CREATE TABLE IF NOT EXISTS trainings_positions
 (
 		position_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-		position VARCHAR(255) NOT NULL UNIQUE
+		position VARCHAR(255) NOT NULL UNIQUE,
+		del BOOL DEFAULT 0
 );
 
 
@@ -24,7 +26,8 @@ CREATE TABLE IF NOT EXISTS trainings_positions
 CREATE TABLE IF NOT EXISTS trainings_departments
 (
 		department_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-		department VARCHAR(255) NOT NULL UNIQUE
+		department VARCHAR(255) NOT NULL UNIQUE,
+		del BOOL DEFAULT 0
 );
 
 ##### Виды

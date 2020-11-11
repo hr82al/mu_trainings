@@ -1,6 +1,5 @@
 package ru.haval.muTrainings.accessingdatajpa;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

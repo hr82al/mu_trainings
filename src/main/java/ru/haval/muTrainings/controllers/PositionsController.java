@@ -1,19 +1,16 @@
 package ru.haval.muTrainings.controllers;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.haval.muTrainings.accessingdatajpa.Position;
 import ru.haval.muTrainings.accessingdatajpa.PositionsRepository;
 
-@Slf4j
 @Controller
 @RequestMapping
 public class PositionsController {
@@ -49,7 +46,8 @@ public class PositionsController {
 
     @PostMapping(path="/positions", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Position addPosition(@RequestBody Position position){
+    public @ResponseBody
+    Position addPosition(@RequestBody Position position){
         if ( position.getText() != ""){
             return positionsRepository.save(position);
         }

@@ -7,3 +7,11 @@ table {
 .deletePosition {
   width: 100%;
 }
+
+#inputDepartment {
+	width: 100%;
+}
+
+.deleteDepartment {
+	width: 100%;
+}
