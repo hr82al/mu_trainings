@@ -30,6 +30,15 @@ CREATE TABLE IF NOT EXISTS trainings_departments
 		del BOOL DEFAULT 0
 );
 
+#Список названий лицензированный обучений trainingsNamesList
+CREATE TABLE IF NOT EXISTS trainings_names_list
+(
+		training_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		training VARCHAR(255) NOT NULL UNIQUE,
+		training_period INT NOT NULL,
+		del BOOL DEFAULT 0
+);
+
 ##### Виды
 
 # Вид сотрудники
@@ -44,10 +53,3 @@ FROM hmmr_mu_staff hs
 		WHERE user_del=0;
 
 
-
-
-
-
-
-#<!--th:text="#{${'seedstarter.type.' + position}}">Должность</option>-->
- #<!-- <td th:text="${employee.position}">Должность</td>-->

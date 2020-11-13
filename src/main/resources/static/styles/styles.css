@@ -15,3 +15,18 @@ table {
 .deleteDepartment {
 	width: 100%;
 }
+
+.addItemButton {
+  width: 100%;
+}
+
+.deleteItemButton {
+  width: 100%;
+}
+
+.borderless {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: hidden;
+}

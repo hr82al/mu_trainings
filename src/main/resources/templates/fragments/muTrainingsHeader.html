@@ -6,19 +6,31 @@
     <title>Document</title>
 </head>
 <body>
-    <div th:fragment="muTrainingsHeader" th:replace="fragments/header :: header">
-        <div class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="#">Static header</a>
-            </div>
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-              </ul>
-            </div>
-          </div>
+  
+  <div th:fragment="muTrainingsHeader" >
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          
+          <a class="navbar-brand" href="/">
+            <img th:src="@{/images/haval_logo.jpg}"/>
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/muTrainings">Список сотрудников</a></li>
+            <li class="active"><a href="/trainings">Лицензированные обучения</a></li>
+            <li class="active"><a href="/positions">Должности</a></li>
+            <li class="active"><a href="/departments">Департаменты</a></li>
+            <li class="active"><a href="/trainingsNamesList">Список названий лицензированных обучений</a></li>
+          </ul>
         </div>
       </div>
+    </div>
+  </div>
+
+
+
+  
 </body>
 </html>

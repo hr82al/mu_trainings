@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <link rel="stylesheet" th:href="@{/styles/styles.css}">
+    <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
+
+    <script type="text/javascript" th:src="@{/libs/jquery-3.5.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/libs/traningsNames.js}"></script>
+    <script type="text/javascript" th:src="@{/libs/select2.min.js}"></script>
+    <title>Должности</title>
+</head>
+<body>
+<div th:insert="fragments/muTrainingsHeader :: muTrainingsHeader"></div>
+<table>
+    <thead>
+        <td>№</td>
+        <td>Наименование обучения</td>
+        <td>Периодичность (дней)</td>
+        <td>Удалить</td>
+    </thead>
+    <tbody>
+        <tr th:id="'id' + ${traininName.training}" th:each="trainingName, count :${traininsgNames}" class="id_trainingName">
+            <td>
+                <div th:text="${count.count}"></div>
+            </td>
+            <td ><div th:text="${trainingName.training}"></div></td>
+            <td ><div th:text="${trainingName.trainingPeriod}"></div></td>
+            <td><input type="button" class="deleteTrainingName deleteItemButton" value="Удалить" onclick="deleteDepartment(this)"></input></td>
+        </tr>
+        
+        <tr id="addEntry" class="addTrainingName">
+            <td>+</td>
+            <td>
+                <input id="inputTraning" type="text" class="borderless" ></input>
+            </td>
+            <td>
+                <input id="inputTraningPeriod" type="text" class="borderless" ></input>
+            </td>
+            <td><input id="addItemButton" type="button"  class="addItemButton" value="Добавить" onclick="addItem(this)">
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
