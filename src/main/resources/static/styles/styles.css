@@ -1,6 +1,6 @@
-td, th {
+/* td, th {
   border: 1px solid black;
-}
+} */
 table {
   border-collapse: collapse;
 }
@@ -24,9 +24,28 @@ table {
   width: 100%;
 }
 
-.borderless {
+/* .borderless {
+  width: 98%;
   border-top-style: hidden;
   border-right-style: hidden;
   border-left-style: hidden;
   border-bottom-style: hidden;
+} */
+
+.btn-primary {
+  color: #fff;
+  background-color: #df0e0e;
+  border-color: #ff1e1e;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+  color: #fff;
+  background-color: #b96900;
+  border-color: #b96200;
+  box-shadow: 0 0 0 0.2rem rgba(255,143,38,.5);
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: #d96900;
+  border-color: #cc6200;
 }

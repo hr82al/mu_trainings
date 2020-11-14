@@ -12,15 +12,15 @@ xmlns:th="http://www.thymeleaf.org">
     <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/styles/styles.css}">
 
-    <title>Список названий лицензированных обучений</title>
+    <title>Списки обучений для должности</title>
 </head>
 <body>
 <div th:insert="fragments/muTrainingsHeader :: muTrainingsHeader"></div>
 <table class="table table-striped container-fluid table-bordered container">
     <thead>
         <td>№</td>
+        <td>Должность</td>
         <td>Наименование обучения</td>
-        <td>Периодичность (дней)</td>
         <td>Удалить</td>
     </thead>
     <tbody>
@@ -47,6 +47,6 @@ xmlns:th="http://www.thymeleaf.org">
     </tbody>
 </table>
 <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
-<script type="text/javascript" th:src="@{/libs/trainingsNames.js}"></script>
+<script type="text/javascript" th:src="@{/libs/positionsTrainings.js}"></script>
 </body>
 </html>
