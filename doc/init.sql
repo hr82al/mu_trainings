@@ -20,7 +20,13 @@ CREATE TABLE IF NOT EXISTS trainings_positions
 		del BOOL DEFAULT 0
 );
 
-
+# Каждая дожность должна иметь списой необходимых обучений
+CREATE TABLE IF NOT EXISTS trainings_positions_trainings
+(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	position_id INT NOT NUll,
+	training_id INT NOT NULL
+)
 
 #Департаменты
 CREATE TABLE IF NOT EXISTS trainings_departments
@@ -38,6 +44,15 @@ CREATE TABLE IF NOT EXISTS trainings_names_list
 		training_period INT NOT NULL,
 		del BOOL DEFAULT 0
 );
+
+#Таблица сотруднии и их обучения
+CREATE TABLE IF NOT EXISTS trainings_dates
+(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	user_id INT NOT NULL,
+	training_id VARCHAR(255) NOT NULL,
+	last_date DATE NOT NULL
+)
 
 ##### Виды
 

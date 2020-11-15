@@ -7,8 +7,6 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Data
-@ToString
-
 @NoArgsConstructor
 @Entity
 @Table(name="trainings_positions")

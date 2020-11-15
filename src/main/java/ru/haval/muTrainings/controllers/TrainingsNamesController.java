@@ -19,7 +19,7 @@ public class TrainingsNamesController {
 
     @GetMapping
     public String showTrainingNameFrame(Model model){
-        model.addAttribute("traininsgNames", trainingsNamesRepository.findByDelIsFalseOrderByTraining());
+        model.addAttribute("trainingsgNames", trainingsNamesRepository.findByDelIsFalseOrderByTraining());
         return "trainingsNames";
     }
 

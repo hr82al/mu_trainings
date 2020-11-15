@@ -1,15 +1,6 @@
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
-$(function () {
-    $('td.select2').click(showSelect);
-
-});
-
-function showSelect() {
-    console.log('focused');
-}
-
 function sendPost(path, param, run) {
     $.ajax({
         url: path,

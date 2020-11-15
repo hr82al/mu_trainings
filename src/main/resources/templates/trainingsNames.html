@@ -24,7 +24,7 @@ xmlns:th="http://www.thymeleaf.org">
         <td>Удалить</td>
     </thead>
     <tbody>
-        <tr th:id="'id' + ${trainingName.id}" th:each="trainingName, count :${traininsgNames}" class="id_trainingName deleteEntry">
+        <tr th:id="'id' + ${trainingName.id}" th:each="trainingName, count :${trainingsgNames}" class="id_trainingName deleteEntry">
             <td>
                 <div th:text="${count.count}"></div>
             </td>

@@ -18,13 +18,13 @@ public class TrainingName {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "training_id")
-    Long id;
+    private Long id;
 
     @Column(unique = true)
-    String training;
+    private String training;
 
-    Integer trainingPeriod;
+    private Integer trainingPeriod;
 
-    Boolean del = false;
+    private Boolean del = false;
     
 }
