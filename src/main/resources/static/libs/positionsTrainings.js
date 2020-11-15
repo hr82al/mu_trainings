@@ -6,8 +6,24 @@ $(function () {
 
 });
 
+
 function showSelect() {
-    console.log('focused');
+    let cur = this;
+    let tmp = $('<div></div>')
+    $(cur).append(tmp);
+    let path = `/${$(cur).attr('class').split(' ')[0]}/get`;
+    sendPost(path, {}, (x) => {
+        console.log(x);
+        $(tmp).select2({
+            data: x,
+        });
+        $(tmp).on('select2:select', function (e) {
+            //Here select new a position of  thr employee.
+            $(cur).html(`${e.params.data.text}`);
+            $(cur).click(showSelect);
+        });
+    });
+    $(cur).off('click');
 }
 
 function sendPost(path, param, run) {
@@ -23,7 +39,6 @@ function sendPost(path, param, run) {
         complete: function (jqXHR, textStatus) {
             if (textStatus == 'success') {
                 run(jqXHR.responseJSON);
-                console.log(jqXHR.responseJSON);
             }
             if (jqXHR.status == 500) {
                 console.log(jqXHR.responseJSON);
@@ -37,6 +52,7 @@ function addItem(item) {
     var entry =  {};
     for(var i = 1; i < $('#addEntry').children().length - 1; i++){
         var currentVal = $('#addEntry').children().eq(i).children().eq(0).val();
+        console.log(currentVal);
         var inputVarName = getInputVarName(i, $('#addEntry'));
         entry[inputVarName] = currentVal;
     }
@@ -55,7 +71,7 @@ function getItemFromRow(row) {
     }
     return item;
 }
-var tmp;
+
 function deleteItem(item) {
     //Select current row
     let row = $(item).closest('.deleteEntry');
@@ -70,6 +86,7 @@ function getInputVarName(num, row) {
     str = getVarInputByColumn(num, row)
     //str = str.substr(5)
     //Cut from the first Uppercase character to space
+    console.log(str);
     let first = str.search(/[A-Z]/);
     let last = str.search(/\s/);
     last = last == -1 ? undefined : last;
@@ -139,4 +156,15 @@ function changeRow(p, entry) {
 
 function validateNum(data) {
     return data.match(/^[0-9]+$/) != null
+}
+
+function cachingDecorator(func) {
+    let cache = new Map();
+    return function(x) {
+        if(cache.has(x)){
+            return cache.get(x);
+        }
+        let result = func(x)
+        return result;
+    }
 }

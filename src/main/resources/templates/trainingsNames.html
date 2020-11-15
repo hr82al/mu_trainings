@@ -28,7 +28,7 @@ xmlns:th="http://www.thymeleaf.org">
             <td>
                 <div th:text="${count.count}"></div>
             </td>
-            <td ><div th:text="${trainingName.training}" class="itemTraining"></div></td>
+            <td ><div th:text="${trainingName.text}" class="itemText"></div></td>
             <td ><div th:text="${trainingName.trainingPeriod}" class="itemTrainingPeriod"></div></td>
             <td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></input></td>
         </tr>
@@ -36,7 +36,7 @@ xmlns:th="http://www.thymeleaf.org">
         <tr id="addEntry" class="addTrainingName">
             <td>+</td>
             <td>
-                <input id="inputTraining" type="text" class="inputTraining  w-100 borderless" ></input>
+                <input id="inputTraining" type="text" class="inputText  w-100 borderless" ></input>
             </td>
             <td>
                 <input id="inputTrainingPeriod" type="text" class="inputTrainingPeriod w-100 borderless" ></input>

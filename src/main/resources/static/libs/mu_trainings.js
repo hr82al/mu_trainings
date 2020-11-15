@@ -42,12 +42,12 @@ function getPositions() {
 }
 
 function positionSelect(e) {
-    console.log($(this).html()) ;
+
         var cur = $(this).children()[0];
         $.ajax({
             url: "/get_positions",
             success: function(res) {
-
+//console.log(res);
                 $(cur).select2({
                     data: $.parseJSON(res)
                 });
@@ -56,7 +56,7 @@ function positionSelect(e) {
                     var data = e.params.data;
                     $(this).text(e.params.text);
                     var div = $(cur).parent();
-                     console.log(div.html("<div class=\"employee_position\">" + e.params.data.text + "</div>"));
+                     div.html("<div class=\"employee_position\">" + e.params.data.text + "</div>");
                      div.click(positionSelect);
                 });
 

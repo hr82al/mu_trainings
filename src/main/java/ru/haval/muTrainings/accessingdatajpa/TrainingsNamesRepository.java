@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface TrainingsNamesRepository extends CrudRepository<TrainingName, Long> {
-    List<TrainingName> findByDelIsFalseOrderByTraining();
+    List<TrainingName> findByDelIsFalseOrderByText();
 
     @Transactional
     @Modifying

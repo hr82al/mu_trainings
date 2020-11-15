@@ -20,8 +20,8 @@ public class TrainingName {
     @Column(name = "training_id")
     private Long id;
 
-    @Column(unique = true)
-    private String training;
+    @Column(name = "training", unique = true)
+    private String text;
 
     private Integer trainingPeriod;
 

@@ -79,7 +79,7 @@ function addNewRow(entry) {
     console.log(JSON.stringify(entry));
     var currentRow = $("#addEntry");
     var last = $(currentRow).prev();
-    var newRow = $(`<tr id="id" class="id_trainingName deleteEntry"><td><div></div></td><td><div class="itemTraining"></div></td><td><div class="itemTrainingPeriod"></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>`);
+    var newRow = $(`<tr id="id" class="id_trainingName deleteEntry"><td><div></div></td><td><div class="itemText"></div></td><td><div class="itemTrainingPeriod"></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>`);
     $(newRow).children().eq(0).text(parseInt($(newRow).children().eq(0).text()) + 1);
     var nom = $(last).children().eq(0).text();
     if (nom == undefined) {

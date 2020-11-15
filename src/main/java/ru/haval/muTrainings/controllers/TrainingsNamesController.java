@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import ru.haval.muTrainings.accessingdatajpa.TrainingName;
 import ru.haval.muTrainings.accessingdatajpa.TrainingsNamesRepository;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/trainingsNamesList")
 public class TrainingsNamesController {
@@ -19,7 +21,7 @@ public class TrainingsNamesController {
 
     @GetMapping
     public String showTrainingNameFrame(Model model){
-        model.addAttribute("trainingsgNames", trainingsNamesRepository.findByDelIsFalseOrderByTraining());
+        model.addAttribute("trainingsgNames", trainingsNamesRepository.findByDelIsFalseOrderByText());
         return "trainingsNames";
     }
 
@@ -27,7 +29,7 @@ public class TrainingsNamesController {
     @ResponseBody
     public TrainingName addTrainingName(@RequestBody TrainingName trainingName){
         System.out.println(trainingName); 
-        int i =  trainingsNamesRepository.addTrainingNameQuery(trainingName.getTraining(), trainingName.getTrainingPeriod());
+        int i =  trainingsNamesRepository.addTrainingNameQuery(trainingName.getText(), trainingName.getTrainingPeriod());
         // Map<String, Object> map = new HashMap<>();
         // map.put("result", "ok");
         return trainingName;
@@ -37,15 +39,18 @@ public class TrainingsNamesController {
     @ResponseBody
     public TrainingName deleteTrainingName(@RequestBody TrainingName trainingName){
         trainingName.setDel(true);
-        System.out.println(trainingName);
         TrainingName result =  trainingsNamesRepository.save(trainingName);
         return result;
     }
     @RequestMapping(path = "/change", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public TrainingName changeTrainingName(@RequestBody TrainingName trainingName){
-        System.out.println(trainingName);
-        TrainingName result =  trainingsNamesRepository.save(trainingName);
-        return result;
+        return trainingsNamesRepository.save(trainingName);
+    }
+
+    @RequestMapping(path = "/get", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public List<TrainingName> getTrainingNames() {
+        return trainingsNamesRepository.findByDelIsFalseOrderByText();
     }
 }

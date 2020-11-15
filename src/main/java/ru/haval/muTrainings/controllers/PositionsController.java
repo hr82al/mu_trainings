@@ -11,19 +11,23 @@ import org.springframework.web.bind.annotation.*;
 import ru.haval.muTrainings.accessingdatajpa.Position;
 import ru.haval.muTrainings.accessingdatajpa.PositionsRepository;
 
+import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Controller
-@RequestMapping
+@RequestMapping("/positions")
 public class PositionsController {
     @Autowired
     PositionsRepository positionsRepository;
 
-    @GetMapping(path="/positions")
+    @GetMapping
     public String showPositionForm(Model model) {
         model.addAttribute("positions", positionsRepository.findByOrderByTextAsc());
         return "positions";
     }
 
-    @DeleteMapping("/position/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(code= HttpStatus.NO_CONTENT)
     public void deletePosition(@PathVariable("id") Long id, Model model) {
         System.out.println(id);
@@ -44,7 +48,7 @@ public class PositionsController {
         return "positions";
     }*/
 
-    @PostMapping(path="/positions", consumes = "application/json", produces = "application/json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Position addPosition(@RequestBody Position position){
@@ -60,4 +64,23 @@ public class PositionsController {
         model.addAttribute("positions", greeting);
         return "positions";
     }*/
+
+    @RequestMapping(path = "/get", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public List<Position> getPositions(){
+        return positionsRepository.findByDelIsFalseOrderByTextAsc();
+    }
+
+    // @RequestMapping("/get")
+    // @ResponseBody
+    // public String getPositions(){
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     String json = "{}";
+    //     try {
+    //         json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(positionsRepository.findAll());
+    //     } catch(Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     return json;
+    // }
 }

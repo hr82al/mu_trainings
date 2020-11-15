@@ -8,4 +8,5 @@ public interface PositionsRepository extends CrudRepository<Position, Long> {
     List<Position> findAll();
     List<Position> findByOrderByIdAsc();
     List<Position> findByOrderByTextAsc();
+    List<Position> findByDelIsFalseOrderByTextAsc();
 }

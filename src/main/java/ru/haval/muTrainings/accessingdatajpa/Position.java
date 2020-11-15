@@ -2,7 +2,6 @@ package ru.haval.muTrainings.accessingdatajpa;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -15,8 +14,12 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "positionId")
     private Long id;
+
     @Column(name = "position", unique = true)
     private String text;
+
+    private
+    Boolean del = false;
 
     public Position(String text) {
         this.text = text;
