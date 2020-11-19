@@ -21,18 +21,19 @@ public class TrainingsNamesController {
 
     @GetMapping
     public String showTrainingNameFrame(Model model){
-        model.addAttribute("trainingsgNames", trainingsNamesRepository.findByDelIsFalseOrderByText());
+        //model.addAttribute("trainingsNames", trainingsNamesRepository.findByDelIsFalseOrderByText());
+        model.addAttribute("trainingsNames", trainingsNamesRepository.findAll());
         return "trainingsNames";
     }
 
     @RequestMapping(path = "/add", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public TrainingName addTrainingName(@RequestBody TrainingName trainingName){
-        System.out.println(trainingName); 
-        int i =  trainingsNamesRepository.addTrainingNameQuery(trainingName.getText(), trainingName.getTrainingPeriod());
+        //System.out.println(trainingName); 
+        //int i =  trainingsNamesRepository.addTrainingNameQuery(trainingName.getText(), trainingName.getTrainingPeriod());
         // Map<String, Object> map = new HashMap<>();
         // map.put("result", "ok");
-        return trainingName;
+        return trainingsNamesRepository.save(trainingName);
     }
 
     @RequestMapping(path = "/del", consumes = "application/json", produces = "application/json")

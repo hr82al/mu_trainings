@@ -21,7 +21,7 @@ xmlns:th="http://www.thymeleaf.org">
         <tr>
             <th>№</th>
             <th>Должность</th>
-            <th>Удалить</th>
+            <th>Удалено</th>
         </tr>
         </thead>
         <tbody>
@@ -29,16 +29,19 @@ xmlns:th="http://www.thymeleaf.org">
         <tr th:id="'id' + ${position.id}" th:each="position, count :${positions}" class="position_id">
             <td th:text="${count.count}"></td>
             <td>
-                <div class="position" th:text="${position.text}"></div>
+                <div class="itemText" th:text="${position.text}"></div>
             </td>
-            <td><input type="button" class="deletePosition btn btn-primary" value="Удалить" onclick="deletePosition(this)"></input></td>
+            <td><input type="checkbox" class="itemDel"></td>
+            <!-- <td><input type="button" class="deletePosition btn btn-primary" value="Удалить" onclick="deletePosition(this)"></input></td> -->
         </tr>
-        <tr>
+        <tr id="addEntry">
             <td>+</td>
             <td>
-                <input type="text" name="pos" id="inputPos"></input>
+                <!-- id="inputPos" -->
+                <input id="inputText" type="text" class="inputText w-100"></input>
             </td>
-            <td><input type="button" class="deleteItemButton btn btn-primary" value="Добавить" onclick="addPosition()"> 
+            <td><input id="addItemButton" type="button" class="deleteItemButton btn btn-primary" value="Добавить" onclick="addItem(this)">
+                <!-- onclick="addPosition()">  -->
             </td>
 
         </tr>
@@ -46,6 +49,7 @@ xmlns:th="http://www.thymeleaf.org">
     </table>
  </form>
  <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
+ <script type="text/javascript" th:src="@{/libs/jpa.js}"></script>
  <script type="text/javascript" th:src="@{/libs/positions.js}"></script>
 </body>
 </html>

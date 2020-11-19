@@ -1,3 +1,6 @@
+
+const NEW_ROW_PATTERN = '<tr class="position_id deleteEntry"><td></td><td><div class="itemText"></div></td><td><input type="checkbox" class="itemDel"></td></tr>'
+
 $(function(){
     $(".postPosition").click(function(e) {
         postPosition();
@@ -135,9 +138,7 @@ function addPosition(){
             });
 }
 
-var newRecord;
 function addNewPositionToTable(id, text){
     var row = $('tr').eq(-2);
-    row.after("<tr id='id" + id + "' class=\"position_id\"><td>" + (parseInt($("tr").eq(-2).eq(0).children().eq(0).text()) + 1) + "</td><td>" + text + "</td><td><input type=\"button\" class=\"deletePosition\" value=\"Удалить\" onclick=\"deletePosition(this)\"></input></td></td></tr>");
+    row.after("<tr id='id" + id + "' class=\"position_id\"><td>" + (parseInt($("tr").eq(-2).eq(0).children().eq(0).text()) + 1) + "</td><td>" + text + "</td><td><input type=\"button\" class=\"deletePosition btn btn-primary\" value=\"Удалить\" onclick=\"deletePosition(this)\"></input></td></td></tr>");
 }
-var tmp;

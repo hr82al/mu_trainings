@@ -1,6 +1,45 @@
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
 
+var itemTrainingPeriodEditable = {
+    event: 'click',
+    lineBreaks: false,
+    closeOnEnter: true,
+    callback: function (data) {
+        
+        if(data.content){
+            currentRow = $(data.$el).closest('.deleteEntry');
+            
+            let entry = getItemFromRow(currentRow)
+            $(currentRow).children().eq(2).children().eq(0).text('Сохранение данных ...');
+            let currentValue = entry.trainingPeriod;
+            if (validateNum(currentValue)) {
+                changeRow(currentRow, entry);
+            }
+            else {
+                $(currentRow).children().eq(2).children().eq(0).text('Введите число');
+            }
+        }
+    }
+};
+
+var itemTextEditable = {
+    event: 'click',
+    lineBreaks: false,
+    closeOnEnter: true,
+    callback: function (data) {
+        
+        if(data.content){
+            currentRow = $(data.$el).closest('.deleteEntry');
+            tmp = currentRow;
+            
+            let entry = getItemFromRow(currentRow)
+            $(currentRow).children().eq(1).children().eq(0).text('Сохранение данных ...');
+            changeRow(currentRow, entry);
+        }
+    }
+};
+
 function sendPost(path, param, run) {
     $.ajax({
         url: path,
@@ -75,59 +114,55 @@ function getVarInputByColumn(num, row){
 function checkIfAddedAndAddNewRow(entry) {
     addNewRow(entry);
 }
+
+var tmp;
 function addNewRow(entry) {
     console.log(JSON.stringify(entry));
-    var currentRow = $("#addEntry");
-    var last = $(currentRow).prev();
-    var newRow = $(`<tr id="id" class="id_trainingName deleteEntry"><td><div></div></td><td><div class="itemText"></div></td><td><div class="itemTrainingPeriod"></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>`);
+    let currentRow = $("#addEntry");
+    let last = $(currentRow).prev();
+    let newRow = $(`<tr id="id" class="id_trainingName deleteEntry"><td><div></div></td><td><div class="itemText"></div></td><td><div class="itemTrainingPeriod" ></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>`);
     $(newRow).children().eq(0).text(parseInt($(newRow).children().eq(0).text()) + 1);
-    var nom = $(last).children().eq(0).text();
+    let nom = parseInt($(last).children().eq(0).text());
+    tmp = nom;
     if (nom == undefined) {
         nom = 1;
     }
     else {
-        nom = `${parseInt(nom.substr(2)) + 1}` ;
+        nom = nom + 1;
     }  
-    $(newRow).children().eq(0).text(nom);
+    console.log(nom);
+    $(newRow).children().eq(0).html(`<div>${nom}</div>`)
     $(newRow).attr('id', `id${entry.id}`);
-    for(var i = 1; i < $('#addEntry').children().length - 1; i++) {
-        var name = getInputVarName(i, currentRow);
-        $(newRow).children().eq(i).text(entry[name]);
+    for(let i = 1; i < $('#addEntry').children().length - 1; i++) {
+        let name = getInputVarName(i, currentRow);
+        $(newRow).children().eq(i).children().eq(0).text(entry[name]);
     }
     $(currentRow).before($(newRow));
+    $(`#id${entry.id} .itemTrainingPeriod`).editable(itemTrainingPeriodEditable);
+    $('#inputTraining').text('');
+    $('#inputTraining').focus();
 }
 
 $(function() {
-    $('.itemTrainingPeriod').editable({
-        event: 'click',
-        lineBreaks: false,
-        closeOnEnter: true,
-        callback: function (data) {
-            
-            if(data.content){
-                currentRow = $(data.$el).closest('.deleteEntry');
-                tmp = currentRow;
-                
-                let entry = getItemFromRow(currentRow)
-                $(currentRow).children().eq(2).children().eq(0).text('Сохранение данных ...');
-                let currentValue = entry.trainingPeriod;
-                if (validateNum(currentValue)) {
-                    changeRow(currentRow, entry);
-                }
-                else {
-                    $(currentRow).children().eq(2).children().eq(0).text('Введите число');
-                }
-            }
-        }
-    });
+    $('.itemTrainingPeriod').editable(itemTrainingPeriodEditable);
+    $('.itemText').editable(itemTextEditable);
 });
 
 function changeRow(p, entry) {
     sendPost(`${window.location.pathname}/change`, entry, (item) => {
-        $(p).children().eq(2).children().eq(0).text(item.trainingPeriod);
+        updateRow(p, entry);
+        //$(p).children().eq(2).children().eq(0).text(item.trainingPeriod);
     })
 }
 
 function validateNum(data) {
     return data.match(/^[0-9]+$/) != null
+}
+
+function updateRow(p, entry) {
+    for(let i = 1; i < $('#addEntry').children().length - 1; i++) {
+        let inputVarName = getInputVarName(i, p);
+        console.log(inputVarName);
+        $(p).children().eq(i).children().eq(0).text(entry[inputVarName]);
+    }
 }

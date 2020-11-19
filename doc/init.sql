@@ -40,9 +40,10 @@ CREATE TABLE IF NOT EXISTS trainings_departments
 CREATE TABLE IF NOT EXISTS trainings_names_list
 (
 		training_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-		training VARCHAR(255) NOT NULL UNIQUE,
+		training TEXT NOT NULL UNIQUE,
 		training_period INT NOT NULL,
-		del BOOL DEFAULT 0
+		del BOOL DEFAULT 0,
+		KEY ix_length_training (training(255))
 );
 
 #Таблица сотруднии и их обучения

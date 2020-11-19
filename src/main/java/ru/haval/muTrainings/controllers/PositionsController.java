@@ -23,7 +23,8 @@ public class PositionsController {
 
     @GetMapping
     public String showPositionForm(Model model) {
-        model.addAttribute("positions", positionsRepository.findByOrderByTextAsc());
+        //model.addAttribute("positions", positionsRepository.findByOrderByTextAsc());
+        model.addAttribute("positions", positionsRepository.findAll());
         return "positions";
     }
 
@@ -48,15 +49,15 @@ public class PositionsController {
         return "positions";
     }*/
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Position addPosition(@RequestBody Position position){
-        if ( position.getText() != ""){
-            return positionsRepository.save(position);
-        }
-        return  null;
-    }
+    // @PostMapping(consumes = "application/json", produces = "application/json")
+    // @ResponseStatus(HttpStatus.CREATED)
+    // public @ResponseBody
+    // Position addPosition(@RequestBody Position position){
+    //     if ( position.getText() != ""){
+    //         return positionsRepository.save(position);
+    //     }
+    //     return  null;
+    // }
 
 
 /*    @PostMapping("/positions")
@@ -83,4 +84,11 @@ public class PositionsController {
     //     }
     //     return json;
     // }
+
+    @RequestMapping(path = "/add", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public Position addPosition(@RequestBody Position position) {
+        System.out.println(position);
+        return positionsRepository.save(position);
+    }
 }
