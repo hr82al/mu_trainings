@@ -1,12 +1,43 @@
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
+const NEW_ROW_ITEM = '<tr class="id_positionName deleteEntry"><td><div></div></td><td><div class="itemPosition"></div></td><td><div class="itemTraining"></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>'
+var availablePositions;
+var availableTrainings;
 
-const NEW_ROW_ITEM = '<tr id="id" class="id_trainingName deleteEntry"><td><div></div></td><td><div class="itemTraining"></div></td><td><div class="itemTrainingPeriod"></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>';
+//const NEW_ROW_ITEM = '<tr id="id" class="id_trainingName deleteEntry"><td><div></div></td><td><div class="itemTraining"></div></td><td><div class="itemTrainingPeriod"></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>';
 
 $(function () {
-    $('td.select2').click(showSelect);
+    update();
+    //$('td.select2').click(showSelect);
+    // $('#position').click(function() { 
+    //   customSelect('#position', availablePositions);
+    // });
 
+    // $('#training').click(function() { 
+    //   customSelect('#training', availableTrainings);
+    // });
+    //setSelects();
 });
+
+function setSelects(){
+    customSelect('#position', availablePositions);
+    customSelect('#training', availableTrainings);
+}
+
+
+
+function update() {
+    //Load list of available positions
+    sendPost('/positions/get', {}, (positions) => {
+        availablePositions = positions;
+        customSelect('#position', availablePositions);
+    });
+    //Load list of available trainingsNames
+    sendPost('/trainingsNamesList/get', {}, (trainings) => {
+        availableTrainings = trainings;
+        customSelect('#training', availableTrainings);
+    });
+}
 
 
 function showSelect() {
@@ -15,7 +46,6 @@ function showSelect() {
     $(cur).append(tmp);
     let path = `/${$(cur).attr('class').split(' ')[0]}/get`;
     sendPost(path, {}, (x) => {
-        console.log(x);
         $(tmp).select2({
             data: x,
         });
@@ -25,7 +55,21 @@ function showSelect() {
             $(cur).click(showSelect);
         });
     });
-    $(cur).off('click');
+    //$(cur).off('click');
+}
+
+function customSelect(curId, aData) {
+    let cur = $(curId);
+    let tmp = $('<div></div>');
+    $(cur).append(tmp);
+    $(tmp).select2({
+      data: aData,
+    });
+    $(tmp).on('select2:select', function (a) {
+    //   $(cur).html(a.params.data.text);
+      $(cur).attr('aid', a.params.data.id);
+    });
+    //$(cur).off('click');
 }
 
 function sendPost(path, param, run) {
@@ -125,6 +169,7 @@ function addNewRow(entry) {
     $(currentRow).before($(newRow));
 }
 
+/*
 $(function() {
     $('.itemTrainingPeriod').editable({
         event: 'click',
@@ -149,6 +194,7 @@ $(function() {
         }
     });
 });
+*/
 
 function changeRow(p, entry) {
     sendPost(`${window.location.pathname}/change`, entry, (item) => {
@@ -169,4 +215,25 @@ function cachingDecorator(func) {
         let result = func(x)
         return result;
     }
+}
+
+function addPositionTraining(input) {
+  sendPost('/positionsTrainings/set', 
+    {
+        positionId: $('#position').attr('aid'),
+        trainingId: $('#training').attr('aid')
+    },
+    (res) => {
+        let newRow = $(NEW_ROW_ITEM);
+        console.log('f');
+        
+        $(newRow).find('.itemPosition').text($('#position').find('.select2-selection__rendered').text());
+        $(newRow).find('.itemTraining').text($('#training').find('.select2-selection__rendered').text());
+        $(newRow).children().eq(0).text(parseInt($('#addPositionTraining').prev().children().eq(0).text()) + 1);
+        $('#addPositionTraining').before(newRow);
+        $('#position').find('.select2-selection__rendered').text('');
+        $('#training').find('.select2-selection__rendered').text('');
+        // setSelects();
+    }
+  );
 }

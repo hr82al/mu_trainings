@@ -28,18 +28,18 @@ xmlns:th="http://www.thymeleaf.org">
             <td>
                 <div th:text="${count.count}"></div>
             </td>
-            <td ><div th:text="${positionTraining.positions.text}" class="itemTraining"></div></td>
-            <td ><div th:text="${positionTraining.trainingName.text}" class="itemTrainingPeriod"></div></td>
+            <td ><div th:text="${positionTraining.position.text}" class="itemPosition"></div></td>
+            <td ><div th:text="${positionTraining.trainingName.text}" class="itemTraining"></div></td>
             <td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></input></td>
         </tr>
         
-        <tr id="addEntry" class="addTrainingName">
+        <tr id="addPositionTraining" class="addTrainingName">
             <td>+</td>
-            <td class="positions select2">
+            <td id="position" class="positions select2">
             </td>
-            <td class="trainingsNamesList select2">
+            <td id="training" class="trainingsNamesList select2">
             </td>
-            <td><input id="addItemButton" type="button"  class="addItemButton btn btn-primary" value="Добавить" onclick="addItem(this)">
+            <td><input id="addItemButton" type="button"  class="addItemButton btn btn-primary" value="Добавить" onclick="addPositionTraining(this)">
             </td>
         </tr>
     </tbody>

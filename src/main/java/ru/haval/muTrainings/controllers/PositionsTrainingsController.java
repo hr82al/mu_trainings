@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.haval.muTrainings.accessingdatajpa.PositionTraining;
+import ru.haval.muTrainings.accessingdatajpa.PositionTrainingIds;
+import ru.haval.muTrainings.accessingdatajpa.PositionsTrainingIdsRepository;
 import ru.haval.muTrainings.accessingdatajpa.PositionsTrainingsRepository;
 
 @Controller
@@ -17,19 +19,30 @@ public class PositionsTrainingsController {
     @Autowired
     PositionsTrainingsRepository positionsTrainingsRepository;
 
+    @Autowired
+    PositionsTrainingIdsRepository positionTrainingIdsRepository;
+
     @GetMapping
-    public String showPeriodsFrame(Model model){
-        for(PositionTraining positionTraining : positionsTrainingsRepository.findAll()){
+    public String showPeriodsFrame(Model model) {
+        for (PositionTraining positionTraining : positionsTrainingsRepository.findAll()) {
             System.out.println(positionTraining);
         }
         model.addAttribute("positionsTrainings", positionsTrainingsRepository.findAll());
         return "positionsTrainings";
     }
 
-    @RequestMapping(path = "/del", consumes = "application/json", produces = "applicaion/json")
+    @RequestMapping(path = "/del", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public PositionTraining deletePositionTraining(@RequestBody PositionTraining positionTraining){
+    public PositionTraining deletePositionTraining(@RequestBody PositionTraining positionTraining) {
         positionsTrainingsRepository.deleteById(positionTraining.getId());
         return positionTraining;
+    }
+
+    @RequestMapping(path = "/set", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public PositionTrainingIds setPositionTraining(@RequestBody PositionTrainingIds positionTrainingIds) {
+        System.out.println("pt set");
+        System.out.println(positionTrainingIds);
+        return positionTrainingIdsRepository.save(positionTrainingIds);
     }
 }

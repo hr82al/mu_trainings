@@ -25,8 +25,13 @@ CREATE TABLE IF NOT EXISTS trainings_positions_trainings
 (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	position_id INT NOT NUll,
-	training_id INT NOT NULL
-)
+	training_id INT NOT NULL,
+	UNIQUE KEY (position_id, training_id),
+	FOREIGN KEY (position_id)
+        REFERENCES trainings_positions(position_id),
+	FOREIGN KEY (training_id)
+				REFERENCES trainings_names_list(training_id)
+);
 
 #Департаменты
 CREATE TABLE IF NOT EXISTS trainings_departments
@@ -51,9 +56,10 @@ CREATE TABLE IF NOT EXISTS trainings_dates
 (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	user_id INT NOT NULL,
-	training_id VARCHAR(255) NOT NULL,
-	last_date DATE NOT NULL
-)
+	training_id int NOT NULL,
+	last_date DATE,
+	UNIQUE KEY (user_id, training_id)
+);
 
 ##### Виды
 
