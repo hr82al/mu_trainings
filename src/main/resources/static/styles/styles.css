@@ -9,11 +9,11 @@ table {
 }
 
 #inputDepartment {
-	width: 100%;
+  width: 100%;
 }
 
 .deleteDepartment {
-	width: 100%;
+  width: 100%;
 }
 
 .addItemButton {
@@ -38,11 +38,12 @@ table {
   border-color: #ff1e1e;
 }
 
-.btn-primary.focus, .btn-primary:focus {
+.btn-primary.focus,
+.btn-primary:focus {
   color: #fff;
   background-color: #b96900;
   border-color: #b96200;
-  box-shadow: 0 0 0 0.2rem rgba(255,143,38,.5);
+  box-shadow: 0 0 0 0.2rem rgba(255, 143, 38, 0.5);
 }
 .btn-primary:hover {
   color: #fff;
@@ -51,5 +52,12 @@ table {
 }
 
 .itemDel {
-  text-align: center;   
+  text-align: center;
+}
+
+.rotated {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  height: 12rem;
+  /*white-space: nowrap;*/
 }
