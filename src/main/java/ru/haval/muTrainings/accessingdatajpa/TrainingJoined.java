@@ -30,7 +30,7 @@ public class TrainingJoined {
   @JoinColumn(name = "user_id")
   Employee employee;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "training_id")
   TrainingName trainingName;
 

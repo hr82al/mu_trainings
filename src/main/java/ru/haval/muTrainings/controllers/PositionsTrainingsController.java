@@ -1,5 +1,7 @@
 package ru.haval.muTrainings.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +26,10 @@ public class PositionsTrainingsController {
 
     @GetMapping
     public String showPeriodsFrame(Model model) {
+        model.addAttribute("positionsTrainings", positionsTrainingsRepository.findAll());
         for (PositionTraining positionTraining : positionsTrainingsRepository.findAll()) {
             System.out.println(positionTraining);
         }
-        model.addAttribute("positionsTrainings", positionsTrainingsRepository.findAll());
         return "positionsTrainings";
     }
 
@@ -44,5 +46,25 @@ public class PositionsTrainingsController {
         System.out.println("pt set");
         System.out.println(positionTrainingIds);
         return positionTrainingIdsRepository.save(positionTrainingIds);
+    }
+
+    @RequestMapping(path = "/change", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public PositionTrainingIds changePositionTraining(@RequestBody PositionTrainingIds rPositionTrainingIds) {
+        System.out.println("pt set");
+        System.out.println(rPositionTrainingIds.getId());
+        System.out.println(rPositionTrainingIds.getOptional());
+        Optional<PositionTrainingIds> positionTraining = positionTrainingIdsRepository
+                .findById(rPositionTrainingIds.getId());
+        if (positionTraining.isPresent()) {
+            PositionTrainingIds pt = positionTraining.get();
+            System.out.println("**********************************************************************");
+            System.out.println(pt);
+            System.out.println("**********************************************************************");
+            pt.setOptional(rPositionTrainingIds.getOptional());
+            return positionTrainingIdsRepository.save(pt);
+        }
+        return null;
+
     }
 }

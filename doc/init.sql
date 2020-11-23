@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS trainings_positions_trainings
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	position_id INT NOT NUll,
 	training_id INT NOT NULL,
+	optional BOOL DEFAULT 0,
+	del BOOL DEFAULT 0,
 	UNIQUE KEY (position_id, training_id),
 	FOREIGN KEY (position_id)
         REFERENCES trainings_positions(position_id),

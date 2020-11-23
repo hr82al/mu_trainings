@@ -21,7 +21,8 @@ xmlns:th="http://www.thymeleaf.org">
         <th>№</th>
         <th>Должность</th>
         <th>Наименование обучения</th>
-        <th>Удалить</th>
+        <th>Дополнительно</th>
+        <th>Отключено</th>
     </thead>
     <tbody>
         <tr th:id="'id' + ${positionTraining.id}" th:each="positionTraining, count :${positionsTrainings}" class="id_positionName deleteEntry">
@@ -30,7 +31,8 @@ xmlns:th="http://www.thymeleaf.org">
             </td>
             <td ><div th:text="${positionTraining.position.text}" class="itemPosition"></div></td>
             <td ><div th:text="${positionTraining.trainingName.text}" class="itemTraining"></div></td>
-            <td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></input></td>
+            <td><input type="checkbox" class="itemOptional" th:checked="${positionTraining.optional}"></td>
+            <td><input type="checkbox" class="itemDel"></td>
         </tr>
         
         <tr id="addPositionTraining" class="addTrainingName">

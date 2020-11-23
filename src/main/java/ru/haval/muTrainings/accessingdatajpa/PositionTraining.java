@@ -1,5 +1,6 @@
 package ru.haval.muTrainings.accessingdatajpa;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,5 +30,11 @@ public class PositionTraining {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "training_id")
 	private TrainingName trainingName;
+
+	@Column
+	private Boolean optional;
+
+	@Column
+	private Boolean del;
 
 }

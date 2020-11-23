@@ -23,4 +23,8 @@ public class PositionTrainingIds {
   private Integer positionId;
   @Column(name = "training_id")
   private Integer trainingId;
+
+  private Boolean optional;
+
+  private Boolean del;
 }

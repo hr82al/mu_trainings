@@ -8,6 +8,11 @@ var availableTrainings;
 
 $(function () {
     update();
+
+    $('.itemOptional').change(function () {
+        console.log($(this).prop('checked'));
+        //sendPost("/positionsTrainings/change", {"id": 52, "optional": true}, () => {} );
+    });
     //$('td.select2').click(showSelect);
     // $('#position').click(function() { 
     //   customSelect('#position', availablePositions);
@@ -231,9 +236,13 @@ function addPositionTraining(input) {
         $(newRow).find('.itemTraining').text($('#training').find('.select2-selection__rendered').text());
         $(newRow).children().eq(0).text(parseInt($('#addPositionTraining').prev().children().eq(0).text()) + 1);
         $('#addPositionTraining').before(newRow);
-        $('#position').find('.select2-selection__rendered').text('');
-        $('#training').find('.select2-selection__rendered').text('');
-        // setSelects();
+        // $('#position').find('.select2-selection__rendered').text('');
+        // $('#training').find('.select2-selection__rendered').text('');
+        $('#position').text('');
+        $('#training').text('');
+        
+        setSelects();
+        $('#position').select2('focus');
     }
   );
 }
