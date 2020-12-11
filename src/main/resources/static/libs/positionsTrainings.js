@@ -1,6 +1,7 @@
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
-const NEW_ROW_ITEM = '<tr class="id_positionName deleteEntry"><td><div></div></td><td><div class="itemPosition"></div></td><td><div class="itemTraining"></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>'
+const NEW_ROW_ITEM = '<tr class="id_positionName deleteEntry"><td><div></div></td><td><div class="itemPosition"></div></td><td><div class="itemTraining"></div></td><td><input type="checkbox" class="itemOptional"></td><td><input type="checkbox" class="itemDel"></td></tr>'
+
 var availablePositions;
 var availableTrainings;
 

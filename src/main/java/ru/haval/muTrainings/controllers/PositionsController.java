@@ -11,8 +11,6 @@ import ru.haval.muTrainings.accessingdatajpa.PositionsRepository;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @Controller
 @RequestMapping("/positions")
 public class PositionsController {

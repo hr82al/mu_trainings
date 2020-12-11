@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ru.haval.muTrainings.accessingdatajpa.Employee;
 import ru.haval.muTrainings.accessingdatajpa.EmployeeRepository;
 import ru.haval.muTrainings.accessingdatajpa.TrainingJoined;
 import ru.haval.muTrainings.accessingdatajpa.TrainingJoinedRepository;
@@ -15,7 +14,6 @@ import ru.haval.muTrainings.accessingdatajpa.TrainingRepository;
 import ru.haval.muTrainings.accessingdatajpa.TrainingsNamesRepository;
 
 import java.util.List;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/trainings")
