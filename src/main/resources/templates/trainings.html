@@ -30,6 +30,9 @@ xmlns:th="http://www.thymeleaf.org">
         <td>
           <div th:text="${employee.position}" class="itemTraining"></div>
         </td>
+        <!-- <th:block th:each="date, index: ${dates}">
+          <td th:text=${date.get(employee.index).get(date.index)}></td>
+        </th:block> -->
       </tr>
     </tbody>
   </table>

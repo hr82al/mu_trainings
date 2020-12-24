@@ -53,12 +53,21 @@ CREATE TABLE IF NOT EXISTS trainings_names_list
 		KEY ix_length_training (training(255))
 );
 
-#Таблица сотруднии и их обучения
-CREATE TABLE IF NOT EXISTS trainings_dates
+#Таблица история
+CREATE TABLE IF NOT EXISTS trainings_history
 (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	user_id INT NOT NULL,
 	training_id int NOT NULL,
+	last_date DATE
+);
+
+#Последние даты обучений
+CREATE TABLE IF NOT EXISTS trainings_last_dates
+(
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	user_id INT NOT NULL,
+	training_id INT NOT NULL,
 	last_date DATE,
 	UNIQUE KEY (user_id, training_id)
 );
