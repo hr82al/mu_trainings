@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @Entity
-@Table(name = "trainings_last_date")
+@Table(name = "trainings_last_dates")
 public class LastDates {
   @Id
   private Long id;
