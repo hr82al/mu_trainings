@@ -61,3 +61,15 @@ table {
   height: 12rem;
   /*white-space: nowrap;*/
 }
+
+.trainings-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.employees-header {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}

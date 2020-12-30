@@ -18,7 +18,7 @@ public class TrainingName {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "training_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "training", unique = true)
     private String text;
@@ -26,5 +26,5 @@ public class TrainingName {
     private Integer trainingPeriod;
 
     private Boolean del = false;
-    
+
 }

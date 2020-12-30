@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "trainings_last_dates")
-public class LastDates {
+public class LastDate {
   @Id
   private Long id;
   @Column(name = "user_id")

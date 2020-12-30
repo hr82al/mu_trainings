@@ -10,32 +10,38 @@ xmlns:th="http://www.thymeleaf.org">
     <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
     <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/styles/styles.css}">
+    <link rel="stylesheet" th:href="@{/styles/bootstrap-datepicker/1.9.0/bootstrap-datepicker.min.css}">
 
     <title>График лицензированного обучения сотрудников.</title>
 </head>
 <body>
   <div th:insert="fragments/muTrainingsHeader :: muTrainingsHeader"></div>
-  <table  class="table table-striped table-bordered container">
-    <thead>
-      <th>ФИО</th>
-      <th>Должность</th>
-      <th th:id="'tid' + ${training.id}"th:each="training, count :${trainings}" ><div class="rotated" th:text="${training.text}"></div></th>
+  <table id="trainings" class="table table-striped table-bordered container table-fixed">
+    <thead class="trainings-header">
+      <th class="trainings-header">ФИО</th>
+      <th class="trainings-header">Должность</th>
+      <th th:id="'tid' + ${training.id}" th:each="training, count :${trainings}" class="trainings-header"><div class="rotated" th:text="${training.text}"></div></th>
     </thead>
     <tbody>
-      <tr th:id="'eid' + ${employee.userId}" th:each="employee, count :${employees}"
+      <tr th:id="'eid' + ${employee.userId}" th:each="employee, index :${employees}"
         class="id_positionName deleteEntry">
-        <td>
+
+        <td class="employees-header">
           <div th:text="${employee.fio}" class="itemPosition"></div>
         </td>
         <td>
           <div th:text="${employee.position}" class="itemTraining"></div>
         </td>
-        <!-- <th:block th:each="date, index: ${dates}">
-          <td th:text=${date.get(employee.index).get(date.index)}></td>
+        <th:block th:each="date : ${dates.get(index.index)}">
+          <td th:text="${date.getDate()}" class="date"></td>
+        </th:block>
+        <!-- <th:block th:each="v1 : ${dates.get(index)}">
+        <td th:text="${v1.size()}"></td>
         </th:block> -->
       </tr>
     </tbody>
   </table>
   <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
+  <script type="text/javascript" th:src="@{/libs/trainings.js}"></script>
 </body>
 </html>
