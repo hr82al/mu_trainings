@@ -62,14 +62,18 @@ table {
   /*white-space: nowrap;*/
 }
 
-.trainings-header {
+.trainings-header th {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
+  border: 1px solid #dee2e6 !important;
+  background: white;
 }
 
 .employees-header {
   position: sticky;
   left: 0;
-  z-index: 2;
+  z-index: 1;
+  border: 1px solid #dee2e6 !important;
+  background: white;
 }

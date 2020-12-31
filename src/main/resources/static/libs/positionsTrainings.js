@@ -7,7 +7,7 @@ var availablePositions;
 var availableTrainings;
 
 //const NEW_ROW_ITEM = '<tr id="id" class="id_trainingName deleteEntry"><td><div></div></td><td><div class="itemTraining"></div></td><td><div class="itemTrainingPeriod"></div></td><td><input type="button" class="deleteTrainingName deleteItemButton btn btn-primary" value="Удалить" onclick="deleteItem(this)"></td></tr>';
-var tmp;
+
 $(function () {
   update();
 
@@ -21,6 +21,10 @@ $(function () {
       () => {}
     );
   });
+
+  $("#trainingOptional").on("change", function () {
+    $("#addItemButton").focus();
+  });
   //$('td.select2').click(showSelect);
   // $('#position').click(function() {
   //   customSelect('#position', availablePositions);
@@ -30,6 +34,14 @@ $(function () {
   //   customSelect('#training', availableTrainings);
   // });
   //setSelects();
+
+  // document.addEventListener(
+  //   "focus",
+  //   function () {
+  //     console.log("focused: ", document.activeElement);
+  //   },
+  //   true
+  // );
 });
 
 function setSelects() {
@@ -67,7 +79,7 @@ function showSelect() {
   });
   //$(cur).off('click');
 }
-
+var tmp2;
 function customSelect(curId, aData) {
   let cur = $(curId);
   let tmp = $("<div></div>");
@@ -78,6 +90,15 @@ function customSelect(curId, aData) {
   $(tmp).on("select2:select", function (a) {
     //   $(cur).html(a.params.data.text);
     $(cur).attr("aid", a.params.data.id);
+    switch (cur.prop("id")) {
+      case "position":
+        $("#training div").select2("open");
+        break;
+      case "training":
+        $("#trainingOptional").focus();
+        break;
+    }
+    console.log(cur.prop("id"));
   });
   //$(cur).off('click');
 }
@@ -254,7 +275,7 @@ function addPositionTraining(input) {
         .text(
           parseInt($("#addPositionTraining").prev().children().eq(0).text()) + 1
         );
-      $(newRow).find(".trainingOptional").checked = isChecked;
+      $(newRow).find(".trainingOptional").prop("checked", isChecked);
       $("#addPositionTraining").before(newRow);
       // $('#position').find('.select2-selection__rendered').text('');
       // $('#training').find('.select2-selection__rendered').text('');
@@ -262,7 +283,8 @@ function addPositionTraining(input) {
       $("#training").text("");
 
       setSelects();
-      $("#position").select2("focus");
+      $("#trainingOptional").prop("checked", false);
+      $("#position div").select2("open");
     }
   );
 }
