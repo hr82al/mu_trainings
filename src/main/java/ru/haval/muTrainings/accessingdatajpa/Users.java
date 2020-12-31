@@ -2,18 +2,16 @@ package ru.haval.muTrainings.accessingdatajpa;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
-@RequiredArgsConstructor
-@Entity(name="user")
+@Entity(name = "users")
 public class Users {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name="id_num")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_num")
     private Long idNum;
 
     private String first_name;
@@ -31,5 +29,7 @@ public class Users {
     @NotNull
     @Column(name = "user_del")
     private Integer userDel = 0;
-    private String Descript;
+
+    @Column(name = "Desctipt")
+    private String Description;
 }

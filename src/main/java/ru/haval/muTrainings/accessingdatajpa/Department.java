@@ -8,12 +8,12 @@ import javax.persistence.*;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name="trainings_departments")
+@Table(name = "trainings_departments")
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "departmentId")
-    private long id;
+    private Integer id;
     @Column(name = "department", unique = true)
     private String text;
     @Column

@@ -12,9 +12,6 @@ $(function () {
   update();
 
   $(".trainingOptional").change(function () {
-    const isChecked = $(this).prop("checked");
-    const id = $(this).closest("tr").attr("id").substr(2);
-
     sendPost(
       "/positionsTrainings/change",
       { id: id, optional: isChecked },

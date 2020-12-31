@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface PositionsRepository extends CrudRepository<Position, Long> {
+public interface PositionsRepository extends CrudRepository<Position, Integer> {
     List<Position> findAll();
 
     List<Position> findByOrderByIdAsc();

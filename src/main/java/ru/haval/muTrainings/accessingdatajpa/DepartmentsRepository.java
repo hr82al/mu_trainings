@@ -8,8 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface DepartmentsRepository extends CrudRepository<Department, Long> {
+public interface DepartmentsRepository extends CrudRepository<Department, Integer> {
     List<Department> findByDelIsFalseOrderByTextAsc();
+
     List<Department> findByText(String text);
 
     @Query("update Department d set d.del = :del where d.text = :text")
@@ -24,5 +25,7 @@ public interface DepartmentsRepository extends CrudRepository<Department, Long> 
     @Modifying
     @Query(value = "UPDATE trainings_departments SET del = 1 WHERE department_id = :id", nativeQuery = true)
     void delById(@Param(value = "id") Long id);
-    
+
+    List<Department> findByDelIsFalse();
+
 }
