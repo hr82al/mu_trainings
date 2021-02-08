@@ -15,7 +15,7 @@ xmlns:th="http://www.thymeleaf.org">
 </head>
 <body>
   <div th:insert="fragments/muTrainingsHeader :: muTrainingsHeader"></div>
-  <table  class="table table-striped table-bordered container">
+  <table id="p_table" class="table table-striped table-bordered container">
     <thead>
       <th>ФИО</th>
       <th>Должность</th>
@@ -36,6 +36,12 @@ xmlns:th="http://www.thymeleaf.org">
       </tr>
     </tbody>
   </table>
+  
+  <div id="head_pattern" hidden=true></div>
+  <div id="row_pattern" hidden=true>
+
+  </div>
   <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
+  <script type="text/javascript" th:src="@{/libs/trainings.js}"></script>
 </body>
 </html>

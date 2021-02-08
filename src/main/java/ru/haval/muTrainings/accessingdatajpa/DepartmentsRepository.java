@@ -10,7 +10,10 @@ import java.util.List;
 
 public interface DepartmentsRepository extends CrudRepository<Department, Long> {
     List<Department> findByDelIsFalseOrderByTextAsc();
+
     List<Department> findByText(String text);
+
+    List<Department> findAll();
 
     @Query("update Department d set d.del = :del where d.text = :text")
     void updateByText(@Param(value = "text") String text, @Param(value = "del") boolean del);
@@ -24,5 +27,5 @@ public interface DepartmentsRepository extends CrudRepository<Department, Long> 
     @Modifying
     @Query(value = "UPDATE trainings_departments SET del = 1 WHERE department_id = :id", nativeQuery = true)
     void delById(@Param(value = "id") Long id);
-    
+
 }
