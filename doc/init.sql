@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS trainings_last_dates
 CREATE VIEW employees AS SELECT
 		hs.user_id,
 		CONCAT(hs.L_Name_RUS, ' ', hs.F_Name_RUS, ' ',  hs.Otchestvo) AS FIO,
-		tp.position, td.department
+		tp.position, te.position_id, td.department, te.department_id
 FROM hmmr_mu_staff hs
 		LEFT JOIN trainings_employees te ON hs.user_id = te.user_id
 		LEFT JOIN trainings_positions tp ON te.position_id = tp.position_id

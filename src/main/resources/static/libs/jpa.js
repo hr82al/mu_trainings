@@ -81,6 +81,10 @@ function addRow(row) {
     $(newRow)
       .find("." + attribute)
       .text(row[attribute]);
+    const name = $(`#row_pattern>.${attribute}`).attr("name");
+    if (name && row[name]) {
+      $(newRow).find(`.${attribute}`).attr(name, `${row[name]}`);
+    }
   }
 }
 
@@ -107,24 +111,36 @@ function initSelect() {
     $(".select").click(itemSelect);
   }
 }
-
+var k;
 function itemSelect() {
   let current = this;
+  // const parent = $(this).parent();
+  console.log(parent);
   const item = table.selections.get(current.classList[0] + "s");
   $(current).unbind("click");
   $(current).html("");
   let tmp = $("<div></div>");
   $(current).append($(tmp));
-  console.log(`${item}s`);
   $(tmp).select2({
-    data: table.selections.get(`${item}s`),
+    data: item,
     width: "100%",
   });
 
   $(tmp).on("select2:select", function (e) {
     $(tmp).remove();
+    //set text to the current cell
     $(current).text(e.params.data.text);
+    // k = $(current).parent();
+    // k = $(current);
+    //set id to the current cell
+    const id = e.params.data.id;
+    $(current).attr($(current).attr("name"), id);
+    let employees = ``;
+    console.log(id);
+    console.log("************");
+    save($(current).parent());
     // let fn = itemSelect.bind(this);
+    //Bind a new click listener
     $(current).click(itemSelect);
   });
 
@@ -135,6 +151,19 @@ function itemSelect() {
   // $(`.${item}.select`).on("select2:select", function (e) {
   //   console.log("select");
   // });
+}
+
+function save(row) {
+  data = {};
+  for (const item of row.children()) {
+    data[$(item).attr("name")] = $(item).attr($(item).attr("name"));
+  }
+  needFill = Object.keys(data).find((key) => data[key] == undefined);
+  if (needFill) {
+    $(row).find(`[name=${needFill}]`).text("Для сохранения заполните это поле");
+  } else {
+    sendPost("/muTrainings/add", data, (v) => console.log(v));
+  }
 }
 
 function addItem(item) {
@@ -235,7 +264,7 @@ function addNewRow(entry) {
   for (let i = 1; i < $("#addEntry").children().length - 1; i++) {
     let name = getInputVarName(i, currentRow);
     console.log(
-      "varname " +
+      "var name " +
         $(newRow).children().eq(i).children().eq(0).text(entry[name]).html()
     );
     $(newRow).children().eq(i).children().eq(0).text(entry[name]);

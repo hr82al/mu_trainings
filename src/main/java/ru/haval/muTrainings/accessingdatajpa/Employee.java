@@ -1,7 +1,5 @@
 package ru.haval.muTrainings.accessingdatajpa;
 
-
-
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Immutable;
@@ -11,19 +9,22 @@ import javax.persistence.*;
 
 @Data
 @RequiredArgsConstructor
-//@NoArgsConstructor(access=AccessLevel.PROTECTED, force=true)
-//@NoArgsConstructor
+// @NoArgsConstructor(access=AccessLevel.PROTECTED, force=true)
+// @NoArgsConstructor
 @Entity
 @Immutable
 @Table(name = "employees")
-//@Subselect("SELECT * FROM hmmr_mu.employees;")
+// @Subselect("SELECT * FROM hmmr_mu.employees;")
 public class Employee {
     @Id
     @Column(name = "user_id")
     private Long userId;
-    @Column(name="FIO")
+    @Column(name = "FIO")
     private String fio;
     private String position;
     private String department;
+    @Column(name = "position_id")
+    private Long positionId;
+    @Column(name = "department_id")
+    private Long departmentId;
 }
-

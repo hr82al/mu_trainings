@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import ru.haval.muTrainings.accessingdatajpa.Employee;
 import ru.haval.muTrainings.accessingdatajpa.EmployeeRepository;
+import ru.haval.muTrainings.accessingdatajpa.Employees;
+import ru.haval.muTrainings.accessingdatajpa.EmployeesRepository;
 import ru.haval.muTrainings.accessingdatajpa.PositionsRepository;
 import java.util.List;
 
@@ -27,6 +29,8 @@ public class MuTrainingsController {
 	EmployeeRepository employeeRepository;
 	@Autowired
 	PositionsRepository positionsRepository;
+	@Autowired
+	EmployeesRepository employeesRepository;
 
 	/*
 	 * @GetMapping("/mu_trainings/") public String muTrainings() { return
@@ -52,6 +56,12 @@ public class MuTrainingsController {
 		System.out.println("pos:");
 		System.out.println(tmp.getPos());
 		return "muTrainings";
+	}
+
+	@RequestMapping(path = "/muTrainings/add", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public Employees addEmployees(@RequestBody Employees employees) {
+		return employeesRepository.save(employees);
 	}
 
 	/*
