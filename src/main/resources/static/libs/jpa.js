@@ -45,7 +45,6 @@ function init() {
     table.selectNames = getSelectNames($("#row_pattern"));
     drawTable(table.data);
     initSelect();
-    // setListeners();
   });
 }
 
@@ -130,8 +129,6 @@ function itemSelect() {
     $(tmp).remove();
     //set text to the current cell
     $(current).text(e.params.data.text);
-    // k = $(current).parent();
-    // k = $(current);
     //set id to the current cell
     const id = e.params.data.id;
     $(current).attr($(current).attr("name"), id);

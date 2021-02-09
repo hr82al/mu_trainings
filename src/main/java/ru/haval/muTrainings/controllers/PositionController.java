@@ -39,4 +39,13 @@ public class PositionController {
         System.out.println(tmp);
         return "ok";
     }
+
+    // @RequestMapping(path = "/positions/add", consumes = "application/json",
+    // produces = "application/json")
+    // @ResponseBody
+    // public Position chPosition(@RequestBody Position position) {
+    // System.out.println(position);
+
+    // return positionsRepository.save(position);
+    // }
 }

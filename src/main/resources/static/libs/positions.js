@@ -32,7 +32,27 @@ $(function () {
     // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
     alert(data);
   }
+  $(".itemText").editable(itemTextEditable);
+  $(".itemDel").change((e) => {
+    changeDel(e);
+  });
 });
+
+function changeDel(e) {
+  current_row = e.currentTarget.parentElement.parentElement;
+  const object = parsePosition(current_row);
+  console.log(object);
+  sendPost(`${window.location.pathname}/add`, object, () => {});
+}
+
+function parsePosition(row) {
+  const res = {
+    id: $(row).attr("id").substr(2),
+    text: $(row).find(".itemText").text(),
+    del: $(row).find("input")[0].checked,
+  };
+  return res;
+}
 
 function deletePosition(p) {
   console.log("delete");
@@ -147,3 +167,18 @@ function addNewPositionToTable(id, text) {
       '</td><td><input type="button" class="deletePosition btn btn-primary" value="Удалить" onclick="deletePosition(this)"></input></td></td></tr>'
   );
 }
+
+var itemTextEditable = {
+  event: "click",
+  lineBreaks: false,
+  closeOnEnter: true,
+  callback: function (data) {
+    if (data.content) {
+      console.log(`${window.location.pathname}/add`);
+      const current = $(data.$el)[0].closest("tr");
+      object = parsePosition(current);
+      sendPost(`${window.location.pathname}/add`, object, () => {});
+      // changeRow(currentRow, entry);
+    }
+  },
+};

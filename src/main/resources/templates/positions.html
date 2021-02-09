@@ -31,17 +31,14 @@ xmlns:th="http://www.thymeleaf.org">
             <td>
                 <div class="itemText" th:text="${position.text}"></div>
             </td>
-            <td><input type="checkbox" class="itemDel"></td>
-            <!-- <td><input type="button" class="deletePosition btn btn-primary" value="Удалить" onclick="deletePosition(this)"></input></td> -->
+            <td><input type="checkbox" class="itemDel" th:checked="${position.del}" ></td>
         </tr>
         <tr id="addEntry">
             <td>+</td>
             <td>
-                <!-- id="inputPos" -->
                 <input id="inputText" type="text" class="inputText w-100"></input>
             </td>
             <td><input id="addItemButton" type="button" class="deleteItemButton btn btn-primary" value="Добавить" onclick="addItem(this)">
-                <!-- onclick="addPosition()">  -->
             </td>
 
         </tr>
@@ -49,7 +46,7 @@ xmlns:th="http://www.thymeleaf.org">
     </table>
  </form>
  <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
- <script type="text/javascript" th:src="@{/libs/jpa.js}"></script>
  <script type="text/javascript" th:src="@{/libs/positions.js}"></script>
+ <script type="text/javascript" th:src="@{/libs/jpa.js}"></script>
 </body>
 </html>
