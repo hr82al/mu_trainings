@@ -11,4 +11,9 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     List<Employee> findByOrderByFioAsc();
 
+    List<Employee> findByOrderByDepartmentIdAscFioAsc();
+
+    // List<Department> findByDelIsFalseOrderByTextAsc();
+    List<Employee> findByDepartmentId(Long departmentId);
+
 }

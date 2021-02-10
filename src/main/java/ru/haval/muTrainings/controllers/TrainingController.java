@@ -1,7 +1,6 @@
 package ru.haval.muTrainings.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +18,7 @@ import ru.haval.muTrainings.accessingdatajpa.TrainingsNamesRepository;
 import ru.haval.muTrainings.accessingdatajpa.LastDates;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
-import java.util.Collections;
 import java.util.List;
 
 @Controller

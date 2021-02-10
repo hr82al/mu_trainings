@@ -38,14 +38,71 @@ document.addEventListener("DOMContentLoaded", () => {
 function init() {
   table.token = $("meta[name='_csrf']").attr("content");
   table.header = $("meta[name='_csrf_header']").attr("content");
-  table.address = window.location.pathname;
-  sendPost(`${table.address}/get`, {}, (value) => {
-    table.data = value;
+  table.address = $("#row_pattern").attr("address");
+  table.sectionAddress = $("#section_pattern").attr("address");
+  if (table.address) {
     table.columnNames = getColumnNames($("#row_pattern"));
     table.selectNames = getSelectNames($("#row_pattern"));
-    drawTable(table.data);
-    initSelect();
+    if (!table.sectionAddress) {
+      sendPost(`${table.address}`, {}, (value) => {
+        table.data = value;
+        drawTable(table.data);
+        initSelect();
+      });
+    } else {
+      drawSection();
+    }
+  }
+
+  drawTh();
+}
+
+function drawSection() {
+  sendPost(table.sectionAddress, {}, (data) => {
+    const sections = data;
+    let employees = [];
+    let counter = data.length;
+    for (let item of data) {
+      sendPost(`${table.address}`, { departmentId: item.id }, (value) => {
+        employees[item.id] = value;
+        if (--counter == 0) {
+          for (const department of sections) {
+            console.log(department.text);
+            addItem2(department, $("#section_pattern"));
+            for (const employee of employees[department.id]) {
+              addItem2(employee, $("#row_pattern"));
+            }
+          }
+        }
+      });
+    }
   });
+}
+
+function drawTh() {
+  const th_pattern = $("#th_pattern");
+  if (th_pattern.length != 0) {
+    table.thAddress = th_pattern.attr("address");
+    sendPost(table.thAddress, {}, (data) => {
+      table.thData = data;
+      for (let item of table.thData) {
+        addItem2(item, th_pattern);
+      }
+    });
+  }
+}
+
+function addItem2(item, pattern) {
+  const root = $(pattern).parent();
+  let newRow = $(pattern).clone().removeAttr("hidden").removeAttr("address");
+  // const var_name = $("#th_pattern>.text")[0].classList[1];
+  for (let v of newRow.find(".text")) {
+    v.textContent = item[v.classList[1].substr(2)];
+  }
+  // const var_name = pattern.find(".text")[0].classList[1];
+  // newRow.find(`.${var_name}`)[0].textContent = item[var_name.substr(2)];
+  newRow.attr("tid", item.id);
+  root.append(newRow);
 }
 
 function getColumnNames(pattern) {
@@ -74,7 +131,11 @@ function drawTable(data) {
 
 function addRow(row) {
   let pattern = $("#row_pattern");
-  let newRow = $(pattern).clone().removeAttr("hidden").removeAttr("id");
+  let newRow = $(pattern)
+    .clone()
+    .removeAttr("hidden")
+    .removeAttr("id")
+    .removeAttr("address");
   $(pattern).parent().append(newRow);
   for (let attribute of table.columnNames) {
     $(newRow)

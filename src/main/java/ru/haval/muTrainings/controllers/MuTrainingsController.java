@@ -82,7 +82,13 @@ public class MuTrainingsController {
 	@RequestMapping(path = "/muTrainings/get", consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public List<Employee> getEmployees() {
-		return employeeRepository.findByOrderByFioAsc();
+		return employeeRepository.findByOrderByDepartmentIdAscFioAsc();
+	}
+
+	@RequestMapping(path = "/muTrainings/get_by_department", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public List<Employee> findByDepartmentId(@RequestBody Employee employee) {
+		return employeeRepository.findByDepartmentId(employee.getDepartmentId());
 	}
 }
 

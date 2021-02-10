@@ -20,17 +20,19 @@ public class TrainingsNamesController {
     TrainingsNamesRepository trainingsNamesRepository;
 
     @GetMapping
-    public String showTrainingNameFrame(Model model){
-        //model.addAttribute("trainingsNames", trainingsNamesRepository.findByDelIsFalseOrderByText());
+    public String showTrainingNameFrame(Model model) {
+        // model.addAttribute("trainingsNames",
+        // trainingsNamesRepository.findByDelIsFalseOrderByText());
         model.addAttribute("trainingsNames", trainingsNamesRepository.findAll());
         return "trainingsNames";
     }
 
     @RequestMapping(path = "/add", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public TrainingName addTrainingName(@RequestBody TrainingName trainingName){
-        //System.out.println(trainingName); 
-        //int i =  trainingsNamesRepository.addTrainingNameQuery(trainingName.getText(), trainingName.getTrainingPeriod());
+    public TrainingName addTrainingName(@RequestBody TrainingName trainingName) {
+        // System.out.println(trainingName);
+        // int i = trainingsNamesRepository.addTrainingNameQuery(trainingName.getText(),
+        // trainingName.getTrainingPeriod());
         // Map<String, Object> map = new HashMap<>();
         // map.put("result", "ok");
         return trainingsNamesRepository.save(trainingName);
@@ -38,20 +40,27 @@ public class TrainingsNamesController {
 
     @RequestMapping(path = "/del", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public TrainingName deleteTrainingName(@RequestBody TrainingName trainingName){
+    public TrainingName deleteTrainingName(@RequestBody TrainingName trainingName) {
         trainingName.setDel(true);
-        TrainingName result =  trainingsNamesRepository.save(trainingName);
+        TrainingName result = trainingsNamesRepository.save(trainingName);
         return result;
     }
+
     @RequestMapping(path = "/change", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public TrainingName changeTrainingName(@RequestBody TrainingName trainingName){
+    public TrainingName changeTrainingName(@RequestBody TrainingName trainingName) {
         return trainingsNamesRepository.save(trainingName);
     }
 
     @RequestMapping(path = "/get", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public List<TrainingName> getTrainingNames() {
+    public List<TrainingName> getTrainingNamesAlphabetical() {
         return trainingsNamesRepository.findByDelIsFalseOrderByText();
+    }
+
+    @RequestMapping(path = "/get_json", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public List<TrainingName> getTrainingNames() {
+        return trainingsNamesRepository.findByDelIsFalse();
     }
 }
