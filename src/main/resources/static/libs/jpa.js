@@ -67,16 +67,88 @@ function drawSection() {
         employees[item.id] = value;
         if (--counter == 0) {
           for (const department of sections) {
-            console.log(department.text);
             addItem2(department, $("#section_pattern"));
             for (const employee of employees[department.id]) {
               addItem2(employee, $("#row_pattern"));
             }
           }
+          drawLastDates();
         }
       });
     }
   });
+}
+
+function drawLastDates() {
+  const COLUMNS_NUM =
+    $("#th_pattern").parent().children().length -
+    1 -
+    $("#row_pattern").children().length;
+  // const ROOT = $("#row_pattern").parent();
+  let employee = $(".employee");
+  for (let i = 0; i < COLUMNS_NUM; i++) {
+    employee.append('<td class="date"></td>');
+  }
+  $("#th_pattern").remove();
+  $("#row_pattern").remove();
+  sendPost("/lastDates/get_json", {}, (data) => {
+    table.dates = data;
+
+    sendPost("/positionsTrainings/get_json", {}, (training_list) => {
+      table.positionsTrainings = training_list;
+      initDates();
+      $(".date").click(dateClick);
+    });
+  });
+}
+
+function initDates() {
+  table.trainingsMap = new Map();
+  const trainings = $("#table_anchor").find("th");
+  for (let i = 2; i < trainings.length; i++) {
+    table.trainingsMap.set(i, parseInt($(trainings[i]).attr("id")));
+  }
+  table.employeeIdMap = new Map();
+  for (let item of $("tr.employee")) {
+    const row = item.rowIndex;
+    const userId = parseInt($(item).find("td").attr("userid"));
+    table.employeeIdMap.set(userId, row);
+  }
+  table.positionIdMap = new Map();
+  for (let item of $("tr.employee")) {
+    const row = item.rowIndex;
+    const positionId = parseInt($($(item).find("td")[1]).attr("positionid"));
+    table.positionIdMap.set(positionId, row);
+  }
+  table.positionsTrainingsMap = new Map();
+  for (let item of table.positionsTrainings) {
+    if (table.positionsTrainingsMap.has(item.positionId)) {
+      table.positionsTrainingsMap
+        .get(item.positionId)
+        .push([item.trainingId, item.optional]);
+    } else {
+      table.positionsTrainingsMap.set(item.positionId, [
+        [item.trainingId, item.optional],
+      ]);
+    }
+  }
+}
+
+function dateClick() {
+  const COLUMN = this.cellIndex;
+  const ROW = this.parentNode.rowIndex;
+  // k = document.getElementById("table_anchor").rows[ROW].cells[COLUMN];
+  const USER_ID = $("#table_anchor tr:eq(" + ROW + ") td:eq(" + 0 + ")").attr(
+    "userid"
+  );
+  const TRAINING_ID = parseInt(
+    $("#table_anchor tr:eq(" + 0 + ") th:eq(" + COLUMN + ")").attr("id")
+  );
+  console.log(
+    `row index: ${ROW}\ntraining id: ${TRAINING_ID} \nuser id: ${USER_ID}`
+  );
+  k = this;
+  console.log(this);
 }
 
 function drawTh() {
@@ -94,14 +166,27 @@ function drawTh() {
 
 function addItem2(item, pattern) {
   const root = $(pattern).parent();
-  let newRow = $(pattern).clone().removeAttr("hidden").removeAttr("address");
+  let newRow = $(pattern)
+    .clone()
+    .removeAttr("hidden")
+    .removeAttr("address")
+    .removeAttr("id");
   // const var_name = $("#th_pattern>.text")[0].classList[1];
   for (let v of newRow.find(".text")) {
     v.textContent = item[v.classList[1].substr(2)];
   }
   // const var_name = pattern.find(".text")[0].classList[1];
   // newRow.find(`.${var_name}`)[0].textContent = item[var_name.substr(2)];
-  newRow.attr("tid", item.id);
+  const root_name = $(pattern).attr("name");
+  if (root_name) {
+    newRow.attr(root_name, item[root_name]);
+  }
+  const child_names = $(newRow).find("[name]");
+  for (let child_name of child_names) {
+    const name = $(child_name).attr("name");
+    $(child_name).attr(name, item[name]);
+  }
+  // newRow.attr("tid", item.id);
   root.append(newRow);
 }
 

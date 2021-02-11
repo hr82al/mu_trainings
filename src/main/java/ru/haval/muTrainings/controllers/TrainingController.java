@@ -17,14 +17,14 @@ import ru.haval.muTrainings.accessingdatajpa.TrainingRepository;
 import ru.haval.muTrainings.accessingdatajpa.TrainingsNamesRepository;
 import ru.haval.muTrainings.accessingdatajpa.LastDates;
 
-import java.time.LocalDate;
+// import java.time.LocalDate;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/trainings")
 public class TrainingController {
-  private List<LastDates> dates;
+  // private List<LastDates> dates;
 
   @Autowired
   EmployeeRepository employeeRepository;
@@ -52,7 +52,7 @@ public class TrainingController {
     List<TrainingName> trainings = trainingsNamesRepository.findByDelIsFalse();
     model.addAttribute("trainings", trainings);
     model.addAttribute("employees", employees);
-    dates = lastDatesRepository.findAll();
+    // dates = lastDatesRepository.findAll();
     // ArrayList<ArrayList<String>> aDates = new ArrayList<>(employees.size());
     // for (int i = 0; i < employees.size(); i++) {
     // aDates.add(new ArrayList<String>(trainings.size()));
@@ -77,10 +77,11 @@ public class TrainingController {
     return "trainings";
   }
 
-  private LocalDate getTrainingDate(Employee employee, TrainingName trainingName) {
+  // private LocalDate getTrainingDate(Employee employee, TrainingName
+  // trainingName) {
 
-    return null;
-  }
+  // return null;
+  // }
 
   @RequestMapping(path = "/get", consumes = "application/json", produces = "application/json")
   @ResponseBody

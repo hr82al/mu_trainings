@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface PositionsTrainingsRepository extends CrudRepository<PositionTraining, Long> {
     List<PositionTraining> findAll();
+
+    List<PositionTraining> findByDelIsFalse();
 }

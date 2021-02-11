@@ -3,8 +3,6 @@
  */
 package ru.haval.muTrainings.controllers;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +16,7 @@ import ru.haval.muTrainings.accessingdatajpa.PositionsRepository;
 import java.util.List;
 
 /**
- * @author Aleksandr Khomov. hr82al@gmail.com
+ * @author Aleksandr Khromov. hr82al@gmail.com
  */
 
 @Controller
@@ -39,7 +37,7 @@ public class MuTrainingsController {
 	// @GetMapping("/mu_trainings")
 	@GetMapping("/muTrainings")
 	public String showMUTrainingsForm(Model model) {
-		model.addAttribute("pos", new Tmp());
+		// model.addAttribute("pos", new Tmp());
 		model.addAttribute("employees", employeeRepository.findAll());
 		return "muTrainings";
 	}
@@ -51,10 +49,10 @@ public class MuTrainingsController {
 	 */
 
 	@PostMapping("/change_position")
-	public String processPositions(Tmp tmp, Model model) {
+	public String processPositions(/* Tmp tmp, */ Model model) {
 		// model.addAttribute("position", positionsRepository.findAll());
-		System.out.println("pos:");
-		System.out.println(tmp.getPos());
+		// System.out.println("pos:");
+		// System.out.println(tmp.getPos());
 		return "muTrainings";
 	}
 
@@ -92,8 +90,8 @@ public class MuTrainingsController {
 	}
 }
 
-@Data
-@RequiredArgsConstructor
-class Tmp {
-	private String pos;
-}
+// @Data
+// @RequiredArgsConstructor
+// class Tmp {
+// private String pos;
+// }

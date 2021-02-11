@@ -63,7 +63,6 @@ public class DepartmentsController {
 	@PostMapping(path = "/get_json", consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public List<Department> getDepartments() {
-		System.out.println("+++++++++++");
 		return departmentsRepository.findAll();
 	}
 
