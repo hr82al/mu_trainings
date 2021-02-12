@@ -8,8 +8,9 @@ xmlns:th="http://www.thymeleaf.org">
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 
     <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
-    <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/styles/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker3.standalone.min.css}">
+    <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">  
+    <link id="bsdp-css"  rel="stylesheet" th:href="@{/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker3.min.css}">
+    
     <link rel="stylesheet" th:href="@{/styles/styles.css}">
 
     <title>График лицензированного обучения сотрудников.</title>
@@ -20,7 +21,7 @@ xmlns:th="http://www.thymeleaf.org">
     <thead>
       <th>ФИО</th>
       <th>Должность</th>
-      <th id="th_pattern" hidden="true" address="/trainingsNamesList/get_json" name="id"><div class="text v_text rotated"></div></th>
+      <th id="th_pattern" hidden="true" address="/trainingsNamesList/get_json" name="id"><div class="text v_text rotated training"></div></th>
     </thead>
     <tbody>
       <tr id="section_pattern" hidden="true" address="/departments/get_json"><td class="text v_text department" colspan="100%" align="center"></td></tr>
@@ -55,6 +56,8 @@ xmlns:th="http://www.thymeleaf.org">
   </div>
   <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
   <script type="text/javascript" th:src="@{/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js}"></script>
+  <script th:src="@{/bootstrap-datepicker-1.9.0-dist/locales/bootstrap-datepicker.ru.min.js}"
+    charset="UTF-8"></script>
   <script type="text/javascript" th:src="@{/libs/trainings.js}"></script>
   <script type="text/javascript" th:src="@{/libs/jpa.js}"></script>
   

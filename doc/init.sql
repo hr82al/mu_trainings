@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS trainings_last_dates
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	user_id INT NOT NULL,
 	training_id INT NOT NULL,
-	last_date DATE,
+	last_date DATE NOT NULL,
 	UNIQUE KEY (user_id, training_id)
 );
 

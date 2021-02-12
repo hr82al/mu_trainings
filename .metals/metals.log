@@ -40,3 +40,8 @@ Caused by: java.nio.file.FileSystemNotFoundException: Provider "jdt" not install
 	... 15 more
 
 [0m2021.02.08 15:20:47 INFO  shutting down Metals[0m
+[0m2021.02.12 08:30:39 INFO  Started: Metals version 0.9.10 in workspace 'C:\workspace\spring\mu_trainings' for client vscode 1.53.1.[0m
+[0m2021.02.12 08:30:43 INFO  time: initialize in 4.59s[0m
+[0m2021.02.12 08:30:46 WARN  Build server is not auto-connectable.[0m
+[0m2021.02.12 08:30:50 INFO  skipping build import with status 'Requested'[0m
+[0m2021.02.12 12:17:47 INFO  shutting down Metals[0m

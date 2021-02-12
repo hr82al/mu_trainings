@@ -61,3 +61,19 @@ table {
   height: 12rem;
   /*white-space: nowrap;*/
 }
+
+td.required {
+  background-color: red;
+}
+
+td.optional {
+  background-color: #f0f0b0;
+}
+
+td.notify {
+  background-color: yellow;
+}
+
+td.alarm {
+  background-color: red;
+}

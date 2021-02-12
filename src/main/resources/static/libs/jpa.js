@@ -9,6 +9,9 @@
 Скрипт заполняет таблицу с id="table_anchor"
 */
 var table = {};
+const SAVE_DATA = "Сохранение данных...";
+const DAYS_ALARM = 7;
+const DAYS_NOTIFY = 28;
 
 function sendPost(path, param, run) {
   $.ajax({
@@ -91,15 +94,69 @@ function drawLastDates() {
   }
   $("#th_pattern").remove();
   $("#row_pattern").remove();
+  $("#section_pattern").remove();
   sendPost("/lastDates/get_json", {}, (data) => {
-    table.dates = data;
+    table.lastDates = data;
 
     sendPost("/positionsTrainings/get_json", {}, (training_list) => {
       table.positionsTrainings = training_list;
       initDates();
-      $(".date").click(dateClick);
+      setDatepicker(".required, .optional");
     });
   });
+}
+
+function setDatepicker(cell) {
+  const TIP = getNextDate(cell);
+  $(cell)
+    .datepicker({ language: "ru", autoclose: true, format: "yyyy-dd-mm" })
+    .tooltip({ title: "f" })
+    .on("changeDate", function (e) {
+      const DATE = e.format("yyyy-mm-dd");
+      let request = getUserTrainingId(this);
+      request.lastDate = DATE;
+      request.id = parseInt(this.id);
+
+      this.textContent = SAVE_DATA;
+      sendPost("/lastDates/set_json", request, () => {
+        const ROW = table.userIdRowMap.get(request.userId);
+        const COLUMN = table.trainingIdColumnMap.get(request.trainingId);
+        const TRAINING_ID = getTrainingIdByColumn(COLUMN);
+        const TRAINING_PERIOD = table.trainingsPeriodsMap.get(TRAINING_ID);
+        setCell(request.id, ROW, COLUMN, request.lastDate, TRAINING_PERIOD);
+      });
+    });
+}
+
+function getNextDate(cell) {
+  // const NEXT_DATE =
+  const LAST_DATE = cell.textContent + "***";
+  let tmp = new Date(LAST_DATE);
+  tmp.setDate(tmp.getDate() + getTrainingPeriodByCell(cell));
+  const NEXT_DATE = "Следующая дата: " + tmp;
+  console.log(getTrainingPeriodByCell($(cell)));
+
+  return NEXT_DATE;
+}
+
+function getTrainingPeriodByCell(cell) {
+  return table.trainingsPeriodsMap.get(getTrainingIdByCell(cell));
+}
+
+function getTrainingIdByCell(cell) {
+  const COLUMN = cell.cellIndex;
+  const TRAINING_ID = parseInt(
+    $("#table_anchor tr:eq(" + 0 + ") th:eq(" + COLUMN + ")").attr("id")
+  );
+  return TRAINING_ID;
+}
+
+function getUserTrainingId(obj) {
+  const ROW = obj.parentNode.rowIndex;
+  const USER_ID = parseInt(
+    $("#table_anchor tr:eq(" + ROW + ") td:eq(" + 0 + ")").attr("userid")
+  );
+  return { userId: USER_ID, trainingId: getTrainingIdByCell(obj) };
 }
 
 function initDates() {
@@ -108,36 +165,137 @@ function initDates() {
   for (let i = 2; i < trainings.length; i++) {
     table.trainingsMap.set(i, parseInt($(trainings[i]).attr("id")));
   }
-  table.employeeIdMap = new Map();
+  table.userIdRowMap = new Map();
   for (let item of $("tr.employee")) {
     const row = item.rowIndex;
     const userId = parseInt($(item).find("td").attr("userid"));
-    table.employeeIdMap.set(userId, row);
+    table.userIdRowMap.set(userId, row);
   }
-  table.positionIdMap = new Map();
-  for (let item of $("tr.employee")) {
-    const row = item.rowIndex;
-    const positionId = parseInt($($(item).find("td")[1]).attr("positionid"));
-    table.positionIdMap.set(positionId, row);
-  }
+  // table.positionIdRow = new Map();
+  // for (let item of $("tr.employee")) {
+  //   const row = item.rowIndex;
+  //   const positionId = parseInt($($(item).find("td")[1]).attr("positionid"));
+  //   console.log(row, positionId);
+  //   table.positionIdRowMap.set(positionId, row);
+  // }
   table.positionsTrainingsMap = new Map();
+  // for (let item of table.positionsTrainings) {
+  //   if (table.positionsTrainingsMap.has(item.positionId)) {
+  //     table.positionsTrainingsMap
+  //       .get(item.positionId)
+  //       .push([item.trainingId, item.optional]);
+  //   } else {
+  //     table.positionsTrainingsMap.set(item.positionId, [
+  //       [item.trainingId, item.optional],
+  //     ]);
+  //   }
+  // }
+  table.maxTrainingsId = 0;
+  // let maxPositionsId = 0;
   for (let item of table.positionsTrainings) {
-    if (table.positionsTrainingsMap.has(item.positionId)) {
-      table.positionsTrainingsMap
-        .get(item.positionId)
-        .push([item.trainingId, item.optional]);
-    } else {
-      table.positionsTrainingsMap.set(item.positionId, [
-        [item.trainingId, item.optional],
-      ]);
+    // if (item.positionId > maxPositionsId) {
+    //   maxPositionsId = item.positionId;
+    // }
+    if (item.trainingId > table.maxTrainingsId) {
+      table.maxTrainingsId = item.trainingId;
     }
+  }
+  for (let item of table.positionsTrainings) {
+    table.positionsTrainingsMap.set(
+      item.positionId * table.maxTrainingsId + item.trainingId,
+      item.optional
+    );
+  }
+  table.trainingIdColumnMap = new Map();
+  for (let item of $("th>.training")) {
+    const POSITION_ID = parseInt($(item).parent()[0].id);
+    const COLUMN = $(item).parent()[0].cellIndex;
+    table.trainingIdColumnMap.set(POSITION_ID, COLUMN);
+  }
+  table.rowIndexPositionId = [];
+  for (let item of $("tr.employee")) {
+    const ROW = item.rowIndex;
+    const POSITION_ID = parseInt($(item).parent()[0].id);
+    table.rowIndexPositionId[ROW] = POSITION_ID;
+  }
+
+  for (let cell of $(".date")) {
+    const ROW = $(cell).parent()[0].rowIndex;
+    const COLUMN = cell.cellIndex;
+    const POSITION_ID = parseInt(
+      $(cell).parent().children().eq(1).attr("positionid")
+    );
+    // const POSITION_ID = parseInt(
+    //   $($(cell).parent().find("[name='positionId']").attr("positionid"))
+    // );
+    const TRAINING_ID = parseInt(
+      $("#table_anchor tr:eq(" + 0 + ") th:eq(" + COLUMN + ")").attr("id")
+    );
+    const OPTIONAL = isTrainingPositionOptional(TRAINING_ID, POSITION_ID);
+    if (OPTIONAL != undefined) {
+      if (OPTIONAL) {
+        $(cell).addClass("required");
+      } else {
+        $(cell).addClass("optional");
+      }
+    }
+  }
+
+  for (let date of table.lastDates) {
+    const ROW = table.userIdRowMap.get(date.userId);
+    const COLUMN = table.trainingIdColumnMap.get(date.trainingId);
+    const TRAINING_ID = getTrainingIdByColumn(COLUMN);
+    const TRAINING_PERIOD = table.trainingsPeriodsMap.get(TRAINING_ID);
+    const ID = date.id;
+    setCell(ID, ROW, COLUMN, date.lastDate, TRAINING_PERIOD);
+  }
+}
+
+function getTrainingIdByColumn(column) {
+  return parseInt(
+    $("#table_anchor tr:eq(" + 0 + ") th:eq(" + column + ")").attr("id")
+  );
+}
+
+function isTrainingPositionOptional(trainingId, positionId) {
+  return table.positionsTrainingsMap.get(
+    positionId * table.maxTrainingsId + trainingId
+  );
+}
+
+function setCell(id, row, column, lastDate, period) {
+  const CELL = $("#table_anchor tr:eq(" + row + ") td:eq(" + column + ")");
+
+  const LAST_DATE = new Date(lastDate);
+  let tmp = new Date(lastDate);
+  tmp.setDate(tmp.getDate() + period);
+  const NEXT_DATE = tmp;
+  CELL.text(LAST_DATE.toLocaleDateString());
+  const DAY_DIFFERENCE = Math.floor(
+    (NEXT_DATE.getTime() - new Date().getTime()) / (1000 * 24 * 3600)
+  );
+  $(CELL)
+    .removeClass("required")
+    .removeClass("optional")
+    .removeClass("alarm")
+    .removeClass("notify")
+    .addClass("text-nowrap");
+  setDatepicker(CELL);
+  $(CELL).attr("id", id);
+  highlightCell(CELL, DAY_DIFFERENCE);
+}
+
+function highlightCell(cell, dayDifference) {
+  if (dayDifference < DAYS_NOTIFY && dayDifference > DAYS_ALARM) {
+    $(cell).addClass("notify");
+  } else if (dayDifference < DAYS_ALARM) {
+    $(cell).addClass("alarm");
   }
 }
 
 function dateClick() {
   const COLUMN = this.cellIndex;
   const ROW = this.parentNode.rowIndex;
-  // k = document.getElementById("table_anchor").rows[ROW].cells[COLUMN];
   const USER_ID = $("#table_anchor tr:eq(" + ROW + ") td:eq(" + 0 + ")").attr(
     "userid"
   );
@@ -147,7 +305,7 @@ function dateClick() {
   console.log(
     `row index: ${ROW}\ntraining id: ${TRAINING_ID} \nuser id: ${USER_ID}`
   );
-  k = this;
+  // this.datepicker({});
   console.log(this);
 }
 
@@ -156,8 +314,12 @@ function drawTh() {
   if (th_pattern.length != 0) {
     table.thAddress = th_pattern.attr("address");
     sendPost(table.thAddress, {}, (data) => {
-      table.thData = data;
-      for (let item of table.thData) {
+      table.trainingsNames = data;
+      table.trainingsPeriodsMap = new Map();
+      for (let period of table.trainingsNames) {
+        table.trainingsPeriodsMap.set(period.id, period.trainingPeriod);
+      }
+      for (let item of table.trainingsNames) {
         addItem2(item, th_pattern);
       }
     });

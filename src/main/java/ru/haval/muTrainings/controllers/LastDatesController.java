@@ -3,6 +3,7 @@ package ru.haval.muTrainings.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,5 +22,12 @@ public class LastDatesController {
   @ResponseBody
   public List<LastDates> getLastDates() {
     return lastDatesRepository.findAll();
+  }
+
+  @RequestMapping(path = "/set_json", consumes = "application/json", produces = "application/json")
+  @ResponseBody
+  public LastDates setPositionTraining(@RequestBody LastDates lastDates) {
+    System.out.println(lastDates);
+    return lastDatesRepository.save(lastDates);
   }
 }
