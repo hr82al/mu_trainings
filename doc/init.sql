@@ -1,6 +1,9 @@
 # mu_trainings
 #The program controls terms of trainings of employers.
 
+CREATE DATABASE trainings;
+
+USE trainings;
 ##### Таблицы проекта
 
 # Работники (trainings_employees)
@@ -10,7 +13,7 @@ CREATE TABLE IF NOT EXISTS trainings_employees
 		position_id INT NOT NULL,
 		department_id INT NOT NULL,
 		del BOOL DEFAULT 0
-);
+) CHARSET=utf8;
 
 # Должности (trainings_positions)
 CREATE TABLE IF NOT EXISTS trainings_positions
@@ -18,7 +21,7 @@ CREATE TABLE IF NOT EXISTS trainings_positions
 		position_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 		position VARCHAR(255) NOT NULL UNIQUE,
 		del BOOL DEFAULT 0
-);
+) CHARSET=utf8;
 
 # Каждая дожность должна иметь списой необходимых обучений
 CREATE TABLE IF NOT EXISTS trainings_positions_trainings
@@ -33,7 +36,7 @@ CREATE TABLE IF NOT EXISTS trainings_positions_trainings
         REFERENCES trainings_positions(position_id),
 	FOREIGN KEY (training_id)
 				REFERENCES trainings_names_list(training_id)
-);
+) CHARSET=utf8;
 
 #Департаменты
 CREATE TABLE IF NOT EXISTS trainings_departments
@@ -41,7 +44,7 @@ CREATE TABLE IF NOT EXISTS trainings_departments
 		department_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 		department VARCHAR(255) NOT NULL UNIQUE,
 		del BOOL DEFAULT 0
-);
+) CHARSET=utf8;
 
 #Список названий лицензированный обучений trainingsNamesList
 CREATE TABLE IF NOT EXISTS trainings_names_list
@@ -51,7 +54,7 @@ CREATE TABLE IF NOT EXISTS trainings_names_list
 		training_period INT NOT NULL,
 		del BOOL DEFAULT 0,
 		KEY ix_length_training (training(255))
-);
+) CHARSET=utf8;
 
 #Таблица история
 CREATE TABLE IF NOT EXISTS trainings_history
@@ -60,7 +63,7 @@ CREATE TABLE IF NOT EXISTS trainings_history
 	user_id INT NOT NULL,
 	training_id int NOT NULL,
 	last_date DATE
-);
+) CHARSET=utf8;
 
 #Последние даты обучений
 CREATE TABLE IF NOT EXISTS trainings_last_dates
@@ -70,7 +73,7 @@ CREATE TABLE IF NOT EXISTS trainings_last_dates
 	training_id INT NOT NULL,
 	last_date DATE NOT NULL,
 	UNIQUE KEY (user_id, training_id)
-);
+) CHARSET=utf8;
 
 ##### Виды
 

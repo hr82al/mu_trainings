@@ -134,7 +134,7 @@ function addPosition() {
   var token = $("meta[name='_csrf']").attr("content");
   var header = $("meta[name='_csrf_header']").attr("content");
   $.ajax({
-    url: "/positions",
+    url: "positions",
     type: "POST",
     contentType: "application/json; charset=utf-8",
     dataType: "json",

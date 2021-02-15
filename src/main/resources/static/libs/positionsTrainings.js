@@ -24,8 +24,6 @@ $(function () {
   //   customSelect('#training', availableTrainings);
   // });
   //setSelects();
-
-  console.log("ta");
 });
 
 function setSelects() {
@@ -35,12 +33,12 @@ function setSelects() {
 
 function update() {
   //Load list of available positions
-  sendPost("/positions/get", {}, (positions) => {
+  sendPost("positions/get", {}, (positions) => {
     availablePositions = positions;
     customSelect("#position", availablePositions);
   });
   //Load list of available trainingsNames
-  sendPost("/trainingsNamesList/get", {}, (trainings) => {
+  sendPost("trainingsNamesList/get", {}, (trainings) => {
     availableTrainings = trainings;
     customSelect("#training", availableTrainings);
   });

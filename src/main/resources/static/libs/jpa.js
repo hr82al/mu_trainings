@@ -14,6 +14,11 @@ const DAYS_ALARM = 7;
 const DAYS_NOTIFY = 28;
 
 function sendPost(path, param, run) {
+  // if (table.baseAddress) {
+  //   path = "/" + table.baseAddress + path;
+  // }
+  console.log("path");
+  console.log(path);
   $.ajax({
     url: path,
     type: "POST",
@@ -38,11 +43,22 @@ document.addEventListener("DOMContentLoaded", () => {
   init();
 });
 
+table.findBaseAddress = function () {
+  const PATH = window.location.pathname;
+  const LAST_INDEX = PATH.indexOf("/");
+  const PREVIOUS_INDEX = PATH.substr(0, LAST_INDEX);
+  if (PREVIOUS_INDEX != -1) {
+    return PATH.substr(PREVIOUS_INDEX, LAST_INDEX);
+  }
+};
+
 function init() {
   table.token = $("meta[name='_csrf']").attr("content");
   table.header = $("meta[name='_csrf_header']").attr("content");
   table.address = $("#row_pattern").attr("address");
   table.sectionAddress = $("#section_pattern").attr("address");
+  table.baseAddress = table.findBaseAddress();
+  console.log(table.baseAddress);
   if (table.address) {
     table.columnNames = getColumnNames($("#row_pattern"));
     table.selectNames = getSelectNames($("#row_pattern"));
@@ -70,7 +86,9 @@ function drawSection() {
         employees[item.id] = value;
         if (--counter == 0) {
           for (const department of sections) {
-            addItem2(department, $("#section_pattern"));
+            if (employees[department.id].length > 0) {
+              addItem2(department, $("#section_pattern"));
+            }
             for (const employee of employees[department.id]) {
               addItem2(employee, $("#row_pattern"));
             }
@@ -95,10 +113,10 @@ function drawLastDates() {
   $("#th_pattern").remove();
   $("#row_pattern").remove();
   $("#section_pattern").remove();
-  sendPost("/lastDates/get_json", {}, (data) => {
+  sendPost("lastDates/get_json", {}, (data) => {
     table.lastDates = data;
 
-    sendPost("/positionsTrainings/get_json", {}, (training_list) => {
+    sendPost("positionsTrainings/get_json", {}, (training_list) => {
       table.positionsTrainings = training_list;
       initDates();
       setDatepicker(".required, .optional");
@@ -107,10 +125,13 @@ function drawLastDates() {
 }
 
 function setDatepicker(cell) {
-  const TIP = getNextDate(cell);
   $(cell)
     .datepicker({ language: "ru", autoclose: true, format: "yyyy-dd-mm" })
-    .tooltip({ title: "f" })
+    .tooltip({
+      title: function (e) {
+        return getNextDate(this);
+      },
+    })
     .on("changeDate", function (e) {
       const DATE = e.format("yyyy-mm-dd");
       let request = getUserTrainingId(this);
@@ -118,7 +139,7 @@ function setDatepicker(cell) {
       request.id = parseInt(this.id);
 
       this.textContent = SAVE_DATA;
-      sendPost("/lastDates/set_json", request, () => {
+      sendPost("lastDates/set_json", request, () => {
         const ROW = table.userIdRowMap.get(request.userId);
         const COLUMN = table.trainingIdColumnMap.get(request.trainingId);
         const TRAINING_ID = getTrainingIdByColumn(COLUMN);
@@ -133,7 +154,7 @@ function getNextDate(cell) {
   const LAST_DATE = cell.textContent + "***";
   let tmp = new Date(LAST_DATE);
   tmp.setDate(tmp.getDate() + getTrainingPeriodByCell(cell));
-  const NEXT_DATE = "Следующая дата: " + tmp;
+  const NEXT_DATE = "Следующая дата: " + tmp.toLocaleDateString();
   console.log(getTrainingPeriodByCell($(cell)));
 
   return NEXT_DATE;
@@ -467,7 +488,7 @@ function save(row) {
   if (needFill) {
     $(row).find(`[name=${needFill}]`).text("Для сохранения заполните это поле");
   } else {
-    sendPost("/muTrainings/add", data, (v) => console.log(v));
+    sendPost("muTrainings/add", data, (v) => console.log(v));
   }
 }
 
