@@ -80,12 +80,14 @@ CREATE TABLE IF NOT EXISTS trainings_last_dates
 # Вид сотрудники
 CREATE VIEW employees AS SELECT
 		hs.user_id,
-		CONCAT(hs.L_Name_RUS, ' ', hs.F_Name_RUS, ' ',  hs.Otchestvo) AS FIO,
-		tp.position, te.position_id, td.department, te.department_id
-FROM hmmr_mu_staff hs
+		CONCAT(hs.L_Name_RUS, ' ', CONCAT(SUBSTR(hs.F_Name_RUS,1,1)), '. ', 
+		IF (hs.Otchestvo <> '', CONCAT(SUBSTR(hs.Otchestvo,1,1), '.'), '')
+    ) AS FIO,
+		tp.position, te.position_id, td.department, te.department_id, hs.Otchestvo
+FROM hmmr_mu.hmmr_mu_staff hs
 		LEFT JOIN trainings_employees te ON hs.user_id = te.user_id
 		LEFT JOIN trainings_positions tp ON te.position_id = tp.position_id
 		LEFT JOIN trainings_departments td ON te.department_id = td.department_id
-		WHERE user_del=0;
+		WHERE hs.user_del=0;
 
 
