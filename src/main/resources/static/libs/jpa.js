@@ -8,10 +8,45 @@
         </tr>
 Скрипт заполняет таблицу с id="table_anchor"
 */
+
+var k;
 var table = {};
 const SAVE_DATA = "Сохранение данных...";
 const DAYS_ALARM = 7;
 const DAYS_NOTIFY = 28;
+
+function createRow(data, pattern) {
+  let newRow = pattern
+    .clone()
+    .removeAttr("hidden")
+    .removeAttr("address")
+    .removeAttr("id");
+  const VALUES = newRow.find("td[value_from]");
+  //set text in td
+  for (let i of VALUES) {
+    const VALUE = $(i).attr("value_from");
+    const TEXT = data[VALUE];
+    i.textContent = TEXT;
+  }
+  //set input checkbox
+  const CHECKBOXES = newRow.find('input[type="checkbox"]');
+  for (let checkbox of CHECKBOXES) {
+    const VALUE = $(checkbox).attr("value_from");
+    const STATE = data[VALUE];
+    $(checkbox).prop("checked", STATE);
+  }
+  //set ids
+  const ID_NAMES = newRow.find("[name]");
+  for (let tag of ID_NAMES) {
+    const NAME = $(tag).attr("name");
+    const ID = data[NAME];
+    $(tag).attr(NAME, ID);
+  }
+  if (newRow.attr("name")) {
+    newRow.attr(newRow.attr("name"), data[newRow.attr("name")]);
+  }
+  return newRow;
+}
 
 function sendPost(path, param, run) {
   // if (table.baseAddress) {
@@ -52,6 +87,33 @@ table.findBaseAddress = function () {
   }
 };
 
+function getObjectFromTr(tr) {
+  let data = {};
+  const VALUES = tr.find("td[value_from]");
+  //set text in td
+  for (let i of VALUES) {
+    const VALUE = $(i).attr("value_from");
+    data[VALUE] = i.textContent;
+  }
+  //set input checkbox
+  const CHECKBOXES = tr.find('input[type="checkbox"]');
+  for (let checkbox of CHECKBOXES) {
+    const VALUE = $(checkbox).attr("value_from");
+    data[VALUE] = $(checkbox).prop("checked");
+  }
+  //set ids
+  const ID_NAMES = tr.find("[name]");
+  for (let tag of ID_NAMES) {
+    const NAME = $(tag).attr("name");
+    data[NAME] = $(tag).attr(NAME);
+  }
+  if (tr.attr("name")) {
+    data[tr.attr("name")] = tr.attr(tr.attr("name"));
+  }
+
+  return data;
+}
+
 function init() {
   table.token = $("meta[name='_csrf']").attr("content");
   table.header = $("meta[name='_csrf_header']").attr("content");
@@ -72,8 +134,108 @@ function init() {
       drawSection();
     }
   }
+  const address = $("#r_pattern").attr("address");
+  if (address) {
+    sendPost(`${address}`, {}, (rows) => {
+      for (let row of rows) {
+        addTotable(createRow(row, $(r_pattern)));
+      }
+      // $(".itemOptional").on("change", function (e) {
+      //   const CHECKED = $(this).prop("checked");
+      // });
+    });
+  }
+  if ($(".preload").length != 0) {
+    for (let item of $(".preload")) {
+      const ADDRESS = $(item).attr("address");
+      console.log(item.classList[0]);
+      sendPost(ADDRESS, {}, function (data) {
+        table[item.classList[0]] = data;
+        $(`.select2.${item.classList[0]}`).select2({
+          data: data,
+        });
+        $(`.select2.${item.classList[0]}`).on("select2:select", function (a) {
+          $(item).attr($(item).attr("name"), a.params.data.id);
+        });
+      });
+    }
+  }
 
   drawTh();
+}
+
+//on Listeners
+function changeOptional(current) {
+  const REQUEST = getObjectFromTr($(current).parent().parent());
+  sendPost("positionsTrainings/set", REQUEST, function (result) {
+    $(current).prop("checked", result.optional);
+  });
+}
+
+function deletePositionTraining(current) {
+  const ROW = $(current).parent().parent();
+  const REQUEST = getObjectFromTr(ROW);
+  sendPost("positionsTrainings/del", REQUEST, function (result) {
+    ROW.remove();
+  });
+}
+
+function f() {}
+function addPositionTraining(current) {
+  const ROW = $(current).parent().parent();
+  const ADDRESS = ROW.attr("address");
+  const REQUEST = getObjectFromTr(ROW);
+  sendPost(ADDRESS, REQUEST, function (data) {
+    for (let item of $(ROW).find(".select2-selection__rendered")) {
+      REQUEST[
+        $(item)
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .find("[value_from]")
+          .attr("value_from")
+      ] = item.textContent;
+    }
+    REQUEST.id = data.id;
+    addTotable(createRow(REQUEST, $(r_pattern)));
+  });
+  f(
+    "positionsTrainings/set",
+    {
+      positionId: $("#position").attr("aid"),
+      trainingId: $("#training").attr("aid"),
+    },
+    (res) => {
+      let newRow = $(NEW_ROW_ITEM);
+      console.log("f");
+
+      $(newRow)
+        .find(".itemPosition")
+        .text($("#position").find(".select2-selection__rendered").text());
+      $(newRow)
+        .find(".itemTraining")
+        .text($("#training").find(".select2-selection__rendered").text());
+      $(newRow)
+        .children()
+        .eq(0)
+        .text(
+          parseInt($("#addPositionTraining").prev().children().eq(0).text()) + 1
+        );
+      $("#addPositionTraining").before(newRow);
+      // $('#position').find('.select2-selection__rendered').text('');
+      // $('#training').find('.select2-selection__rendered').text('');
+      $("#position").text("");
+      $("#training").text("");
+
+      setSelects();
+      $("#position").select2("focus");
+    }
+  );
+}
+
+function addTotable(row) {
+  $("#table_anchor>tbody").eq(-1).before(row);
 }
 
 function drawSection() {
@@ -150,14 +312,15 @@ function setDatepicker(cell) {
 }
 
 function getNextDate(cell) {
-  // const NEXT_DATE =
-  const LAST_DATE = cell.textContent + "***";
-  let tmp = new Date(LAST_DATE);
-  tmp.setDate(tmp.getDate() + getTrainingPeriodByCell(cell));
-  const NEXT_DATE = "Следующая дата: " + tmp.toLocaleDateString();
-  console.log(getTrainingPeriodByCell($(cell)));
+  const LAST_DATE = cell.textContent;
+  let tmp = "";
+  if (LAST_DATE != "") {
+    tmp = new Date(LAST_DATE);
+    tmp.setDate(tmp.getDate() + getTrainingPeriodByCell(cell));
+    tmp = "Следующая дата: " + tmp.toLocaleDateString();
+  }
 
-  return NEXT_DATE;
+  return tmp;
 }
 
 function getTrainingPeriodByCell(cell) {
@@ -307,9 +470,9 @@ function setCell(id, row, column, lastDate, period) {
 }
 
 function highlightCell(cell, dayDifference) {
-  if (dayDifference < DAYS_NOTIFY && dayDifference > DAYS_ALARM) {
+  if (dayDifference < DAYS_NOTIFY && dayDifference >= DAYS_ALARM) {
     $(cell).addClass("notify");
-  } else if (dayDifference < DAYS_ALARM) {
+  } else if (dayDifference <= DAYS_ALARM) {
     $(cell).addClass("alarm");
   }
 }
@@ -431,7 +594,7 @@ function initSelect() {
   table.selections = new Map();
   for (const item of table.selectNames) {
     // const url = `/get_${item}s`;
-    const url = `/${item}s/get_json`;
+    const url = `${item}s/get_json`;
     sendPost(url, {}, function (data) {
       table.selections.set(item + "s", data);
     });
@@ -439,7 +602,6 @@ function initSelect() {
     $(".select").click(itemSelect);
   }
 }
-var k;
 function itemSelect() {
   let current = this;
   // const parent = $(this).parent();

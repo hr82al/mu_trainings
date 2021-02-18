@@ -34,7 +34,4 @@ public class PositionTraining {
 	@Column
 	private Boolean optional;
 
-	@Column
-	private Boolean del;
-
 }

@@ -26,32 +26,11 @@ xmlns:th="http://www.thymeleaf.org">
     <tbody>
       <tr id="section_pattern" hidden="true" address="departments/get_json"><td class="text v_text department" colspan="100%" align="center"></td></tr>
       <tr id="row_pattern" class="employee" hidden="true" address="muTrainings/get_by_department">
-        <td class="text v_fio" name="userId"></td>
+        <td class="text v_fio text-nowrap" name="userId"></td>
         <td class="text v_position select" name="positionId"> </td>
       </tr>
     </tbody>
   </table>
-  <table id="p_table" hidden="true" class="table table-striped table-bordered container">
-    <thead>
-      <th>ФИО</th>
-      <th>Должность</th>
-      <th th:id="'tid' + ${training.id}"th:each="training, count :${trainings}" ><div class="rotated" th:text="${training.text}"></div></th>
-    </thead>
-    <tbody>
-      <tr th:id="'eid' + ${employee.userId}" th:each="employee, count :${employees}"
-        class="id_positionName deleteEntry">
-        <td>
-          <div th:text="${employee.fio}" class="itemPosition"></div>
-        </td>
-        <td>
-          <div th:text="${employee.position}" class="itemTraining"></div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  
-  <div id="head_pattern" hidden=true></div>
-  <div id="row_pattern" hidden=true>
 
   </div>
   <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>

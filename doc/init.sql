@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS trainings_positions_trainings
 	position_id INT NOT NUll,
 	training_id INT NOT NULL,
 	optional BOOL DEFAULT 0,
-	del BOOL DEFAULT 0,
 	UNIQUE KEY (position_id, training_id),
 	FOREIGN KEY (position_id)
         REFERENCES trainings_positions(position_id),
@@ -73,6 +72,16 @@ CREATE TABLE IF NOT EXISTS trainings_last_dates
 	training_id INT NOT NULL,
 	last_date DATE NOT NULL,
 	UNIQUE KEY (user_id, training_id)
+) CHARSET=utf8;
+
+#Users
+CREATE TABLE IF NOT EXISTS trainings_last_dates
+(
+	user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	username VARCHAR(45) NOT NULL,
+	password VARCHAR(64) NOT NULL,
+	role VARCHAR(45) NOT NULL,
+	enabled BOOL NOT NULL
 ) CHARSET=utf8;
 
 ##### Виды

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.haval.muTrainings.accessingdatajpa.PositionTraining;
 import ru.haval.muTrainings.accessingdatajpa.PositionTrainingIds;
+import ru.haval.muTrainings.accessingdatajpa.PositionTrainingNames;
+import ru.haval.muTrainings.accessingdatajpa.PositionTrainingNamesRepository;
 import ru.haval.muTrainings.accessingdatajpa.PositionsTrainingIdsRepository;
 import ru.haval.muTrainings.accessingdatajpa.PositionsTrainingsRepository;
 
@@ -26,6 +28,9 @@ public class PositionsTrainingsController {
 
     @Autowired
     PositionsTrainingIdsRepository positionTrainingIdsRepository;
+
+    @Autowired
+    PositionTrainingNamesRepository positionTrainingNamesRepository;
 
     @GetMapping
     public String showPeriodsFrame(Model model) {
@@ -74,7 +79,12 @@ public class PositionsTrainingsController {
     @PostMapping(path = "/get_json", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public List<PositionTrainingIds> getNotDeletedPositionsTrainings() {
-        System.out.println("json");
-        return positionTrainingIdsRepository.findByDelIsFalse();
+        return positionTrainingIdsRepository.findAll();
+    }
+
+    @PostMapping(path = "/get", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public List<PositionTrainingNames> getPositionsTrainings() {
+        return positionTrainingNamesRepository.findAll();
     }
 }

@@ -224,7 +224,7 @@ function cachingDecorator(func) {
 
 function addPositionTraining(input) {
   sendPost(
-    "/positionsTrainings/set",
+    "positionsTrainings/set",
     {
       positionId: $("#position").attr("aid"),
       trainingId: $("#training").attr("aid"),
