@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class MyUserDetails implements UserDetails {
 
+  private static final long serialVersionUID = -3040015349568642659L;
   private User user;
 
   public MyUserDetails(User user) {
@@ -28,7 +29,7 @@ public class MyUserDetails implements UserDetails {
 
   @Override
   public String getUsername() {
-    return user.getPassword();
+    return user.getUsername();
   }
 
   @Override

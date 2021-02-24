@@ -2,6 +2,8 @@ package ru.haval.muTrainings.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,29 +57,27 @@ public class DepartmentsController {
 	@PostMapping(path = "/get", consumes = "application/json", produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody Department getDepartment(@RequestBody Department department) {
-		System.out.println("+++++++++++");
-		System.out.println(department);
 		return departmentsRepository.findByText(department.getText()).get(0);
 	}
 
 	@PostMapping(path = "/set", consumes = "application/json", produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody Department setDepartment(@RequestBody Department department) {
-		System.out.println(department);
 		return departmentsRepository.save(department);
 	}
 
 	@PostMapping(path = "/get_json", consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public List<Department> getDepartments() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		System.out.println(currentPrincipalName);
 		return departmentsRepository.findAll();
 	}
 
 	@PostMapping(path = "/del", consumes = "application/json", produces = "application/json")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delDepartment(@RequestBody Department department) {
-		System.out.println("****************************************");
-		System.out.println(department.getId());
 		departmentsRepository.delById(department.getId());
 	}
 

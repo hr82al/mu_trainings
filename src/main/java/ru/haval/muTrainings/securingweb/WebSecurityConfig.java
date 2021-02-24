@@ -3,13 +3,15 @@ package ru.haval.muTrainings.securingweb;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import ru.haval.muTrainings.authentication.UserDetailServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -29,14 +31,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().anyRequest().authenticated().and().formLogin().and().logout().permitAll();
     }
 
-    @Bean
-    @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        UserDetails user = User.withDefaultPasswordEncoder().username("admin").password("Haval_123").roles("USER")
-                .build();
-        System.out.println(user.getUsername());
-        return new InMemoryUserDetailsManager(user);
-    }
+    // @Bean
+    // @Override
+    // public UserDetailsService userDetailsServiceBean() throws Exception {
+    // UserDetails user =
+    // User.withDefaultPasswordEncoder().username("admin").password("Haval_123").roles("USER")
+    // .build();
+    // System.out.println(user.getUsername());
+    // return new InMemoryUserDetailsManager(user);
+    // }
 
     // @Autowired
     // public void initialize(AuthenticationManagerBuilder builder, DataSource
@@ -51,4 +54,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // }
 
     // }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailServiceImpl();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.authenticationProvider(authenticationProvider());
+    }
 }
