@@ -49,11 +49,6 @@ function createRow(data, pattern) {
 }
 
 function sendPost(path, param, run) {
-  // if (table.baseAddress) {
-  //   path = "/" + table.baseAddress + path;
-  // }
-  console.log("path");
-  console.log(path);
   $.ajax({
     url: path,
     type: "POST",
@@ -89,11 +84,13 @@ table.findBaseAddress = function () {
 
 function getObjectFromTr(tr) {
   let data = {};
-  const VALUES = tr.find("td[value_from]");
+  k = tr;
+  // const VALUES = tr.find("td[value_from]");
+  const VALUES = tr.find("[value_from]");
   //set text in td
   for (let i of VALUES) {
     const VALUE = $(i).attr("value_from");
-    data[VALUE] = i.textContent;
+    data[VALUE] = $(i).val();
   }
   //set input checkbox
   const CHECKBOXES = tr.find('input[type="checkbox"]');
@@ -120,7 +117,6 @@ function init() {
   table.address = $("#row_pattern").attr("address");
   table.sectionAddress = $("#section_pattern").attr("address");
   table.baseAddress = table.findBaseAddress();
-  console.log(table.baseAddress);
   if (table.address) {
     table.columnNames = getColumnNames($("#row_pattern"));
     table.selectNames = getSelectNames($("#row_pattern"));
@@ -148,7 +144,6 @@ function init() {
   if ($(".preload").length != 0) {
     for (let item of $(".preload")) {
       const ADDRESS = $(item).attr("address");
-      console.log(item.classList[0]);
       sendPost(ADDRESS, {}, function (data) {
         table[item.classList[0]] = data;
         $(`.select2.${item.classList[0]}`).select2({
@@ -172,6 +167,14 @@ function changeOptional(current) {
   });
 }
 
+function changeCheckbox(current) {
+  const ADDRESS = $(current).attr("address");
+  const REQUEST = getObjectFromTr($(current).parent().parent());
+  sendPost(ADDRESS, REQUEST, function (result) {
+    $(current).prop("checked", result.del);
+  });
+}
+
 function deletePositionTraining(current) {
   const ROW = $(current).parent().parent();
   const REQUEST = getObjectFromTr(ROW);
@@ -180,7 +183,16 @@ function deletePositionTraining(current) {
   });
 }
 
-function f() {}
+function add(current) {
+  const ROW = $(current).parent().parent();
+  const ADDRESS = ROW.attr("address");
+  const REQUEST = getObjectFromTr($(current).parent().parent());
+  sendPost(ADDRESS, REQUEST, function (data) {
+    REQUEST.id = data.id;
+    addTotable(createRow(REQUEST, $(r_pattern)));
+  });
+}
+
 function addPositionTraining(current) {
   const ROW = $(current).parent().parent();
   const ADDRESS = ROW.attr("address");
@@ -200,38 +212,6 @@ function addPositionTraining(current) {
     REQUEST.id = data.id;
     addTotable(createRow(REQUEST, $(r_pattern)));
   });
-  f(
-    "positionsTrainings/set",
-    {
-      positionId: $("#position").attr("aid"),
-      trainingId: $("#training").attr("aid"),
-    },
-    (res) => {
-      let newRow = $(NEW_ROW_ITEM);
-      console.log("f");
-
-      $(newRow)
-        .find(".itemPosition")
-        .text($("#position").find(".select2-selection__rendered").text());
-      $(newRow)
-        .find(".itemTraining")
-        .text($("#training").find(".select2-selection__rendered").text());
-      $(newRow)
-        .children()
-        .eq(0)
-        .text(
-          parseInt($("#addPositionTraining").prev().children().eq(0).text()) + 1
-        );
-      $("#addPositionTraining").before(newRow);
-      // $('#position').find('.select2-selection__rendered').text('');
-      // $('#training').find('.select2-selection__rendered').text('');
-      $("#position").text("");
-      $("#training").text("");
-
-      setSelects();
-      $("#position").select2("focus");
-    }
-  );
 }
 
 function addTotable(row) {
@@ -313,13 +293,23 @@ function setDatepicker(cell) {
 
 function getNextDate(cell) {
   const LAST_DATE = cell.textContent;
+  const COLUMN = this.cellIndex;
+  // const ROW = this.parentNode.rowIndex;
+  k = cell;
   let tmp = "";
   if (LAST_DATE != "") {
-    tmp = new Date(LAST_DATE);
-    tmp.setDate(tmp.getDate() + getTrainingPeriodByCell(cell));
+    tmp = new Date(LAST_DATE.split(".").reverse().join("-"));
+    console.log(tmp.toLocaleDateString());
+    tmp.setMonth(tmp.getMonth() + getTrainingPeriodByCell(cell));
+    console.log(tmp.toLocaleDateString());
     tmp = "Следующая дата: " + tmp.toLocaleDateString();
   }
-
+  tmp +=
+    "\r\n" +
+    cell.parentElement.getElementsByClassName("v_fio")[0].textContent +
+    "\r\n  " +
+    $("thead>tr").children().eq($(cell).index()).text();
+  console.log();
   return tmp;
 }
 
@@ -355,13 +345,6 @@ function initDates() {
     const userId = parseInt($(item).find("td").attr("userid"));
     table.userIdRowMap.set(userId, row);
   }
-  // table.positionIdRow = new Map();
-  // for (let item of $("tr.employee")) {
-  //   const row = item.rowIndex;
-  //   const positionId = parseInt($($(item).find("td")[1]).attr("positionid"));
-  //   console.log(row, positionId);
-  //   table.positionIdRowMap.set(positionId, row);
-  // }
   table.positionsTrainingsMap = new Map();
   // for (let item of table.positionsTrainings) {
   //   if (table.positionsTrainingsMap.has(item.positionId)) {
@@ -418,9 +401,9 @@ function initDates() {
     const OPTIONAL = isTrainingPositionOptional(TRAINING_ID, POSITION_ID);
     if (OPTIONAL != undefined) {
       if (OPTIONAL) {
-        $(cell).addClass("required");
-      } else {
         $(cell).addClass("optional");
+      } else {
+        $(cell).addClass("required");
       }
     }
   }
@@ -452,7 +435,7 @@ function setCell(id, row, column, lastDate, period) {
 
   const LAST_DATE = new Date(lastDate);
   let tmp = new Date(lastDate);
-  tmp.setDate(tmp.getDate() + period);
+  tmp.setMonth(tmp.getMonth() + period);
   const NEXT_DATE = tmp;
   CELL.text(LAST_DATE.toLocaleDateString());
   const DAY_DIFFERENCE = Math.floor(
@@ -486,11 +469,6 @@ function dateClick() {
   const TRAINING_ID = parseInt(
     $("#table_anchor tr:eq(" + 0 + ") th:eq(" + COLUMN + ")").attr("id")
   );
-  console.log(
-    `row index: ${ROW}\ntraining id: ${TRAINING_ID} \nuser id: ${USER_ID}`
-  );
-  // this.datepicker({});
-  console.log(this);
 }
 
 function drawTh() {
@@ -579,17 +557,6 @@ function addRow(row) {
   }
 }
 
-function setListeners() {
-  for (let item of table.columnNames) {
-    console.log(item);
-  }
-  $(".select").click(clickedSelect);
-}
-
-function clickedSelect() {
-  console.log(this);
-}
-
 function initSelect() {
   table.selections = new Map();
   for (const item of table.selectNames) {
@@ -604,8 +571,6 @@ function initSelect() {
 }
 function itemSelect() {
   let current = this;
-  // const parent = $(this).parent();
-  console.log(parent);
   const item = table.selections.get(current.classList[0] + "s");
   $(current).unbind("click");
   $(current).html("");
@@ -623,22 +588,11 @@ function itemSelect() {
     //set id to the current cell
     const id = e.params.data.id;
     $(current).attr($(current).attr("name"), id);
-    let employees = ``;
-    console.log(id);
-    console.log("************");
     save($(current).parent());
     // let fn = itemSelect.bind(this);
     //Bind a new click listener
     $(current).click(itemSelect);
   });
-
-  // console.log(this);
-  // $(`.${item}.select`).select2({
-  //   data: table.selections.get(item),
-  // });
-  // $(`.${item}.select`).on("select2:select", function (e) {
-  //   console.log("select");
-  // });
 }
 
 function save(row) {
@@ -661,7 +615,6 @@ function addItem(item) {
     var inputVarName = getInputVarName(i, $("#addEntry"));
     entry[inputVarName] = currentVal;
   }
-  console.log(entry);
   sendPost(`${window.location.pathname}/add`, entry, (item) => {
     addNewRow(item);
     $("#inputText").val("");
@@ -683,9 +636,7 @@ function getItemFromRow(row) {
 function deleteItem(item) {
   //Select current row
   let row = $(item).closest(".deleteEntry");
-  console.log(JSON.stringify(getItemFromRow(row)));
   sendPost(`${window.location.pathname}/del`, getItemFromRow(row), () => {
-    console.log("success");
     row.remove();
   });
 }
@@ -706,11 +657,6 @@ function getVarInputByColumn(num, row) {
 }
 
 function sendPost2(path, param, run) {
-  console.log(param);
-  console.log(path);
-  console.log(
-    "****************************************************************************"
-  );
   $.ajax({
     url: path,
     type: "POST",
@@ -733,7 +679,6 @@ function sendPost2(path, param, run) {
 }
 
 function addNewRow(entry) {
-  console.log(JSON.stringify(entry));
   let currentRow = $("#addEntry");
   let last = $(currentRow).prev();
   let newRow = $(NEW_ROW_PATTERN);
@@ -757,6 +702,5 @@ function addNewRow(entry) {
     );
     $(newRow).children().eq(i).children().eq(0).text(entry[name]);
   }
-  console.log("nt" + $(newRow).html());
   $(currentRow).before($(newRow));
 }

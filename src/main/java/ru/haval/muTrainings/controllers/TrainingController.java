@@ -44,10 +44,6 @@ public class TrainingController {
   @GetMapping
   public String showTrainingForm(Model model) {
     // List<List<String>> table = new ArrayList<>();
-    System.out.println("training");
-    for (TrainingJoined training : trainingJoinedRepository.findAll()) {
-      System.out.println(training);
-    }
     List<Employee> employees = employeeRepository.findAll();
     List<TrainingName> trainings = trainingsNamesRepository.findByDelIsFalse();
     model.addAttribute("trainings", trainings);

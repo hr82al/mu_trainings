@@ -35,9 +35,6 @@ public class PositionsTrainingsController {
     @GetMapping
     public String showPeriodsFrame(Model model) {
         model.addAttribute("positionsTrainings", positionsTrainingsRepository.findAll());
-        for (PositionTraining positionTraining : positionsTrainingsRepository.findAll()) {
-            System.out.println(positionTraining);
-        }
         return "positionsTrainings";
     }
 
@@ -59,16 +56,10 @@ public class PositionsTrainingsController {
     @RequestMapping(path = "/change", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public PositionTrainingIds changePositionTraining(@RequestBody PositionTrainingIds rPositionTrainingIds) {
-        System.out.println("pt set");
-        System.out.println(rPositionTrainingIds.getId());
-        System.out.println(rPositionTrainingIds.getOptional());
         Optional<PositionTrainingIds> positionTraining = positionTrainingIdsRepository
                 .findById(rPositionTrainingIds.getId());
         if (positionTraining.isPresent()) {
             PositionTrainingIds pt = positionTraining.get();
-            System.out.println("**********************************************************************");
-            System.out.println(pt);
-            System.out.println("**********************************************************************");
             pt.setOptional(rPositionTrainingIds.getOptional());
             return positionTrainingIdsRepository.save(pt);
         }

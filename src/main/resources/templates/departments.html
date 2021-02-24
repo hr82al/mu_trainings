@@ -15,7 +15,31 @@ xmlns:th="http://www.thymeleaf.org">
 </head>
 <body>
     <div th:insert="fragments/muTrainingsHeader :: muTrainingsHeader"></div>
-    <table class="table table-striped table-bordered w-auto container">
+    <table id="table_anchor" class="table table-striped table-bordered w-auto container">
+        <thead>
+            <th>Департамент</th>
+            <th>Отключено</th>
+        </thead>
+        <tbody>
+
+            <tr id="r_pattern" hidden="true" name="id" address="departments/get_json">
+                <td  value_from="text"></td>
+                <td><input type="checkbox" class="itemOptional" address="departments/set" value_from="del" onchange="changeCheckbox(this)"></td>
+            </tr>
+            <tr address="departments/set">
+                <td>
+                    <input type="text" class="inputText w-100" value_from="text"></input>
+                </td>
+                <td><input type="checkbox" value_from="del"></td>
+                <td><input type="button" class="btn btn-primary" value="Добавить" onclick="add(this)">
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    
+    <table hidden="true" class="table table-striped table-bordered w-auto container">
         <thead>
         <tr>
             <th>№</th>
@@ -45,5 +69,6 @@ xmlns:th="http://www.thymeleaf.org">
     </table>
     <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
     <script type="text/javascript" th:src="@{/libs/departments.js}"></script>
+    <script type="text/javascript" th:src="@{/libs/jpa.js}"></script>
 </body>
 </html>

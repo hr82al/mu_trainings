@@ -60,6 +60,13 @@ public class DepartmentsController {
 		return departmentsRepository.findByText(department.getText()).get(0);
 	}
 
+	@PostMapping(path = "/set", consumes = "application/json", produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody Department setDepartment(@RequestBody Department department) {
+		System.out.println(department);
+		return departmentsRepository.save(department);
+	}
+
 	@PostMapping(path = "/get_json", consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public List<Department> getDepartments() {

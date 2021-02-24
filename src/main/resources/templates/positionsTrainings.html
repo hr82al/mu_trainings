@@ -50,41 +50,6 @@ xmlns:th="http://www.thymeleaf.org">
     
 </table>
 
-
-
-
-<table hidden="true" class="table table-striped table-bordered container">
-    <thead>
-        <th>№</th>
-        <th>Должность</th>
-        <th>Наименование обучения</th>
-        <th>Дополнительно</th>
-        <th>Отключено</th>
-    </thead>
-    <tbody>
-        <tr th:id="'id' + ${positionTraining.id}" th:each="positionTraining, count :${positionsTrainings}" class="id_positionName deleteEntry">
-            <td>
-                <div th:text="${count.count}"></div>
-            </td>
-            <td ><div th:text="${positionTraining.position.text}" class="itemPosition"></div></td>
-            <td ><div th:text="${positionTraining.trainingName.text}" class="itemTraining"></div></td>
-            <td><input type="checkbox" class="itemOptional" th:checked="${positionTraining.optional}"></td>
-            <td><input type="checkbox" class="itemDel"></td>
-        </tr>
-        
-        <tr id="addPositionTraining" class="addTrainingName">
-            <td>+</td>
-            <td id="position" class="positions select2">
-            </td>
-            <td id="training" class="trainingsNamesList select2">
-            </td>
-            <td><input type="checkbox" class="itemOptional"></td>
-            <td><input id="addItemButton" type="button"  class="addItemButton btn btn-primary" value="Добавить" onclick="addPositionTraining(this)">
-            </td>
-        </tr>
-    </tbody>
-</table>
-
 <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
 <!-- <script type="text/javascript" th:src="@{/libs/positionsTrainings.js}"></script> -->
 <script type="text/javascript" th:src="@{/libs/jpa.js}"></script>
