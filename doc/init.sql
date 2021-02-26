@@ -99,4 +99,16 @@ FROM hmmr_mu.hmmr_mu_staff hs
 		LEFT JOIN trainings_departments td ON te.department_id = td.department_id
 		WHERE hs.user_del=0;
 
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(64) NOT NULL,
+  `role` enum('Administrator','Group Lead','Team Lead','Engeneer','Technics') NOT NULL DEFAULT 'Technics', 
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`user_id`)
+) DEFAULT CHARSET=utf8
 
+
+CREATE VIEW accounts AS SELECT concat(`hs`.`L_Name_RUS`,' ',concat(substr(`hs`.`F_Name_RUS`,1,1)),'. ',if((`hs`.`Otchestvo` <> ''),concat(substr(`hs`.`Otchestvo`,1,1),'.'),'')) AS `FIO`,
+tu.username, tu.role
+FROM hmmr_mu.users hmu LEFT JOIN hmmr_mu.hmmr_mu_staff  hs ON hs.user_id = hmu.id LEFT JOIN trainings.users tu ON hmu.id = tu.user_id WHERE hmu.user_del = 0;

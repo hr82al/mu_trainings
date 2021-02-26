@@ -31,30 +31,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().anyRequest().authenticated().and().formLogin().and().logout().permitAll();
     }
 
-    // @Bean
-    // @Override
-    // public UserDetailsService userDetailsServiceBean() throws Exception {
-    // UserDetails user =
-    // User.withDefaultPasswordEncoder().username("admin").password("Haval_123").roles("USER")
-    // .build();
-    // System.out.println(user.getUsername());
-    // return new InMemoryUserDetailsManager(user);
-    // }
-
-    // @Autowired
-    // public void initialize(AuthenticationManagerBuilder builder, DataSource
-    // dataSource) {
-    // //
-    // builder.jdbcAuthentication().dataSource(dataSource).withUser("dave").password("secret").roles("USER");
-    // try {
-    // builder.jdbcAuthentication().dataSource(dataSource).withUser("user").password("password").roles("USER");
-    // } catch (Exception e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // }
-
-    // }
-
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailServiceImpl();

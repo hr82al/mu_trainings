@@ -2,3 +2,10 @@
 [0m2021.02.17 08:26:37 INFO  time: initialize in 2.82s[0m
 [0m2021.02.17 08:26:40 WARN  Build server is not auto-connectable.[0m
 [0m2021.02.17 14:58:35 INFO  shutting down Metals[0m
+[0m2021.02.26 10:34:24 INFO  Started: Metals version 0.10.0 in workspace 'C:\workspace\spring\mu_trainings' for client vscode 1.53.2.[0m
+[0m2021.02.26 10:34:27 INFO  time: initialize in 2.97s[0m
+[0m2021.02.26 10:34:28 WARN  Build server is not auto-connectable.[0m
+[0m2021.02.26 10:34:30 INFO  skipping build import with status 'Requested'[0m
+февр. 26, 2021 2:43:25 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+[0m2021.02.26 15:53:51 INFO  shutting down Metals[0m

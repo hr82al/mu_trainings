@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <!-- default header name is X-CSRF-TOKEN -->
+  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+
+  <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
+  <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/styles/styles.css}">
+  <title>Управление аккаунтами</title>
+</head>
+
+<body>
+  <div th:insert="fragments/muTrainingsHeader :: muTrainingsHeader"></div>
+  <form action="#" th:action="@{/mu_trainings}" th:object="${position}" method="post">
+    <table id="table_anchor" class="table table-striped table-bordered w-auto container">
+      <thead>
+        <tr>
+          <th>Фамилия Имя Отчество</th>
+          <th>Имя пользователя</th>
+          <th>Права доступа</th>
+          <th>Пароль</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="row_pattern" hidden=true class="employee_id" address="../muTrainings/get">
+          <td class="fio" name="userId"></td>
+          <td class="position select" name="positionId"> </td>
+          <td class="department select" name="departmentId"> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
+    <!-- <script type="text/javascript" th:src="@{/libs/mu_trainings.js}"></script> -->
+    <script type="text/javascript" th:src="@{/libs/jpa.js}"></script>
+</body>
+
+</html>
