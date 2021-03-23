@@ -63,7 +63,7 @@ table {
 }
 
 td.required {
-  background-color: red;
+  background-color: rgb(255, 210, 196);
 }
 
 td.optional {
@@ -76,4 +76,9 @@ td.notify {
 
 td.alarm {
   background-color: red;
+}
+
+td.tmp-button {
+  padding-top: 100px;
+}
 }

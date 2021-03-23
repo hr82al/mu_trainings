@@ -9,7 +9,6 @@
 Скрипт заполняет таблицу с id="table_anchor"
 */
 
-var k;
 var table = {};
 const SAVE_DATA = "Сохранение данных...";
 const DAYS_ALARM = 7;
@@ -84,7 +83,6 @@ table.findBaseAddress = function () {
 
 function getObjectFromTr(tr) {
   let data = {};
-  k = tr;
   // const VALUES = tr.find("td[value_from]");
   const VALUES = tr.find("[value_from]");
   //set text in td
@@ -261,7 +259,8 @@ function drawLastDates() {
     sendPost("positionsTrainings/get_json", {}, (training_list) => {
       table.positionsTrainings = training_list;
       initDates();
-      setDatepicker(".required, .optional");
+      setDatepicker(".date");
+      // setDatepicker(".required, .optional");
     });
   });
 }
@@ -281,27 +280,49 @@ function setDatepicker(cell) {
       request.id = parseInt(this.id);
 
       this.textContent = SAVE_DATA;
-      sendPost("lastDates/set_json", request, () => {
+      sendPost("lastDates/set_json", request, (response) => {
         const ROW = table.userIdRowMap.get(request.userId);
         const COLUMN = table.trainingIdColumnMap.get(request.trainingId);
         const TRAINING_ID = getTrainingIdByColumn(COLUMN);
         const TRAINING_PERIOD = table.trainingsPeriodsMap.get(TRAINING_ID);
-        setCell(request.id, ROW, COLUMN, request.lastDate, TRAINING_PERIOD);
+        setCell(response.id, ROW, COLUMN, request.lastDate, TRAINING_PERIOD);
       });
+    })
+    .on("mouseover", function (e) {
+      // deleteDateById(parseInt(this.id));
+      if ($(this).find(".tmp-button").length == 0 && $(this).html() != "") {
+        $(this).append(
+          '<div class="tmp-button"><input type="button" class="btn btn-primary" value="Удалить" onclick="deleteDateById(this)"></div>'
+        );
+      }
+    })
+    .on("mouseleave", function (e) {
+      $(".tmp-button").remove();
     });
+}
+var tmp = "";
+function deleteDateById(current) {
+  let request = {};
+  request.id = parseInt($(current).parent().parent().attr("id"));
+  // let request = getUserTrainingId(this);
+  // request.id = parseInt(this.id);
+  sendPost("lastDates/del", request, function () {
+    let currentCell = $(current).parent().parent();
+    currentCell.html("");
+    currentCell.removeClass("alarm");
+    currentCell.removeClass("notify");
+  });
+  // console.log(parseInt(this.id));
 }
 
 function getNextDate(cell) {
   const LAST_DATE = cell.textContent;
   const COLUMN = this.cellIndex;
   // const ROW = this.parentNode.rowIndex;
-  k = cell;
   let tmp = "";
   if (LAST_DATE != "") {
     tmp = new Date(LAST_DATE.split(".").reverse().join("-"));
-    console.log(tmp.toLocaleDateString());
     tmp.setMonth(tmp.getMonth() + getTrainingPeriodByCell(cell));
-    console.log(tmp.toLocaleDateString());
     tmp = "Следующая дата: " + tmp.toLocaleDateString();
   }
   tmp +=
@@ -309,7 +330,6 @@ function getNextDate(cell) {
     cell.parentElement.getElementsByClassName("v_fio")[0].textContent +
     "\r\n  " +
     $("thead>tr").children().eq($(cell).index()).text();
-  console.log();
   return tmp;
 }
 
@@ -696,10 +716,6 @@ function addNewRow(entry) {
   $(newRow).attr("id", `id${entry.id}`);
   for (let i = 1; i < $("#addEntry").children().length - 1; i++) {
     let name = getInputVarName(i, currentRow);
-    console.log(
-      "var name " +
-        $(newRow).children().eq(i).children().eq(0).text(entry[name]).html()
-    );
     $(newRow).children().eq(i).children().eq(0).text(entry[name]);
   }
   $(currentRow).before($(newRow));

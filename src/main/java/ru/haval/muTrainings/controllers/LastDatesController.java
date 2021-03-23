@@ -30,4 +30,12 @@ public class LastDatesController {
     System.out.println(lastDates);
     return lastDatesRepository.save(lastDates);
   }
+
+  @RequestMapping(path = "/del", consumes = "application/json", produces = "application/json")
+  @ResponseBody
+  public LastDates delPositionTraining(@RequestBody LastDates lastDates) {
+    System.out.println(lastDates);
+    lastDatesRepository.deleteById(lastDates.getId());
+    return lastDates;
+  }
 }
