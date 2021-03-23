@@ -1,4 +1,4 @@
-package ru.haval.muTrainings;
+package ru.haval;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

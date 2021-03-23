@@ -70,16 +70,16 @@
         </tr>
         <tr>
           <td>STAFF ID:</td>
-          <td><input id="staffId" type="text" /></td>
+          <td><input id="staffId" type="text" class="unique"/></td>
         </tr>
         <tr>
           <td>ID:</td>
-          <td><input id="userLettersId" type="text" /></td>
+          <td><input id="userLettersId" type="text" class="unique"/></td>
         </tr>
         <tr>
           <td>Секция:</td>
           <td>
-            <select id="section">
+            <select id="section" class="select-employee">
               <option value="MU">MU</option>
               <option value="MTC">MTC</option>
               <option value="PLE">PLE</option>
@@ -90,7 +90,7 @@
         <tr>
           <td>Цех:</td>
           <td>
-            <select id="shop">
+            <select id="shop" class="select-employee">
               <option value="A">A</option>
               <option value="E">E</option>
               <option value="P">P</option>
@@ -105,7 +105,7 @@
         <tr>
           <td>Команда:</td>
           <td>
-            <select id="team">
+            <select id="team" class="select-employee">
               <option value="HOD">HOD</option>
               <option value="HOS">HOS</option>
               <option value="GL">GL</option>
@@ -118,11 +118,11 @@
         </tr>
         <tr>
           <td>Должность:</td>
-          <td><input id="postion" type="text" /></td>
+          <td><select id="position" class="select2 select-employee"> </select></td>
         </tr>
         <tr>
           <td>Position:</td>
-          <td><input id="enPosition" type="text" /></td>
+          <td><select id="enPosition" class="select2 select-employee"> </select></td>
         </tr>
         <tr>
           <td>Смена, часы:</td>
@@ -150,16 +150,16 @@
         </tr>
         <tr>
           <td>Логин:</td>
-          <td><input id="login" type="text" /></td>
+          <td><input id="login" type="text" class="unique"/></td>
         </tr>
         <tr>
           <td>Пароль:</td>
-          <td><input id="password" type="password" /></td>
+          <td><input id="password" type="password" class="unique"/></td>
         </tr>
         <tr>
           <td>Права доступа:</td>
           <td>
-            <select id="accessString" >
+            <select id="accessString" class="select-employee">
               <option th:each="access: ${accesses}" th:value="${access}" th:text="${access}"></option>
             </select>
           </td>

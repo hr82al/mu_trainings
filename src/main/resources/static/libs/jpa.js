@@ -144,6 +144,7 @@ function init() {
       const ADDRESS = $(item).attr("address");
       sendPost(ADDRESS, {}, function (data) {
         table[item.classList[0]] = data;
+        console.log(`.select2.${item.classList[0]}`);
         $(`.select2.${item.classList[0]}`).select2({
           data: data,
         });

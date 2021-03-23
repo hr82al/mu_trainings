@@ -1,18 +1,12 @@
-package ru.haval.muTrainings;
+package ru.haval;
 
-import javax.sql.DataSource;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class HmmrDataSourceConfiguration {
 
-  // @Bean(name = "workrecording")
-  // @ConfigurationProperties(prefix = "spring.datasource.workrecording")
+  // @Bean(name = "work-recording")
+  // // @ConfigurationProperties(prefix = "spring.datasource.work-recording")
   // public DataSource mySqlDataSource() {
   // DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
   // dataSourceBuilder.url("jdbc:mysql://10.168.150.74:3306/hmmr_mu?serverTimezone=UTC");
@@ -21,8 +15,8 @@ public class HmmrDataSourceConfiguration {
   // return dataSourceBuilder.build();
   // }
 
-  // @Bean(name = "trainings")
-  // @ConfigurationProperties(prefix = "spring.datasource")
+  // @Bean
+  // // @ConfigurationProperties(prefix = "spring.datasource")
   // @Primary
   // public DataSource tSqlDataSource() {
   // DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();

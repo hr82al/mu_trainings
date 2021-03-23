@@ -1,9 +1,9 @@
-package ru.haval.muTrainings;
+package ru.haval;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = { "ru.haval.muTrainings", "ru.haval.workRecording" })
+@SpringBootApplication // (scanBasePackages = { "ru.haval.muTrainings", "ru.haval.workRecording" })
 public class MuTrainingsApplication {
 
 	public static void main(String[] args) {

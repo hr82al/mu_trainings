@@ -86,10 +86,41 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#enLastName").val(transliterate(this.value));
   });
 
+  //date pickers
   $("#birthDate").datepicker(RU_PICKER);
   $("#beginDate").datepicker(RU_PICKER);
   $("#endDate").datepicker(RU_PICKER);
+
+  //select 2
+  sendPost("employee/positions", {}).then(function (data) {
+    $("#position").select2({
+      data: data,
+    });
+  });
+
+  sendPost("employee/enPositions", {}).then(function (data) {
+    $("#enPosition").select2({
+      data: data,
+    });
+  });
+  //Check for unique
+  $(".unique").on("change", function (e) {
+    sendPost("employee/checkForUnique", {
+      name: this.id,
+      value: this.value,
+    }).then(function (data) {
+      tmp = e;
+      if (data) {
+        $(this).addClass("not-unique");
+      } else {
+        $(this).removeClass("not-unique");
+      }
+    });
+    console.log(this.value);
+    console.log(this.id);
+  });
 });
+
 var tmp;
 function addEmployee() {
   let employee = {};
@@ -106,12 +137,12 @@ function addEmployee() {
   for (const i of selections) {
     employee[i.id] = i.value;
   }
+  const selects2 = $("div.select2");
+  for (const i of selects2) {
+    employee[i.id] = $(i).find(":selected").text();
+  }
   let promise = sendPost("employee/add", employee);
   promise.then((data) => console.log(JSON.stringify(data)));
-  // promise.then(function (e) {
-  //   console.log(e.json());
-  //   tmp = e;
-  // });
 }
 
 function transliterate(rus) {
@@ -125,7 +156,6 @@ function transliterate(rus) {
   }
   return eng;
 }
-var tmp;
 
 function sendPost(uri, data) {
   let promise = fetch(uri, {

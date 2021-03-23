@@ -81,4 +81,11 @@ td.alarm {
 td.tmp-button {
   padding-top: 100px;
 }
+
+.select-employee {
+  width: 100%;
+}
+
+.not-unique {
+  color: red !important;
 }

@@ -1,4 +1,4 @@
-package ru.haval.muTrainings.accessingdatajpa;
+package ru.haval.workRecording.accessingdatajpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,12 +13,14 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @Entity
-@Table(name = "hmmr_mu_staff", schema = "workrecording")
-public class HmmrStaff {
+@Table(name = "hmmr_mu_staff", schema = "hmmr_mu", catalog = "hmmr_mu")
+public class WorkRecordingHmmrMuStaff {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_num")
   private Long id;
   @Column(name = "Position_RUS")
   private String positionRus;
+  @Column(name = "Position")
+  private String position;
 }
