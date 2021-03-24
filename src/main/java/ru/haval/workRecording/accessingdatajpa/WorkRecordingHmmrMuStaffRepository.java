@@ -9,9 +9,13 @@ public interface WorkRecordingHmmrMuStaffRepository extends CrudRepository<WorkR
   List<WorkRecordingHmmrMuStaff> findAll();
 
   @Query(value = "SELECT * FROM hmmr_mu.hmmr_mu_staff GROUP BY Position_RUS;", nativeQuery = true)
-  List<WorkRecordingHmmrMuStaff> getPositions();
+  List<WorkRecordingHmmrMuStaff> getRuPositions();
 
   @Query(value = "SELECT * FROM hmmr_mu.hmmr_mu_staff GROUP BY Position;", nativeQuery = true)
   List<WorkRecordingHmmrMuStaff> getEnPosition();
+
+  Boolean existsByStaffId(String value);
+
+  Boolean existsByUserLettersId(String value);
 
 }

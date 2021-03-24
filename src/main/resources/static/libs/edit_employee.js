@@ -80,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#firstName").on("change", function (e) {
     $("#enFirstName").val(transliterate(this.value));
-    console.log(this.value);
   });
   $("#lastName").on("change", function (e) {
     $("#enLastName").val(transliterate(this.value));
@@ -88,46 +87,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //date pickers
   $("#birthDate").datepicker(RU_PICKER);
-  $("#beginDate").datepicker(RU_PICKER);
+  $("#beginDate")
+    .datepicker(RU_PICKER)
+    .on("changeDate", function (e) {
+      const DATE = e.date;
+      $("#endDate").datepicker(
+        "setDate",
+        new Date(DATE.setFullYear(DATE.getFullYear() + 40))
+      );
+    });
   $("#endDate").datepicker(RU_PICKER);
 
   //select 2
-  sendPost("employee/positions", {}).then(function (data) {
-    $("#position").select2({
+  sendPost("employee/ruPositions").then(function (data) {
+    $("#ruPosition").select2({
       data: data,
     });
   });
 
-  sendPost("employee/enPositions", {}).then(function (data) {
+  sendPost("employee/enPositions").then(function (data) {
     $("#enPosition").select2({
       data: data,
     });
   });
   //Check for unique
   $(".unique").on("change", function (e) {
+    const CURRENT = this;
     sendPost("employee/checkForUnique", {
       name: this.id,
       value: this.value,
     }).then(function (data) {
-      tmp = e;
       if (data) {
-        $(this).addClass("not-unique");
+        $(CURRENT).addClass("not-unique");
       } else {
-        $(this).removeClass("not-unique");
+        $(CURRENT).removeClass("not-unique");
       }
     });
-    console.log(this.value);
-    console.log(this.id);
   });
 });
 
+function yearLocalToUTC(year) {
+  return year.value.split(".").reverse().join("-");
+}
 var tmp;
 function addEmployee() {
   let employee = {};
   const values = $("#user input");
   for (const i of values) {
     if (i.id.endsWith("Date")) {
-      let val = i.value.split(".").reverse().join("-");
+      let val = yearLocalToUTC(i);
       employee[i.id] = val;
     } else {
       employee[i.id] = i.value;
@@ -137,12 +145,14 @@ function addEmployee() {
   for (const i of selections) {
     employee[i.id] = i.value;
   }
-  const selects2 = $("div.select2");
+  const selects2 = $("select.select2");
   for (const i of selects2) {
     employee[i.id] = $(i).find(":selected").text();
   }
-  let promise = sendPost("employee/add", employee);
-  promise.then((data) => console.log(JSON.stringify(data)));
+  console.log(JSON.stringify(employee));
+  sendPost("employee/add", employee).then((data) => {
+    console.log(JSON.stringify(data));
+  });
 }
 
 function transliterate(rus) {

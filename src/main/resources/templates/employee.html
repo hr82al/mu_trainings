@@ -22,23 +22,23 @@
       <tbody>
         <tr>
           <td>Фамилия:</td>
-          <td><input id="firstName" type="text"/></td>
+          <td><input id="firstName" type="text" maxlength="50"/></td>
         </tr>
         <tr>
           <td>Имя:</td>
-          <td><input id="lastName" type="text" /></td>
+          <td><input id="lastName" type="text" maxlength="50"/></td>
         </tr>
         <tr>
           <td>Отчество:</td>
-          <td><input id="patronymic" type="text" /></td>
+          <td><input id="patronymic" type="text" maxlength="50"/></td>
         </tr>
         <tr>
           <td>First Name:</td>
-          <td><input id="enFirstName" type="text" /></td>
+          <td><input id="enFirstName" type="text" maxlength="50"/></td>
         </tr>
         <tr>
           <td>Last Name:</td>
-          <td><input id="enLastName" type="text" /></td>
+          <td><input id="enLastName" type="text" maxlength="50"/></td>
         </tr>
         <tr>
           <td>Дата рождения:</td>
@@ -46,35 +46,35 @@
         </tr>
         <tr>
           <td>E - Mail:</td>
-          <td><input id="email" type="email" /></td>
+          <td><input id="email" type="email" maxlength="45"/></td>
         </tr>
         <tr>
           <td>Skype:</td>
-          <td><input id="skype" type="text" /></td>
+          <td><input id="skype" type="text" maxlength="55"/></td>
         </tr>
         <tr>
           <td>Телефон 1:</td>
-          <td><input id="phone1" type="text" /></td>
+          <td><input id="phone1" type="text" maxlength="25"/></td>
         </tr>
         <tr>
           <td>Телефон 2:</td>
-          <td><input id="phone2" type="tel" /></td>
+          <td><input id="phone2" type="tel" maxlength="25"/></td>
         </tr>
         <tr>
           <td>Адрес:</td>
-          <td><input id="address" type="tel" /></td>
+          <td><input id="address" type="tel" maxlength="255"/></td>
         </tr>
         <tr>
           <td>№ автомобиля:</td>
-          <td><input id="numPlate" type="text" /></td>
+          <td><input id="numPlate" type="text" maxlength="75"/></td>
         </tr>
         <tr>
           <td>STAFF ID:</td>
-          <td><input id="staffId" type="text" class="unique"/></td>
+          <td><input id="staffId" type="text" class="unique" maxlength="15"/></td>
         </tr>
         <tr>
           <td>ID:</td>
-          <td><input id="userLettersId" type="text" class="unique"/></td>
+          <td><input id="userLettersId" type="text" class="unique" maxlength="5"/></td>
         </tr>
         <tr>
           <td>Секция:</td>
@@ -118,7 +118,7 @@
         </tr>
         <tr>
           <td>Должность:</td>
-          <td><select id="position" class="select2 select-employee"> </select></td>
+          <td><select id="ruPosition" class="select2 select-employee"> </select></td>
         </tr>
         <tr>
           <td>Position:</td>
@@ -130,15 +130,15 @@
         </tr>
         <tr>
           <td>Табельный номер:</td>
-          <td><input id="tabNum" type="text" /></td>
+          <td><input id="gwmId" type="text" /></td>
         </tr>
         <tr>
           <td>Размер обуви:</td>
-          <td><input id="shoeSize" type="number" /></td>
+          <td><input id="shoeSize" type="number"/></td>
         </tr>
         <tr>
           <td>Размер одежды:</td>
-          <td><input id="clothesSize" type="number" /></td>
+          <td><input id="clothesSize" type="number"/></td>
         </tr>
         <tr>
           <td>Дата старта:</td>
@@ -150,16 +150,16 @@
         </tr>
         <tr>
           <td>Логин:</td>
-          <td><input id="login" type="text" class="unique"/></td>
+          <td><input id="login" type="text" class="unique" maxlength="17"/></td>
         </tr>
         <tr>
           <td>Пароль:</td>
-          <td><input id="password" type="password" class="unique"/></td>
+          <td><input id="password" type="password" class="unique" maxlength="17"/></td>
         </tr>
         <tr>
           <td>Права доступа:</td>
           <td>
-            <select id="accessString" class="select-employee">
+            <select id="role" class="select-employee">
               <option th:each="access: ${accesses}" th:value="${access}" th:text="${access}"></option>
             </select>
           </td>

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class EditEmployee {
+  private Long id;
   private String firstName;
   private String lastName;
   private String patronymic;
@@ -27,13 +28,13 @@ public class EditEmployee {
   private String team; // select
   private String position; // select
   private String enPosition; // select
-  private int shift;
-  private String tabNum;
-  private int shoeSize;
-  private int clothesSize;
+  private Long shift;
+  private String gwmId;
+  private Long shoeSize;
+  private Long clothesSize;
   private LocalDate beginDate;
   private LocalDate endDate;
   private String login;
   private String password;
-  private String accessString; // select
+  private String role; // select
 }
