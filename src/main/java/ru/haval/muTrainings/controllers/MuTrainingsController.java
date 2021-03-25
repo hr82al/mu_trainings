@@ -62,6 +62,13 @@ public class MuTrainingsController {
 		return employeesRepository.save(employees);
 	}
 
+	@RequestMapping(path = "/muTrainings/resetUser", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public Employee resetUser(@RequestBody Employee employee) {
+		employeesRepository.deleteById(employee.getUserId());
+		return employee;
+	}
+
 	/*
 	 * @PostMapping(value = "/get_positions", produces = "application/json")
 	 * 

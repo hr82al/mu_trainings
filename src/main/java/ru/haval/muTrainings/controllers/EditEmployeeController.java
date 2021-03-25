@@ -1,15 +1,17 @@
 package ru.haval.muTrainings.controllers;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.haval.NameValue;
@@ -32,52 +34,51 @@ public class EditEmployeeController {
   @Autowired
   WorkRecordingUsersRepository workRecordingUsersRepository;
 
+  // @GetMapping
+  // public String showAddEmployee() {
+  // return "employee";
+  // }
+
   @GetMapping
-  public String showAddEmployee() {
+  public String showAddEmployee(@RequestParam(required = false) String userId, Model model) {
+    EditEmployee employee = new EditEmployee();
+    if (userId != null) {
+      Long id = Long.parseLong(userId);
+      employee.setUserId(id);
+      Optional<WorkRecordingUsers> userOptional = workRecordingUsersRepository.findById(id);
+      if (!userOptional.isEmpty()) {
+        WorkRecordingUsers user = userOptional.get();
+        employee.setWorkRecordingUser(user);
+      }
+      Optional<WorkRecordingHmmrMuStaff> staffOptional = workRecordingHmmrMuStaffRepository
+          .findByUserId(employee.getUserId());
+      if (!staffOptional.isEmpty()) {
+        WorkRecordingHmmrMuStaff staff = staffOptional.get();
+        employee.setWorkRecordingHmmrMuStaff(staff);
+      }
+    }
+    model.addAttribute("employee", employee);
     return "employee";
   }
 
   @RequestMapping(path = "/add", consumes = "application/json", produces = "application/json")
   @ResponseBody
   public EditEmployee addEmployee(@RequestBody EditEmployee employee) {
-    System.out.println(employee);
     WorkRecordingUsers user = new WorkRecordingUsers();
-    user.setFirstName(employee.getFirstName());
-    user.setLastName(employee.getLastName());
-    user.setCreateDate(LocalDate.now());
-    user.setLogin(employee.getLogin());
-    user.setPassword(employee.getPassword());
-    user.setRole(employee.getRole());
-    user.setUserDel(false);
+    user = employee.getWorkRecordingUsers();
+    if (employee.getUserId() != null) {
+      user.setId(employee.getUserId());
+    }
     WorkRecordingUsers newUser = workRecordingUsersRepository.save(user);
+    employee.setUserId(newUser.getId());
     WorkRecordingHmmrMuStaff staff = new WorkRecordingHmmrMuStaff();
-    employee.setId(newUser.getId());
-    staff.setStaffId(employee.getStaffId());
-    staff.setUserLettersId(employee.getUserLettersId());
-    staff.setUserId(newUser.getId());
-    staff.setRuFirstName(employee.getFirstName());
-    staff.setRuLastName(employee.getLastName());
-    staff.setPatronymic(employee.getPatronymic());
-    staff.setEnFirstName(employee.getEnFirstName());
-    staff.setEnLastName(employee.getEnLastName());
-    staff.setBeginDate(employee.getBeginDate());
-    staff.setSection(employee.getSection());
-    staff.setShop(employee.getShop());
-    staff.setTeam(employee.getTeam());
-    staff.setShift(employee.getShift());
-    staff.setEnPosition(employee.getEnPosition());
-    staff.setRuPosition(employee.getEnPosition());
-    staff.setGwmId(employee.getGwmId());
-    staff.setBeginDate(employee.getBeginDate());
-    staff.setEndDate(employee.getBeginDate());
-    staff.setEmail(employee.getEmail());
-    staff.setSkype(employee.getSkype());
-    staff.setPhone1(employee.getPhone1());
-    staff.setPhone2(employee.getPhone2());
-    staff.setAddress(employee.getAddress());
-    staff.setNumPlate(employee.getNumPlate());
-    staff.setShoeSize(employee.getShoeSize());
-    staff.setClothesSize(employee.getClothesSize());
+    staff = employee.getWorkRecordingHmmrMuStaff();
+    if (newUser.getId() != null) {
+      Optional<WorkRecordingHmmrMuStaff> tmpOptional = workRecordingHmmrMuStaffRepository.findByUserId(newUser.getId());
+      if (!tmpOptional.isEmpty()) {
+        staff.setId(tmpOptional.get().getId());
+      }
+    }
     workRecordingHmmrMuStaffRepository.save(staff);
     return employee;
   }
@@ -121,7 +122,6 @@ public class EditEmployeeController {
     case "staffId":
       return workRecordingHmmrMuStaffRepository.existsByStaffId(nameValue.getValue());
     case "userLettersId":
-      System.out.println(workRecordingHmmrMuStaffRepository.existsByUserLettersId(nameValue.getValue()));
       return workRecordingHmmrMuStaffRepository.existsByUserLettersId(nameValue.getValue());
     }
     return false;

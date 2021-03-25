@@ -73,15 +73,11 @@ const ruEn = new Map([
   ["я", "ya"],
 ]);
 
-var token, header;
 document.addEventListener("DOMContentLoaded", () => {
-  token = $("meta[name='_csrf']").attr("content");
-  header = $("meta[name='_csrf_header']").attr("content");
-
-  $("#firstName").on("change", function (e) {
+  $("#ruFirstName").on("change", function (e) {
     $("#enFirstName").val(transliterate(this.value));
   });
-  $("#lastName").on("change", function (e) {
+  $("#ruLastName").on("change", function (e) {
     $("#enLastName").val(transliterate(this.value));
   });
 
@@ -100,15 +96,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //select 2
   sendPost("employee/ruPositions").then(function (data) {
-    $("#ruPosition").select2({
-      data: data,
-    });
+    $("#ruPosition")
+      .select2({
+        data: data,
+      })
+      .val(idByValue(data, $("#ruPosition").attr("value")))
+      .trigger("change");
   });
 
   sendPost("employee/enPositions").then(function (data) {
-    $("#enPosition").select2({
-      data: data,
-    });
+    $("#enPosition")
+      .select2({
+        data: data,
+      })
+      .val(idByValue(data, $("#enPosition").attr("value")))
+      .trigger("change");
   });
   //Check for unique
   $(".unique").on("change", function (e) {
@@ -124,11 +126,34 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+  fixInputs();
 });
+
+function idByValue(data, value) {
+  for (const i of data) {
+    if (i.text == value) {
+      return i.id;
+    }
+  }
+}
+
+function fixInputs() {
+  //fix dates
+  const DATES = $(".date");
+  for (const i of DATES) {
+    $(i).datepicker("update", new Date(i.value));
+  }
+  //set selects
+  const SELECTS = $("select");
+  for (const i of SELECTS) {
+    i.value = $(i).attr("value");
+  }
+}
 
 function yearLocalToUTC(year) {
   return year.value.split(".").reverse().join("-");
 }
+
 var tmp;
 function addEmployee() {
   let employee = {};
@@ -149,9 +174,10 @@ function addEmployee() {
   for (const i of selects2) {
     employee[i.id] = $(i).find(":selected").text();
   }
+  employee.userId = $("#user").attr("user-id");
   console.log(JSON.stringify(employee));
   sendPost("employee/add", employee).then((data) => {
-    console.log(JSON.stringify(data));
+    window.history.back();
   });
 }
 

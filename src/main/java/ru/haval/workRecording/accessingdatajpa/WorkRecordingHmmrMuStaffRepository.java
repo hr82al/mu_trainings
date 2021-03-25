@@ -1,6 +1,7 @@
 package ru.haval.workRecording.accessingdatajpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,5 +18,7 @@ public interface WorkRecordingHmmrMuStaffRepository extends CrudRepository<WorkR
   Boolean existsByStaffId(String value);
 
   Boolean existsByUserLettersId(String value);
+
+  Optional<WorkRecordingHmmrMuStaff> findByUserId(Long id);
 
 }

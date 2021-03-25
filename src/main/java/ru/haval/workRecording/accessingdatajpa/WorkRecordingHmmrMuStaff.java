@@ -25,7 +25,7 @@ public class WorkRecordingHmmrMuStaff {
   private String staffId;
   @Column(name = "ID")
   private String userLettersId;
-  @Column(name = "user_id")
+  @Column(name = "user_id", unique = true)
   private Long userId;
   @Column(name = "L_Name_RUS")
   private String ruLastName;
@@ -38,7 +38,7 @@ public class WorkRecordingHmmrMuStaff {
   @Column(name = "Last_Name")
   private String enLastName;
   @Column(name = "DoB")
-  private String birthDate;
+  private LocalDate birthDate;
   @Column(name = "Sec")
   private String section;
   @Column(name = "Group_S")
@@ -82,5 +82,5 @@ public class WorkRecordingHmmrMuStaff {
   @Column(name = "Quit_Date")
   private LocalDate endDate;
   @Column(name = "user_del")
-  private Boolean userDel;
+  private Boolean userDel = false;
 }

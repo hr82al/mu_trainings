@@ -123,6 +123,7 @@ function init() {
         table.data = value;
         drawTable(table.data);
         initSelect();
+        drawMenu();
       });
     } else {
       drawSection();
@@ -154,8 +155,36 @@ function init() {
       });
     }
   }
-
   drawTh();
+}
+
+function drawMenu() {
+  $(".fio")
+    .on("mouseover", function (e) {
+      // deleteDateById(parseInt(this.id));
+      if ($(this).find(".tmp-button").length == 0 && $(this).html() != "") {
+        $(this).append(
+          ' <div class="dropdown-menu"><a class="dropdown-item" onclick="resetUser(this)">Сбросить</a><a class="dropdown-item" onclick="editUser(this)">Редактировать</a></div>'
+        );
+      }
+    })
+    .on("mouseleave", function (e) {
+      $(".tmp-button").remove();
+    });
+}
+
+function resetUser(current) {
+  "use strict";
+  const USER_ID = parseInt($(current).parent().parent().attr("userid"));
+  sendPost("muTrainings/resetUser", { userId: USER_ID }, function (result) {
+    $(current).parent().parent().parent().find(".position").html("");
+    $(current).parent().parent().parent().find(".department").html("");
+  });
+}
+function editUser(current) {
+  "use strict";
+  const USER_ID = parseInt($(current).parent().parent().attr("userid"));
+  window.location = `employee?userId=${USER_ID}`;
 }
 
 //on Listeners
