@@ -112,3 +112,6 @@ CREATE TABLE `users` (
 CREATE VIEW accounts AS SELECT concat(`hs`.`L_Name_RUS`,' ',concat(substr(`hs`.`F_Name_RUS`,1,1)),'. ',if((`hs`.`Otchestvo` <> ''),concat(substr(`hs`.`Otchestvo`,1,1),'.'),'')) AS `FIO`,
 tu.username, tu.role
 FROM hmmr_mu.users hmu LEFT JOIN hmmr_mu.hmmr_mu_staff  hs ON hs.user_id = hmu.id LEFT JOIN trainings.users tu ON hmu.id = tu.user_id WHERE hmu.user_del = 0;
+
+# Table current action plans tasks
+CREATE VIEW action_plan_base AS (SELECT hap.id,hap.PM_Num,hap.Type,hap.Description,hap.Due_Date,hap.Equipment,hap.Instruction,hap.Otv_For_Task,hap.Otv,hap.Tsk_maker,hap.flag_otv,hap.flag_oft,hap.flag_tm,hap.Icon,hap.Icon_AT, hap.user_id, hmp.Icon AS priority_icon_path, hat.Icon AS activity_type_icon_path, hmp.Description AS priority, hat.Description AS activity_type, hap.del_rec, hap.shop FROM hmmr_action_plan hap INNER JOIN hmmr_mu_prior hmp ON hap.icon =  hmp.ID_TSK INNER JOIN hmmr_activity_type hat ON hap.Icon_AT = hat.Name  INNER JOIN hmmr_mu_staff hms ON hap.Tsk_maker = hms.ID INNER JOIN hmmr_order_type hot ON hot.id = hat.ID_OT AND hap.Type = hot.Name);

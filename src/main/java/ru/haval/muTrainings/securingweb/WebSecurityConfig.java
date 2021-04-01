@@ -28,7 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css", "/styles/bootstrap.min.css",
                         "/libs/jquery-3.5.1.min.js", "/libs/select2.min.js", "/libs/bootstrap.bundle.min.js",
                         "/libs/jquery.editable.min.js", "/styles/bootstrap.min.css.map", "/styles/styles.css")
-                .permitAll().anyRequest().authenticated().and().formLogin().and().logout().permitAll();
+                .hasAnyAuthority("Administrator", "Engeneer", "Team Lead").anyRequest().authenticated().and()
+                .formLogin().and().logout().permitAll();
     }
 
     @Bean
