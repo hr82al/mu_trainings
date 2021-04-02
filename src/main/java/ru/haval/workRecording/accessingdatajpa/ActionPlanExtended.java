@@ -65,6 +65,7 @@ public class ActionPlanExtended {
   private String priority;
   @Column(name = "activity_type")
   private String activityType;
+  private String duration;
 
   public String getPriorityIconPath() {
     return fixPath(priorityIconPath);

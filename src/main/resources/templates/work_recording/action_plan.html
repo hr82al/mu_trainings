@@ -38,11 +38,11 @@ xmlns:th="http://www.thymeleaf.org">
             <td th:text="${row.pmNum}"></td>
             <td th:text="${row.type}"></td>
             <td th:text="${row.description}"></td>
-            <td th:text="${row.dueDate}"></td>
+            <td class="date" th:duration="${row.duration}" th:text="${row.dueDate}"></td>
             <td th:text="${row.equipment}"></td>
-            <td th:text="${row.executor}"></td>
-            <td th:text="${row.responsible}"></td>
-            <td th:text="${row.owner}"></td>
+            <td class="worker-id" th:status="${row.flagOtv}" th:text="${row.executor}"></td>
+            <td class="worker-id" th:status="${row.flagOft}" th:text="${row.responsible}"></td>
+            <td class="worker-id" th:status="${row.flagTm}" th:text="${row.owner}"></td>
             <td class="td-center">
                 <img class="center" th:src="${row.priorityIconPath}" alt="">
             </td>

@@ -108,3 +108,16 @@ td.alarm {
   right: 0;
   bottom: 0;
 }
+
+img.pale {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.worker-id {
+  text-align: center;
+}
+
+.delayed {
+  background-color: red;
+}

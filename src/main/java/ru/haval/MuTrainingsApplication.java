@@ -58,7 +58,10 @@ public class MuTrainingsApplication {
 		warLocation = new File(warLocationUrl.toString()).getParent();
 		if (warLocation.endsWith("bin")) {
 			staticTmpFolder = warLocation + "\\main\\static\\tmp";
-		} else {
+		} else if (warLocation.endsWith("java")) {
+			staticTmpFolder = warLocation + "\\..\\..\\resources\\main\\static\\tmp";
+		}
+		else {
 			staticTmpFolder = warLocation + "\\classes\\static\\tmp";
 		}
 	}

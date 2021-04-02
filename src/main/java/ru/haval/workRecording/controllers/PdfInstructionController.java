@@ -1,13 +1,14 @@
 package ru.haval.workRecording.controllers;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.stream.Stream;
 
@@ -28,25 +29,20 @@ public class PdfInstructionController {
       Path source = Paths.get(path);
       Path dest = Paths.get(MuTrainingsApplication.getStaticTmpFolder() + "\\" + source.getFileName());
       try {
-        // final File dir = new File(MuTrainingsApplication.getStaticTmpFolder());
-        // final File[] files = dir.listFiles((d, name) -> name.matches("*\\.pdf"));
-        // Arrays.asList(files).stream().forEach(File::delete);
         Files.createDirectories(Paths.get(MuTrainingsApplication.getStaticTmpFolder()));
         Stream<Path> list = Files.list(Paths.get(MuTrainingsApplication.getStaticTmpFolder()));
         list.forEach((file) -> {
-          System.out.println(file.toFile().);
-          if ((java.time.Instant.now().getEpochSecond() * 1000 - file.toFile().lastModified()) > 600000) {
-            System.out.println(Path.get(file.toString()) );
-            System.out.println((System.currentTimeMillis() - file.toFile().lastModified()));
-            System.out.println(java.time.Instant.now().toEpochMilli());
-            System.out.println(file.toString());
+          try {
+            if (ChronoUnit.DAYS.between(Files.getLastModifiedTime(Paths.get(file.toUri())).toInstant(), FileTime.fromMillis(System.currentTimeMillis()).toInstant()) > 1) {
+              Files.delete(Paths.get(file.toUri()));
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
           }
         });
         Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
-        System.out.println(MuTrainingsApplication.getStaticTmpFolder());
+        Files.setLastModifiedTime(dest,FileTime.fromMillis(System.currentTimeMillis()));
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        // if path incorrect
         e.printStackTrace();
       }
       return "/tmp/" + source.getFileName();
