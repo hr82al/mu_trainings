@@ -15,6 +15,7 @@ function openInstruction(self) {
   const LINK = $(self).attr("lnk");
   getPlainTextByPost("/work_recording/pdf_instruction/get", LINK).then(
     (pdfUrl) => {
+      window.open(pdfUrl, "_blank");
       console.log(pdfUrl);
     }
   );

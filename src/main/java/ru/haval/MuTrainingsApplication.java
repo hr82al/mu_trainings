@@ -2,6 +2,8 @@ package ru.haval;
 
 import java.util.List;
 import java.io.File;
+import java.net.URI;
+import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -55,7 +57,7 @@ public class MuTrainingsApplication {
 		String warLocationUrl = MuTrainingsApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		warLocation = new File(warLocationUrl.toString()).getParent();
 		if (warLocation.endsWith("bin")) {
-			staticTmpFolder = warLocation + "\\main\static\\tmp";
+			staticTmpFolder = warLocation + "\\main\\static\\tmp";
 		} else {
 			staticTmpFolder = warLocation + "\\classes\\static\\tmp";
 		}
@@ -68,12 +70,4 @@ public class MuTrainingsApplication {
 	public static String getStaticTmpFolder() {
 		return staticTmpFolder;
 	}
-	/*
-	 * @Bean public CommandLineRunner demo(EmployeeRepository repository) { return
-	 * (args) -> { // fetch all customers
-	 * log.info("Customers found with findAll():"); log.info("****************");
-	 * for (Employee employee : repository.findAll()) {
-	 * log.info(employee.toString()); } log.info(""); }; }
-	 */
-
 }
