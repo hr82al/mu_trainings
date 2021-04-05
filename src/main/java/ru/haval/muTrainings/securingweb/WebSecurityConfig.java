@@ -19,17 +19,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // http.csrf().disable();
-        /*
-         * http .authorizeRequests() .antMatchers("/mu_trainings").permitAll()
-         * .anyRequest().authenticated() .and() .formLogin() .and() .logout()
-         * .permitAll();
-         */
+        // http.authorizeRequests()
+        // .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css",
+        // "/styles/bootstrap.min.css",
+        // "/libs/jquery-3.5.1.min.js", "/libs/select2.min.js",
+        // "/libs/bootstrap.bundle.min.js",
+        // "/libs/jquery.editable.min.js", "/styles/bootstrap.min.css.map",
+        // "/styles/styles.css")
+        // .permitAll().anyRequest().authenticated().and().formLogin().and().logout().permitAll();
         http.authorizeRequests()
+                .antMatchers("/muTrainings", "/trainings", "/positions", "/departments", "/trainingsNamesList",
+                        "/positionsTrainings", "/positionsTrainings")
+                .hasAnyAuthority("Administrator", "Engeneer", "Team Lead")
                 .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css", "/styles/bootstrap.min.css",
                         "/libs/jquery-3.5.1.min.js", "/libs/select2.min.js", "/libs/bootstrap.bundle.min.js",
                         "/libs/jquery.editable.min.js", "/styles/bootstrap.min.css.map", "/styles/styles.css")
-                .hasAnyAuthority("Administrator", "Engeneer", "Team Lead").anyRequest().authenticated().and()
-                .formLogin().and().logout().permitAll();
+                .permitAll().and().formLogin().and().logout().permitAll();
+        /*
+         * .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css",
+         * "/styles/bootstrap.min.css", "/libs/jquery-3.5.1.min.js",
+         * "/libs/select2.min.js", "/libs/bootstrap.bundle.min.js",
+         * "/libs/jquery.editable.min.js", "/styles/bootstrap.min.css.map",
+         * "/styles/styles.css").permitAll() . hasAnyAuthority()
+         */
     }
 
     @Bean
