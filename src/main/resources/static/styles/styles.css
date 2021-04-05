@@ -118,6 +118,10 @@ img.pale {
   text-align: center;
 }
 
-.delayed {
-  background-color: red;
+.done {
+  background-color: yellow;
+}
+
+.confirmed {
+  background-color: green;
 }

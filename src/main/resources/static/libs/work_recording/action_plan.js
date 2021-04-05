@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   sendPost("/action_plan/colors", {}).then((dates) => {
     let datesMap = new Map();
     for (const date of dates) {
-      datesMap.set(date.days, date.color.toLocaleLowerCase());
+      datesMap.set(parseInt(date.days), date.color.toLocaleLowerCase());
     }
     const DATES = $(".date");
     for (const i of DATES) {
@@ -21,21 +21,33 @@ document.addEventListener("DOMContentLoaded", () => {
       const DAY_DIFFERENCE = Math.floor(
         (date - new Date().getTime()) / (1000 * 24 * 3600)
       );
-
-      if (DAY_DIFFERENCE < 0) {
-        console.log(DAY_DIFFERENCE);
-        let color = datesMap.get(DAY_DIFFERENCE);
-        if (color) {
-          $(i).attr("style", `background-color: ${color};`);
+      const STATUS = parseInt(
+        $($(i).parent().find(".execution")[0]).attr("status")
+      );
+      if (STATUS == 0) {
+        if (DAY_DIFFERENCE < 0) {
+          let color = datesMap.get(DAY_DIFFERENCE);
+          if (color) {
+            $(i).attr("style", `background-color: ${color};`);
+          } else {
+            $(i).attr("style", `background-color: red;`);
+          }
         } else {
-          $(i).attr("style", `background-color: red;`);
+          $(i).attr("style", `background-color: green;`);
         }
-      } else {
-        $(i).attr("style", `background-color: green;`);
       }
     }
   });
-  const DATES = $(".date");
+  //Change the color of the IDs according to its status
+  const WORKER_IDs = $(".worker-id");
+  for (const i of WORKER_IDs) {
+    const STATUS = parseInt($(i).attr("status"));
+    if (STATUS == 1) {
+      $(i).addClass("done");
+    } else if (STATUS == 2) {
+      $(i).addClass("confirmed");
+    }
+  }
 });
 
 function openInstruction(self) {

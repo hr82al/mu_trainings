@@ -40,9 +40,9 @@ xmlns:th="http://www.thymeleaf.org">
             <td th:text="${row.description}"></td>
             <td class="date" th:duration="${row.duration}" th:text="${row.dueDate}"></td>
             <td th:text="${row.equipment}"></td>
-            <td class="worker-id" th:status="${row.flagOtv}" th:text="${row.executor}"></td>
-            <td class="worker-id" th:status="${row.flagOft}" th:text="${row.responsible}"></td>
-            <td class="worker-id" th:status="${row.flagTm}" th:text="${row.owner}"></td>
+            <td><div class="worker-id execution" th:status="${row.flagOtv}" th:text="${row.executor}"></div></td>
+            <td><div class="worker-id" th:status="${row.flagOft}" th:text="${row.responsible}"></div></td>
+            <td><div class="worker-id" th:status="${row.flagTm}" th:text="${row.owner}"></div></td>
             <td class="td-center">
                 <img class="center" th:src="${row.priorityIconPath}" alt="">
             </td>
