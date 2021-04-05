@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import ru.haval.workRecording.accessingdatajpa.WorkRecordingHmmrMuStaff;
+import ru.haval.workRecording.accessingdatajpa.HmmrMuStaff;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingUsers;
 
 @Data
@@ -67,8 +67,8 @@ public class EditEmployee {
     setRole(user.getRole());
   }
 
-  public WorkRecordingHmmrMuStaff getWorkRecordingHmmrMuStaff() {
-    WorkRecordingHmmrMuStaff staff = new WorkRecordingHmmrMuStaff();
+  public HmmrMuStaff getHmmrMuStaff() {
+    HmmrMuStaff staff = new HmmrMuStaff();
     staff.setStaffId(getStaffId());
     staff.setUserLettersId(getUserLettersId());
     staff.setUserId(getUserId());
@@ -98,7 +98,7 @@ public class EditEmployee {
     return staff;
   }
 
-  public void setWorkRecordingHmmrMuStaff(WorkRecordingHmmrMuStaff staff) {
+  public void setHmmrMuStaff(HmmrMuStaff staff) {
     setStaffId(staff.getStaffId());
     setUserLettersId(staff.getUserLettersId());
     setUserId(staff.getId());

@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "hmmr_mu_staff", schema = "hmmr_mu", catalog = "hmmr_mu")
-public class WorkRecordingHmmrMuStaff {
+public class HmmrMuStaff {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_num")

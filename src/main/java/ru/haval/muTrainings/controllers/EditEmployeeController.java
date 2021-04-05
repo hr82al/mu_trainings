@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.haval.NameValue;
 import ru.haval.Select2;
 import ru.haval.muTrainings.accessingdatajpa.EditEmployee;
-import ru.haval.workRecording.accessingdatajpa.WorkRecordingHmmrMuStaffRepository;
+import ru.haval.workRecording.accessingdatajpa.HmmrMuStaffRepository;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingUsers;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingUsersRepository;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingFilterRepository;
-import ru.haval.workRecording.accessingdatajpa.WorkRecordingHmmrMuStaff;
+import ru.haval.workRecording.accessingdatajpa.HmmrMuStaff;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingFilter;
 
 @Controller
@@ -30,7 +30,7 @@ public class EditEmployeeController {
   @Autowired
   WorkRecordingFilterRepository workRecordingRepository;
   @Autowired
-  WorkRecordingHmmrMuStaffRepository workRecordingHmmrMuStaffRepository;
+  HmmrMuStaffRepository hmmrMuStaffRepository;
   @Autowired
   WorkRecordingUsersRepository workRecordingUsersRepository;
 
@@ -50,11 +50,10 @@ public class EditEmployeeController {
         WorkRecordingUsers user = userOptional.get();
         employee.setWorkRecordingUser(user);
       }
-      Optional<WorkRecordingHmmrMuStaff> staffOptional = workRecordingHmmrMuStaffRepository
-          .findByUserId(employee.getUserId());
+      Optional<HmmrMuStaff> staffOptional = hmmrMuStaffRepository.findByUserId(employee.getUserId());
       if (!staffOptional.isEmpty()) {
-        WorkRecordingHmmrMuStaff staff = staffOptional.get();
-        employee.setWorkRecordingHmmrMuStaff(staff);
+        HmmrMuStaff staff = staffOptional.get();
+        employee.setHmmrMuStaff(staff);
       }
     }
     model.addAttribute("employee", employee);
@@ -71,15 +70,15 @@ public class EditEmployeeController {
     }
     WorkRecordingUsers newUser = workRecordingUsersRepository.save(user);
     employee.setUserId(newUser.getId());
-    WorkRecordingHmmrMuStaff staff = new WorkRecordingHmmrMuStaff();
-    staff = employee.getWorkRecordingHmmrMuStaff();
+    HmmrMuStaff staff = new HmmrMuStaff();
+    staff = employee.getHmmrMuStaff();
     if (newUser.getId() != null) {
-      Optional<WorkRecordingHmmrMuStaff> tmpOptional = workRecordingHmmrMuStaffRepository.findByUserId(newUser.getId());
+      Optional<HmmrMuStaff> tmpOptional = hmmrMuStaffRepository.findByUserId(newUser.getId());
       if (!tmpOptional.isEmpty()) {
         staff.setId(tmpOptional.get().getId());
       }
     }
-    workRecordingHmmrMuStaffRepository.save(staff);
+    hmmrMuStaffRepository.save(staff);
     return employee;
   }
 
@@ -88,7 +87,7 @@ public class EditEmployeeController {
   public List<Select2> getRuPositions() {
     List<Select2> positions = new ArrayList<>();
     Select2 tmp;
-    for (WorkRecordingHmmrMuStaff i : workRecordingHmmrMuStaffRepository.getRuPositions()) {
+    for (HmmrMuStaff i : hmmrMuStaffRepository.getRuPositions()) {
       tmp = new Select2();
       tmp.setId(i.getId());
       tmp.setText(i.getRuPosition());
@@ -102,7 +101,7 @@ public class EditEmployeeController {
   public List<Select2> getEnPositions() {
     List<Select2> enPositions = new ArrayList<>();
     Select2 tmp;
-    for (WorkRecordingHmmrMuStaff i : workRecordingHmmrMuStaffRepository.getEnPosition()) {
+    for (HmmrMuStaff i : hmmrMuStaffRepository.getEnPosition()) {
       tmp = new Select2();
       tmp.setId(i.getId());
       tmp.setText(i.getEnPosition());
@@ -120,9 +119,9 @@ public class EditEmployeeController {
     case "password":
       return workRecordingUsersRepository.existsByPassword(nameValue.getValue());
     case "staffId":
-      return workRecordingHmmrMuStaffRepository.existsByStaffId(nameValue.getValue());
+      return hmmrMuStaffRepository.existsByStaffId(nameValue.getValue());
     case "userLettersId":
-      return workRecordingHmmrMuStaffRepository.existsByUserLettersId(nameValue.getValue());
+      return hmmrMuStaffRepository.existsByUserLettersId(nameValue.getValue());
     }
     return false;
   }

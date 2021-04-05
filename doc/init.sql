@@ -118,3 +118,4 @@ CREATE VIEW action_plan_base AS (SELECT hap.id,hap.PM_Num,hap.Type,hap.Descripti
 
 1. Implement colorization dates in the action plan tablel
 2. Implement colorisation IDs of the employees in the action plan.
+3. Implement the action plan table for other roles not admin.

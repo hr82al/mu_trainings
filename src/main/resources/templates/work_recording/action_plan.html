@@ -24,9 +24,9 @@ xmlns:th="http://www.thymeleaf.org">
             <th th:text="${header.description}"></th>
             <th th:text="${header.dueDate}"></th>
             <th th:text="${header.equipment}"></th>
-            <th th:text="${header.executor}"></th>
-            <th th:text="${header.responsible}"></th>
-            <th th:text="${header.owner}"></th>
+            <th class="letterID" th:text="${header.executor}"></th>
+            <th class="letterID" th:text="${header.responsible}"></th>
+            <th class="letterID" th:text="${header.owner}"></th>
             <th th:text="${header.priorityIconPath}"></th>
             <th th:text="${header.activityTypeIconPath}"></th>
             <th th:text="${header.instruction}"></th>
@@ -37,12 +37,12 @@ xmlns:th="http://www.thymeleaf.org">
             <td th:text="${row.id}"></td>
             <td th:text="${row.pmNum}"></td>
             <td th:text="${row.type}"></td>
-            <td th:text="${row.description}"></td>
+            <td class="description" th:text="${row.description}"></td>
             <td class="date" th:duration="${row.duration}" th:text="${row.dueDate}"></td>
-            <td th:text="${row.equipment}"></td>
-            <td><div class="worker-id execution" th:status="${row.flagOtv}" th:text="${row.executor}"></div></td>
-            <td><div class="worker-id" th:status="${row.flagOft}" th:text="${row.responsible}"></div></td>
-            <td><div class="worker-id" th:status="${row.flagTm}" th:text="${row.owner}"></div></td>
+            <td class="equipment" th:text="${row.equipment}"></td>
+            <td class="letterID"><div class="worker-id execution" th:status="${row.flagOtv}" th:text="${row.executor}"></div></td>
+            <td class="letterID"><div class="worker-id" th:status="${row.flagOft}" th:text="${row.responsible}"></div></td>
+            <td class="letterID"><div class="worker-id" th:status="${row.flagTm}" th:text="${row.owner}"></div></td>
             <td class="td-center">
                 <img class="center" th:src="${row.priorityIconPath}" alt="">
             </td>

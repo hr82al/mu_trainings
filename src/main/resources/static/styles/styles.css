@@ -125,3 +125,17 @@ img.pale {
 .confirmed {
   background-color: green;
 }
+
+.description {
+  min-width: 20rem;
+}
+
+.equipment {
+  max-width: 17rem;
+  word-wrap: break-word;
+}
+
+.letterID {
+  max-width: 5rem;
+  word-wrap: break-word;
+}
