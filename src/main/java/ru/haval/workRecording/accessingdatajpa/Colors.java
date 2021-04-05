@@ -21,4 +21,8 @@ public class Colors {
   private String days;
   @Column(name = "colors")
   private String color;
+
+  public int getDays() {
+    return Integer.parseInt(days);
+  }
 }

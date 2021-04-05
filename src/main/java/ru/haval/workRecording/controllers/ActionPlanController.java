@@ -6,10 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 import ru.haval.MuTrainingsApplication;
 import ru.haval.workRecording.ActionPlanHeader;
 import ru.haval.workRecording.accessingdatajpa.ActionPlanExtendedRepository;
+import ru.haval.workRecording.accessingdatajpa.Colors;
+import ru.haval.workRecording.accessingdatajpa.ColorsRepository;
 
 @Controller
 @RequestMapping("/action_plan")
@@ -19,6 +24,8 @@ import ru.haval.workRecording.accessingdatajpa.ActionPlanExtendedRepository;
 public class ActionPlanController {
   @Autowired
   ActionPlanExtendedRepository actionPlanExtendedRepository;
+  @Autowired
+  ColorsRepository colorsRepository;
 
   /**
    * Shows main window the action plan table
@@ -35,5 +42,11 @@ public class ActionPlanController {
     model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findByDelRecIsFalse());
     model.addAttribute("file", MuTrainingsApplication.getWarLocation());
     return "work_recording/action_plan";
+  }
+
+  @RequestMapping(path = "/colors", consumes = "application/json", produces = "application/json")
+  @ResponseBody
+  public List<Colors> getColors() {
+    return colorsRepository.findAll();
   }
 }

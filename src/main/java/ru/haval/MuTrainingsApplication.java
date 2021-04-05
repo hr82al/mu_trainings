@@ -2,8 +2,6 @@ package ru.haval;
 
 import java.util.List;
 import java.io.File;
-import java.net.URI;
-import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -60,8 +58,7 @@ public class MuTrainingsApplication {
 			staticTmpFolder = warLocation + "\\main\\static\\tmp";
 		} else if (warLocation.endsWith("java")) {
 			staticTmpFolder = warLocation + "\\..\\..\\resources\\main\\static\\tmp";
-		}
-		else {
+		} else {
 			staticTmpFolder = warLocation + "\\classes\\static\\tmp";
 		}
 	}

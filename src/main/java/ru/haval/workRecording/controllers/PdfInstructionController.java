@@ -6,10 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.FileTime;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Controller;
@@ -33,22 +30,22 @@ public class PdfInstructionController {
         Stream<Path> list = Files.list(Paths.get(MuTrainingsApplication.getStaticTmpFolder()));
         list.forEach((file) -> {
           try {
-            if (ChronoUnit.DAYS.between(Files.getLastModifiedTime(Paths.get(file.toUri())).toInstant(), FileTime.fromMillis(System.currentTimeMillis()).toInstant()) > 1) {
+            if (ChronoUnit.DAYS.between(Files.getLastModifiedTime(Paths.get(file.toUri())).toInstant(),
+                FileTime.fromMillis(System.currentTimeMillis()).toInstant()) > 1) {
               Files.delete(Paths.get(file.toUri()));
             }
           } catch (IOException e) {
             e.printStackTrace();
           }
         });
+        list.close();
         Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
-        Files.setLastModifiedTime(dest,FileTime.fromMillis(System.currentTimeMillis()));
+        Files.setLastModifiedTime(dest, FileTime.fromMillis(System.currentTimeMillis()));
       } catch (IOException e) {
         e.printStackTrace();
       }
       return "/tmp/" + source.getFileName();
     }
     return ".";
-
   }
-
 }

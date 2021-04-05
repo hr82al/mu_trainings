@@ -115,3 +115,6 @@ FROM hmmr_mu.users hmu LEFT JOIN hmmr_mu.hmmr_mu_staff  hs ON hs.user_id = hmu.i
 
 # Table current action plans tasks
 CREATE VIEW action_plan_base AS (SELECT hap.id,hap.PM_Num,hap.Type,hap.Description,hap.Due_Date,hap.Equipment,hap.Instruction,hap.Otv_For_Task,hap.Otv,hap.Tsk_maker,hap.flag_otv,hap.flag_oft,hap.flag_tm,hap.Icon,hap.Icon_AT, hap.user_id, hmp.Icon AS priority_icon_path, hat.Icon AS activity_type_icon_path, hmp.Description AS priority, hat.Description AS activity_type, hap.del_rec, hap.shop, hgc.PM_Duration as duration FROM hmmr_action_plan hap INNER JOIN hmmr_mu_prior hmp ON hap.icon =  hmp.ID_TSK INNER JOIN hmmr_activity_type hat ON hap.Icon_AT = hat.Name  INNER JOIN hmmr_mu_staff hms ON hap.Tsk_maker = hms.ID INNER JOIN hmmr_order_type hot ON hot.id = hat.ID_OT AND hap.Type = hot.Name INNER JOIN hmmr_pm hp ON hp.id = hap.PM_Num INNER JOIN hmmr_group_cycle hgc ON hgc.PM_Group = hp.PM_Group);
+
+1. Implement colorization dates in the action plan tablel
+2. Implement colorisation IDs of the employees in the action plan.

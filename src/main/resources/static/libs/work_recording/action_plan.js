@@ -1,45 +1,42 @@
+"use strict";
 document.addEventListener("DOMContentLoaded", () => {
   //change icon if pdf instruction does not exists.
   const INSTRUCTIONS = $(".instruction");
   for (const i of INSTRUCTIONS) {
     const LINK = $(i).attr("lnk");
     if (!LINK.endsWith(".pdf")) {
-      $(i).find("img").attr("src", "/images/brocken-document.png");
+      $(i).find("img").attr("src", "/images/brocken_document.png");
     }
   }
   //change the color of the cell according to its date
-  const DATES = $(".date");
-  for (const i of DATES) {
-    tmp = i;
-    let duration = parseInt($(i).attr("duration"));
-    let date = new Date($(i).html());
-    date.setDate(date.getDate() + duration);
-    new Date($(i).html());
-    const DURATION = parseInt($(i).attr("duration"));
-    console.log(`duration ${date}`);
-    const DAY_DIFFERENCE = Math.floor(
-      (date - new Date().getTime()) / (1000 * 24 * 3600)
-    );
-    //check if the task is delayed
-    if (DAY_DIFFERENCE < 0) {
-      $(i).addClass("delayed");
+  //FIXME check for status
+  sendPost("/action_plan/colors", {}).then((dates) => {
+    let datesMap = new Map();
+    for (const date of dates) {
+      datesMap.set(date.days, date.color.toLocaleLowerCase());
     }
-    console.log(DAY_DIFFERENCE);
-  }
-});
+    const DATES = $(".date");
+    for (const i of DATES) {
+      let date = new Date($(i).html());
+      const DAY_DIFFERENCE = Math.floor(
+        (date - new Date().getTime()) / (1000 * 24 * 3600)
+      );
 
-function sendPost(uri, data) {
-  console.log(data);
-  let promise = fetch(uri, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-      "X-CSRF-TOKEN": $("meta[name='_csrf']").attr("content"),
-    },
-    body: JSON.stringify(data),
+      if (DAY_DIFFERENCE < 0) {
+        console.log(DAY_DIFFERENCE);
+        let color = datesMap.get(DAY_DIFFERENCE);
+        if (color) {
+          $(i).attr("style", `background-color: ${color};`);
+        } else {
+          $(i).attr("style", `background-color: red;`);
+        }
+      } else {
+        $(i).attr("style", `background-color: green;`);
+      }
+    }
   });
-  return promise.then((response) => console.log(response.json()));
-}
+  const DATES = $(".date");
+});
 
 function openInstruction(self) {
   const LINK = $(self).attr("lnk");
@@ -64,6 +61,24 @@ function getPlainTextByPost(url, data) {
     }).then((response) => {
       response.text().then((value) => {
         resolve(value);
+      });
+    });
+  });
+  return promise;
+}
+
+function sendPost(uri, data) {
+  let promise = new Promise((resolve, reject) => {
+    fetch(uri, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-TOKEN": $("meta[name='_csrf']").attr("content"),
+      },
+      body: JSON.stringify(data),
+    }).then((data) => {
+      data.json().then((response) => {
+        resolve(response);
       });
     });
   });
