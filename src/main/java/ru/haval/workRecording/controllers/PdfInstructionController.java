@@ -19,6 +19,7 @@ import ru.haval.MuTrainingsApplication;
 @Controller
 @RequestMapping("/work_recording/pdf_instruction")
 public class PdfInstructionController {
+
   @RequestMapping(path = "/get", consumes = "text/plain", produces = "text/plain")
   @ResponseBody
   public String getPdfInstruction(@RequestBody String path) {

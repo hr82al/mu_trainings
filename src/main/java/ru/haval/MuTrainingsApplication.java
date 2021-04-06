@@ -61,6 +61,7 @@ public class MuTrainingsApplication {
 		} else {
 			staticTmpFolder = warLocation + "\\classes\\static\\tmp";
 		}
+		staticTmpFolder = staticTmpFolder.replace("%20", " ");
 	}
 
 	public static String getWarLocation() {

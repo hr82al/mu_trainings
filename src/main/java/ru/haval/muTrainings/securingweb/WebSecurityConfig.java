@@ -29,12 +29,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // .permitAll().anyRequest().authenticated().and().formLogin().and().logout().permitAll();
         http.authorizeRequests()
                 .antMatchers("/muTrainings", "/trainings", "/positions", "/departments", "/trainingsNamesList",
-                        "/positionsTrainings", "/positionsTrainings")
-                .hasAnyAuthority("Administrator", "Engeneer", "Team Lead")
+                        "/positionsTrainings", "/positionsTrainings", "/employee/**")
+                .hasAnyAuthority("Administrator", "Engeneer", "Team Lead").antMatchers("/action_plan").authenticated()
                 .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css", "/styles/bootstrap.min.css",
                         "/libs/jquery-3.5.1.min.js", "/libs/select2.min.js", "/libs/bootstrap.bundle.min.js",
-                        "/libs/jquery.editable.min.js", "/styles/bootstrap.min.css.map", "/styles/styles.css")
-                .permitAll().and().formLogin().and().logout().permitAll();
+                        "/styles/styles.css", "/favicon.ico")
+                .permitAll().and().formLogin().loginPage("/login").and().logout().permitAll();
         /*
          * .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css",
          * "/styles/bootstrap.min.css", "/libs/jquery-3.5.1.min.js",

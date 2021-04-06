@@ -47,6 +47,7 @@ public class ActionPlanController {
   public String showActionPlan(@RequestHeader("accept-language") String language, Model model) {
     String currentUser = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
         .getUsername();
+    // String currentUser = "admin";
     // String currentUserLettersID = hmmrMuStaff.findByUserId(id)
     // System.out.println(language);
     String userLettersId = getUserLettersByUserName(currentUser);
@@ -56,11 +57,8 @@ public class ActionPlanController {
     //
     ActionPlanHeader header = new ActionPlanHeader("ru");
     model.addAttribute("header", header);
-    model.addAttribute("file", MuTrainingsApplication.getWarLocation());
     if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
         .anyMatch(r -> r.getAuthority().equals("Administrator"))) {
-      // model.addAttribute("action_plan_rows",
-      // actionPlanExtendedRepository.findByLetters("SAV"));
       model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findByDelRecIsFalse());
     } else { // If the users authorities different from the administrator
       model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findByLetters(userLettersId));

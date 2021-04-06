@@ -139,3 +139,16 @@ img.pale {
   max-width: 5rem;
   word-wrap: break-word;
 }
+
+.dynamic-filter {
+  margin-left: 4rem;
+  margin: 1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.selected {
+  background-color: aquamarine !important;
+}
