@@ -2,7 +2,6 @@ package ru.haval.muTrainings.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,19 +32,4 @@ public class PositionController {
     public List<Position> getEmployees() {
         return positionsRepository.findAll();
     }
-
-    @RequestMapping("/set_position")
-    public String setPosition(@RequestBody String tmp) {
-        System.out.println(tmp);
-        return "ok";
-    }
-
-    // @RequestMapping(path = "/positions/add", consumes = "application/json",
-    // produces = "application/json")
-    // @ResponseBody
-    // public Position chPosition(@RequestBody Position position) {
-    // System.out.println(position);
-
-    // return positionsRepository.save(position);
-    // }
 }

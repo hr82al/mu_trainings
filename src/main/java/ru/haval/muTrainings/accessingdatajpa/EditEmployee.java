@@ -40,12 +40,6 @@ public class EditEmployee {
   private String password;
   private String role; // select
 
-  // public String getBirthDateString() {
-  // LocalDate d = getBeginDate();
-  // System.out.println(d.toString());
-  // return d.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-  // }
-
   public WorkRecordingUsers getWorkRecordingUsers() {
     WorkRecordingUsers user = new WorkRecordingUsers();
     user.setFirstName(getRuFirstName());

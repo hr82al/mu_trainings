@@ -9,6 +9,9 @@ public class Translated {
     this.update(lang.substring(0, 2).toLowerCase());
   }
 
+  public Translated() {
+  }
+
   public void update(String lang) {
     ResourceBundle bundle = ResourceBundle.getBundle("bundles.LangBundle", new Locale(lang));
     Field[] fields = this.getClass().getDeclaredFields();
@@ -19,7 +22,6 @@ public class Translated {
           i.set(this, bundle.getString(i.getName()));
         } else {
           i.set(this, i.getName());
-          System.out.println(i.getName());
         }
       } catch (IllegalArgumentException | IllegalAccessException e) {
         // TODO Auto-generated catch block

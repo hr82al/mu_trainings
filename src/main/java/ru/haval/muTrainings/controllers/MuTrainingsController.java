@@ -30,10 +30,6 @@ public class MuTrainingsController {
 	@Autowired
 	EmployeesRepository employeesRepository;
 
-	/*
-	 * @GetMapping("/mu_trainings/") public String muTrainings() { return
-	 * "muTrainings"; }
-	 */
 	// @GetMapping("/mu_trainings")
 	@GetMapping("/muTrainings")
 	public String showMUTrainingsForm(Model model) {
@@ -42,17 +38,8 @@ public class MuTrainingsController {
 		return "muTrainings";
 	}
 
-	/*
-	 * @PostMapping("/mu_trainings") public String processMUTrainings(Position
-	 * position, Model model) { model.addAttribute("employees",
-	 * employeeRepository.findAll()); return "muTrainings"; }
-	 */
-
 	@PostMapping("/change_position")
-	public String processPositions(/* Tmp tmp, */ Model model) {
-		// model.addAttribute("position", positionsRepository.findAll());
-		// System.out.println("pos:");
-		// System.out.println(tmp.getPos());
+	public String processPositions(Model model) {
 		return "muTrainings";
 	}
 
@@ -69,20 +56,6 @@ public class MuTrainingsController {
 		return employee;
 	}
 
-	/*
-	 * @PostMapping(value = "/get_positions", produces = "application/json")
-	 * 
-	 * @ResponseBody public String getPositions() { return "{x :\"x\"}"; }
-	 */
-	/*
-	 * @GetMapping("/greeting") public String greetingForm(Model model) {
-	 * model.addAttribute("greeting", new Greeting()); return "greeting"; }
-	 * 
-	 * @PostMapping("/greeting") public String greetingSubmit(@ModelAttribute
-	 * Greeting greeting, Model model) { model.addAttribute("greeting", greeting);
-	 * return "result"; }
-	 */
-
 	// Get table for showing
 	@RequestMapping(path = "/muTrainings/get", consumes = "application/json", produces = "application/json")
 	@ResponseBody
@@ -96,9 +69,3 @@ public class MuTrainingsController {
 		return employeeRepository.findByDepartmentId(employee.getDepartmentId());
 	}
 }
-
-// @Data
-// @RequiredArgsConstructor
-// class Tmp {
-// private String pos;
-// }

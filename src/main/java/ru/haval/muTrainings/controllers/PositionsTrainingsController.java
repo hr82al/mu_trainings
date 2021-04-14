@@ -48,8 +48,6 @@ public class PositionsTrainingsController {
     @RequestMapping(path = "/set", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public PositionTrainingIds setPositionTraining(@RequestBody PositionTrainingIds positionTrainingIds) {
-        System.out.println("pt set");
-        System.out.println(positionTrainingIds);
         return positionTrainingIdsRepository.save(positionTrainingIds);
     }
 

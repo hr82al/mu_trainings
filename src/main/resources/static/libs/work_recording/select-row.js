@@ -1,10 +1,13 @@
 "use strict";
+
 document.addEventListener("DOMContentLoaded", function () {
   $("table>tbody>tr").click(function (event) {
     rowClicked(this, event);
   });
 });
+
 document.body.onkeydown = function (event) {
+  //if key "a" pressed and if input filter not focused
   if (event.keyCode == 65 && !$(".dynamic-filter").is(":focus")) {
     if (hasSelected()) {
       clearSelection();
@@ -15,7 +18,6 @@ document.body.onkeydown = function (event) {
 };
 
 function selectAll() {
-  console.log("select all");
   for (const i of $("table>tbody>tr")) {
     if (!$(i).hasClass("hidden")) {
       $(i).addClass("selected");
@@ -38,7 +40,6 @@ function hasSelected() {
   return false;
 }
 
-var tmp;
 function rowClicked(self, event) {
   if ($(self).hasClass("selected")) {
     $(self).removeClass("selected");

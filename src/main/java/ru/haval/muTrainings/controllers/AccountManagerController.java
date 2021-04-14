@@ -26,7 +26,6 @@ public class AccountManagerController {
   @RequestMapping(path = "/admin/accountManager/get", consumes = "application/json", produces = "application/json")
   @ResponseBody
   public List<Accounts> requestMethodName() {
-    System.out.println("repository");
     return accountRepository.findAll();
   }
 }

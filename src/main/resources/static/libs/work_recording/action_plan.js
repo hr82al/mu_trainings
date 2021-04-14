@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   //change the color of the cell according to its date
-  //FIXME check for status
   sendPost("/action_plan/colors", {}).then((dates) => {
     let datesMap = new Map();
     for (const date of dates) {
@@ -48,6 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
       $(i).addClass("confirmed");
     }
   }
+
+  //click a owner button to create a new record in the work plan
+  $(".owner-button").click(function () {
+    createWorkPlanRecord(this);
+  });
 });
 
 function openInstruction(self) {
@@ -95,4 +99,44 @@ function sendPost(uri, data) {
     });
   });
   return promise;
+}
+
+function createWorkPlanRecord(self) {
+  $(self).parent().removeClass("selected");
+  $(self).parent().addClass("selected");
+  createWorkPlanRecordClick(self);
+  // let ids = [];
+  // for (const i of $(".selected")) {
+  //   ids.push($($(i).find(".id")[0]).text());
+  // }
+  // fetch("/add_work_record/add", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json;charset=utf-8",
+  //     "X-CSRF-TOKEN": $("meta[name='_csrf']").attr("content"),
+  //   },
+  //   body: JSON.stringify(ids),
+  // }).then((response) => {
+  //   window.location.replace("/add_work_record");
+  // });
+  // $(self).parent().removeClass("selected");
+}
+
+function createWorkPlanRecordClick(self) {
+  let ids = [];
+  for (const i of $(".selected")) {
+    ids.push($($(i).find(".id")[0]).text());
+  }
+  console.log(ids);
+  fetch("/add_work_record/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      "X-CSRF-TOKEN": $("meta[name='_csrf']").attr("content"),
+    },
+    body: JSON.stringify(ids),
+  }).then((response) => {
+    window.location.replace("/add_work_record");
+  });
+  $(self).parent().removeClass("selected");
 }

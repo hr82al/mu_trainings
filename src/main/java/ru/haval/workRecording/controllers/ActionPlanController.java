@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-import ru.haval.MuTrainingsApplication;
 import ru.haval.workRecording.ActionPlanHeader;
 import ru.haval.workRecording.accessingdatajpa.ActionPlanExtendedRepository;
 import ru.haval.workRecording.accessingdatajpa.Colors;
@@ -22,11 +21,11 @@ import ru.haval.workRecording.accessingdatajpa.HmmrMuStaffRepository;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingUsers;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingUsersRepository;
 
-@Controller
-@RequestMapping("/action_plan")
 /**
  * Shows processed work tasks in the table action plan
  */
+@Controller
+@RequestMapping("/action_plan")
 public class ActionPlanController {
   @Autowired
   ActionPlanExtendedRepository actionPlanExtendedRepository;
@@ -47,13 +46,7 @@ public class ActionPlanController {
   public String showActionPlan(@RequestHeader("accept-language") String language, Model model) {
     String currentUser = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
         .getUsername();
-    // String currentUser = "admin";
-    // String currentUserLettersID = hmmrMuStaff.findByUserId(id)
-    // System.out.println(language);
     String userLettersId = getUserLettersByUserName(currentUser);
-    System.out.println(userLettersId);
-    System.out.println(userLettersId);
-    System.out.println(userLettersId);
     //
     ActionPlanHeader header = new ActionPlanHeader("ru");
     model.addAttribute("header", header);
@@ -63,7 +56,6 @@ public class ActionPlanController {
     } else { // If the users authorities different from the administrator
       model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findByLetters(userLettersId));
     }
-
     return "work_recording/action_plan";
   }
 
@@ -73,7 +65,7 @@ public class ActionPlanController {
     return colorsRepository.findAll();
   }
 
-  public String getUserLettersByUserName(String userName) {
+  private String getUserLettersByUserName(String userName) {
     WorkRecordingUsers user = workRecordingUsers.getIdByLogin(userName);
     Long id = user.getId();
     HmmrMuStaff staff = hmmrMuStaff.getUserLettersIdByUserId(id);

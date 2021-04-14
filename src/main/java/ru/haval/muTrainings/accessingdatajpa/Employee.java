@@ -27,4 +27,5 @@ public class Employee {
     private Long positionId;
     @Column(name = "department_id")
     private Long departmentId;
+    private String shop;
 }

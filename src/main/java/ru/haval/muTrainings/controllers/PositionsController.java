@@ -27,38 +27,11 @@ public class PositionsController {
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deletePosition(@PathVariable("id") Long id, Model model) {
-        System.out.println(id);
         try {
             positionsRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
         }
-        // return "positions";
     }
-
-    /*
-     * @PostMapping(path="/positions") //@ResponseStatus(HttpStatus.CREATED) public
-     * String postPosition(@RequestParam String pos, Model model) {
-     * 
-     * System.out.println(pos); Position position = new Position();
-     * position.setText(pos); positionsRepository.save(position); return
-     * "positions"; }
-     */
-
-    // @PostMapping(consumes = "application/json", produces = "application/json")
-    // @ResponseStatus(HttpStatus.CREATED)
-    // public @ResponseBody
-    // Position addPosition(@RequestBody Position position){
-    // if ( position.getText() != ""){
-    // return positionsRepository.save(position);
-    // }
-    // return null;
-    // }
-
-    /*
-     * @PostMapping("/positions") public String greetingSubmit(@ModelAttribute
-     * Greeting greeting, Model model) { model.addAttribute("positions", greeting);
-     * return "positions"; }
-     */
 
     @RequestMapping(path = "/get", consumes = "application/json", produces = "application/json")
     @ResponseBody
@@ -83,7 +56,6 @@ public class PositionsController {
     @RequestMapping(path = "/add", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Position addPosition(@RequestBody Position position) {
-        System.out.println(position);
         return positionsRepository.save(position);
     }
 }

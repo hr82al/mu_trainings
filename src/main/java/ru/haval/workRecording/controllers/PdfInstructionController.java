@@ -42,8 +42,8 @@ public class PdfInstructionController {
         list.close();
         Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
         Files.setLastModifiedTime(dest, FileTime.fromMillis(System.currentTimeMillis()));
-      } catch (IOException e) {
-        e.printStackTrace();
+      } catch (Exception e) {
+        System.out.println("Error file: " + source + " " + e.getMessage());
       }
       return "/tmp/" + source.getFileName();
     }

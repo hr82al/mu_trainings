@@ -11,6 +11,7 @@ xmlns:th="http://www.thymeleaf.org">
     <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">  
     <link id="bsdp-css"  rel="stylesheet" th:href="@{/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker3.min.css}">
     <link rel="stylesheet" th:href="@{/styles/styles.css}">
+    <link rel="stylesheet" th:href="@{/styles/tableexport.min.css}">
 
     <title>График лицензированного обучения сотрудников.</title>
 </head>
@@ -18,19 +19,34 @@ xmlns:th="http://www.thymeleaf.org">
   <div th:insert="fragments/muTrainingsHeader :: muTrainingsHeader"></div>
   <table id="table_anchor" class="table table-striped table-bordered container">
     <thead>
-      <th>ФИО</th>
+      <th>
+        <div><p>Цех:</p>
+          <select id="trainings-shop" class="select-employee">
+            <option value="A">A</option>
+            <option value="E">E</option>
+            <option value="P">P</option>
+            <option value="L">L</option>
+            <option value="S,W">S,W</option>
+            <option value="MU">MU</option>
+            <option value="UTL">UTL</option>
+            <option value="A,L">A,L</option>
+            <option value="all" selected>Все</option>
+          </select>
+        </div>
+        <div>ФИО</div></th>
       <th>Должность</th>
       <th id="th_pattern" class="rotated" hidden="true" address="trainingsNamesList/get_json" name="id"><div class="text v_text training"></div></th>
     </thead>
     <tbody>
       <tr id="section_pattern" hidden="true" address="departments/get_json"><td class="text v_text department" colspan="100%" align="center"></td></tr>
-      <tr id="row_pattern" class="employee" hidden="true" address="muTrainings/get_by_department">
+      <tr id="row_pattern" class="employee shop" hidden="true" address="muTrainings/get_by_department">
         <td class="text v_fio text-nowrap" name="userId"></td>
         <td class="text v_position select" name="positionId"> </td>
       </tr>
     </tbody>
   </table>
-
+  <input type="button" class="btn btn-primary" value="Экспорт в excel"  onclick="$('#table_anchor').tableExport();" />
+  
   </div>
   <div th:insert="fragments/muTrainingsHeader :: muTrainingsFooter"></div>
   <script type="text/javascript" th:src="@{/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js}"></script>
@@ -38,5 +54,9 @@ xmlns:th="http://www.thymeleaf.org">
     charset="UTF-8"></script>
   <script type="text/javascript" th:src="@{/libs/jpa.js}"></script>
   
+
+  <script type="text/javascript" th:src="@{/libs/xlsx.full.min.js}"></script>
+  <script type="text/javascript" th:src="@{/libs/FileSaver.min.js}"></script>
+  <script type="text/javascript" th:src="@{/libs/tableexport.min.js}"></script>
 </body>
 </html>

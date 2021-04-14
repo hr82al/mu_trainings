@@ -251,9 +251,24 @@ function drawSection() {
     const sections = data;
     let employees = [];
     let counter = data.length;
+    table.employees = employees;
+    table.employeeShopMap = new Map();
     for (let item of data) {
       sendPost(`${table.address}`, { departmentId: item.id }, (value) => {
         employees[item.id] = value;
+        //Sort records of department employees by last name
+        employees[item.id].sort(function (a, b) {
+          if (a.fio < b.fio) {
+            return -1;
+          } else if (a.fio > b.fio) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        for (let i of employees[item.id]) {
+          table.employeeShopMap.set(i.fio, i.shop);
+        }
         if (--counter == 0) {
           for (const department of sections) {
             if (employees[department.id].length > 0) {
@@ -342,7 +357,6 @@ function deleteDateById(current) {
     currentCell.removeClass("alarm");
     currentCell.removeClass("notify");
   });
-  // console.log(parseInt(this.id));
 }
 
 function getNextDate(cell) {
@@ -419,7 +433,7 @@ function initDates() {
   }
   for (let item of table.positionsTrainings) {
     table.positionsTrainingsMap.set(
-      item.positionId * table.maxTrainingsId + item.trainingId,
+      `${item.positionId}:${item.trainingId}`,
       item.optional
     );
   }
@@ -475,9 +489,7 @@ function getTrainingIdByColumn(column) {
 }
 
 function isTrainingPositionOptional(trainingId, positionId) {
-  return table.positionsTrainingsMap.get(
-    positionId * table.maxTrainingsId + trainingId
-  );
+  return table.positionsTrainingsMap.get(`${positionId}:${trainingId}`);
 }
 
 function setCell(id, row, column, lastDate, period) {
@@ -559,6 +571,9 @@ function addItem2(item, pattern) {
   for (let child_name of child_names) {
     const name = $(child_name).attr("name");
     $(child_name).attr(name, item[name]);
+  }
+  if (newRow.hasClass("shop")) {
+    newRow.attr("shop", item.shop);
   }
   // newRow.attr("tid", item.id);
   root.append(newRow);
@@ -749,4 +764,29 @@ function addNewRow(entry) {
     $(newRow).children().eq(i).children().eq(0).text(entry[name]);
   }
   $(currentRow).before($(newRow));
+}
+
+//Filter by shop
+$("#trainings-shop").on("change", function (e) {
+  updateByShop();
+});
+
+//Shop filter is changed redraw trainings table
+function updateByShop() {
+  const SELECTED_SHOP = $("#trainings-shop").val();
+  const SELECTED_SHOPS = $("#trainings-shop").val().split(",");
+  //clear selection
+  for (const i of $("tbody>tr")) {
+    console.log($(i).attr("shop"));
+    if (
+      SELECTED_SHOPS.includes($(i).attr("shop")) ||
+      SELECTED_SHOP == $(i).attr("shop")
+    ) {
+      $(i).removeClass("hidden");
+    } else if (SELECTED_SHOPS.includes("all")) {
+      $(i).removeClass("hidden");
+    } else {
+      $(i).addClass("hidden");
+    }
+  }
 }

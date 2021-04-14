@@ -141,8 +141,17 @@ img.pale {
 }
 
 .dynamic-filter {
-  margin-left: 4rem;
   margin: 1rem;
+}
+
+.bordered {
+  margin: 1rem;
+}
+
+#work-description {
+  width: 98%;
+  margin: 1%;
+  height: 5rem;
 }
 
 .hidden {
@@ -151,4 +160,8 @@ img.pale {
 
 .selected {
   background-color: aquamarine !important;
+}
+
+.datetime {
+  width: 9rem;
 }

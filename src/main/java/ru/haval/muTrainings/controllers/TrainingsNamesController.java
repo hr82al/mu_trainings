@@ -30,11 +30,6 @@ public class TrainingsNamesController {
     @RequestMapping(path = "/add", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public TrainingName addTrainingName(@RequestBody TrainingName trainingName) {
-        // System.out.println(trainingName);
-        // int i = trainingsNamesRepository.addTrainingNameQuery(trainingName.getText(),
-        // trainingName.getTrainingPeriod());
-        // Map<String, Object> map = new HashMap<>();
-        // map.put("result", "ok");
         return trainingsNamesRepository.save(trainingName);
     }
 

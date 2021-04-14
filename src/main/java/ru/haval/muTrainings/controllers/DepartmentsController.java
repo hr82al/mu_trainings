@@ -2,8 +2,6 @@ package ru.haval.muTrainings.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,35 +21,12 @@ public class DepartmentsController {
 		return "departments";
 	}
 
-	/*
-	 * @GetMapping(path = "/department/{text}") public String
-	 * showByDepartmentForm(@PathVariable ("text") String text) { //List<Department>
-	 * dpts = departmentsRepository.findByText(text); System.out.println(text);
-	 * //System.out.println(dpts); return "departments"; }
-	 */
-
-	// @PostMapping(consumes = "application/json", produces = "application/json")
-	// @ResponseStatus(HttpStatus.CREATED)
-	// public @ResponseBody Department addDepartment(@RequestBody Department
-	// department) {
-	// if (department.getText() != "") {
-	// System.out.println(department);
-	// return departmentsRepository.save(department);
-	// }
-	// return null;
-	// }
-
 	@PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addDepartment(@RequestBody Department department) {
 		if (department.getText() != "") {
-			System.out.println("_________________");
-			System.out.println(department);
 			departmentsRepository.addDepartmentQuery(department.getText());
-			// return department;
 		}
-		;
-		// return department;
 	}
 
 	@PostMapping(path = "/get", consumes = "application/json", produces = "application/json")
@@ -69,9 +44,6 @@ public class DepartmentsController {
 	@PostMapping(path = "/get_json", consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public List<Department> getDepartments() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String currentPrincipalName = authentication.getName();
-		System.out.println(currentPrincipalName);
 		return departmentsRepository.findAll();
 	}
 
@@ -98,8 +70,6 @@ public class DepartmentsController {
 
 	@PutMapping(consumes = "application/json", produces = "application/json")
 	public @ResponseBody Department updateDepartment(@RequestBody Department department) {
-		System.out.println(department);
 		return departmentsRepository.save(department);
 	}
-
 }
