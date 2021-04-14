@@ -544,7 +544,19 @@ function drawTh() {
         table.trainingsPeriodsMap.set(period.id, period.trainingPeriod);
       }
       for (let item of table.trainingsNames) {
-        addItem2(item, th_pattern);
+        let pattern = $("#th_pattern");
+        let nameLength = item.text.length;
+        let nameSize = "";
+        if (nameLength > 30) {
+          nameSize = parseInt(nameLength / 9) + "rem";
+        } else {
+          nameSize = "4rem";
+        }
+        $(pattern).css("min-width", nameSize);
+        console.log(item.text);
+
+        console.log(nameSize);
+        addItem2(item, pattern);
       }
     });
   }
@@ -780,13 +792,14 @@ function updateByShop() {
     console.log($(i).attr("shop"));
     if (
       SELECTED_SHOPS.includes($(i).attr("shop")) ||
-      SELECTED_SHOP == $(i).attr("shop")
+      SELECTED_SHOP == $(i).attr("shop") ||
+      SELECTED_SHOPS.includes("all")
     ) {
       $(i).removeClass("hidden");
-    } else if (SELECTED_SHOPS.includes("all")) {
-      $(i).removeClass("hidden");
+      $(i).removeClass("tableexport-ignore");
     } else {
       $(i).addClass("hidden");
+      $(i).addClass("tableexport-ignore");
     }
   }
 }

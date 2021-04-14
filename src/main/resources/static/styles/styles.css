@@ -61,11 +61,51 @@ table {
   height: 12rem;
 } */
 .rotated {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
+  /* position: absolute;
+  left: 0%;
+  bottom: 0%; */
+  /* writing-mode: vertical-rl; */
+  writing-mode: tb-rl;
+  /* -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg); */
+  /* width: 3rem; */
   height: 12rem;
-  /* text-align: left; */
-  /*white-space: nowrap;*/
+  white-space: normal;
+  display: block;
+  bottom: 0;
+  /* position: absolute; */
+  /* writing-mode: tb-rl;
+  display: block;
+  bottom: 0;
+  float: left;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg) translate(0px, 0px); 
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  -ms-filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  width: 12rem;
+  height: auto;
+  border-style: solid;
+  border-width: 5px;
+  border-color: #bcbcbc;
+  word-wrap: break-word;
+  text-align: left; */
+}
+
+#table_anchor th {
+  /* position: relative; */
+  /* overflow: hidden; */
+  height: 12rem;
+  /* align-content: center; */
+  /* background-color: aquamarine; */
+  /* border-style: solid;
+  border-width: 5px; */
+  /* border-color: gold; */
 }
 
 td.required {
