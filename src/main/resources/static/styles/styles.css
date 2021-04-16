@@ -167,11 +167,13 @@ img.pale {
 }
 
 .description {
-  min-width: 20rem;
+  max-width: 22rem;
+  min-width: 22rem;
+  word-wrap: break-word;
 }
 
 .equipment {
-  max-width: 17rem;
+  max-width: 10rem;
   word-wrap: break-word;
 }
 

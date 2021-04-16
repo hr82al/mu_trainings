@@ -50,10 +50,8 @@ public class MuTrainingsApplication {
 			tmpUser.setEnabled(true);
 			userRepository.save(tmpUser);
 		}
-
 		String warLocationUrl = MuTrainingsApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		warLocation = new File(warLocationUrl.toString()).getParent();
-		System.out.println("war location : " + warLocation);
 		if (warLocation.endsWith("bin")) {
 			staticTmpFolder = warLocation + "\\main\\static\\tmp";
 		} else if (warLocation.endsWith("java")) {
@@ -62,7 +60,6 @@ public class MuTrainingsApplication {
 			staticTmpFolder = warLocation + "\\classes\\static\\tmp";
 		}
 		staticTmpFolder = staticTmpFolder.replace("%20", " ");
-		System.out.println("static tmp folder " + staticTmpFolder);
 	}
 
 	public static String getWarLocation() {

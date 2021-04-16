@@ -30,7 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/muTrainings", "/trainings", "/positions", "/departments", "/trainingsNamesList",
                         "/positionsTrainings", "/positionsTrainings", "/employee/**")
-                .hasAnyAuthority("Administrator", "Engeneer", "Team Lead").antMatchers("/action_plan").authenticated()
+                .hasAnyAuthority("Administrator", "Engeneer", "Team Lead").antMatchers("/action_plan/**")
+                .authenticated()
                 .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css", "/styles/bootstrap.min.css",
                         "/libs/jquery-3.5.1.min.js", "/libs/select2.min.js", "/libs/bootstrap.bundle.min.js",
                         "/styles/styles.css", "/favicon.ico")
