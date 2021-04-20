@@ -3,7 +3,19 @@
 document.addEventListener("DOMContentLoaded", function () {
   setDatepicker(".datetime");
   fillDates(new Date());
+  initMobile();
 });
+function initMobile() {
+  if (isMobile()) {
+    $("head").append(
+      '<link rel="stylesheet" type="text/css" href="/styles/mobile-styles.css">'
+    );
+  }
+  const REM_SIZE = parseFloat(
+    getComputedStyle(document.documentElement).fontSize
+  );
+  const SCREEN_WIDTH = parseInt($(window).width());
+}
 var tmp;
 function fillDates(dateParam) {
   $(".datetime")[0].value = dateParam.toDateTimeString();
@@ -23,6 +35,7 @@ function fillDates(dateParam) {
   }
 }
 
+var current_datetimepicker;
 function setDatepicker(cell) {
   $(cell)
     .datetimepicker({
@@ -142,5 +155,14 @@ function addWork(p) {
     }).then((data) => {
       window.location.replace("/action_plan");
     });
+  }
+}
+
+function isMobile() {
+  try {
+    document.createEvent("TouchEvent");
+    return true;
+  } catch (e) {
+    return false;
   }
 }

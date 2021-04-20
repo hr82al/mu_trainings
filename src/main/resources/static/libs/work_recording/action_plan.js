@@ -52,7 +52,22 @@ document.addEventListener("DOMContentLoaded", () => {
   $(".owner-button").click(function () {
     createWorkPlanRecord(this);
   });
+
+  initMobile();
 });
+
+function initMobile() {
+  if (isMobile()) {
+    $("head").append(
+      '<link rel="stylesheet" type="text/css" href="/styles/mobile-styles.css">'
+    );
+  }
+  const REM_SIZE = parseFloat(
+    getComputedStyle(document.documentElement).fontSize
+  );
+  const SCREEN_WIDTH = parseInt($(window).width());
+  $(".dynamic-filter").width(SCREEN_WIDTH - REM_SIZE * 2 + "px");
+}
 
 function openInstruction(self) {
   const LINK = $(self).attr("lnk");
@@ -139,4 +154,13 @@ function createWorkPlanRecordClick(self) {
     window.location.replace("/add_work_record");
   });
   $(self).parent().removeClass("selected");
+}
+
+function isMobile() {
+  try {
+    document.createEvent("TouchEvent");
+    return true;
+  } catch (e) {
+    return false;
+  }
 }

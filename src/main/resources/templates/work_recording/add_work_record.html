@@ -4,10 +4,11 @@
 <head>
 
   <meta name="_csrf" th:content="${_csrf.token}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- default header name is X-CSRF-TOKEN -->
   <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-
+  
   <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
   <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">
   <link id="bsdp-css" rel="stylesheet" th:href="@{/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker3.min.css}">
@@ -35,12 +36,11 @@
     </thead>
     <tbody>
       <tr th:each="row : ${action_plan_rows}" th:id="${row.id}" th:duration=${row.duration}>
-        
         <td class="description" th:text="${row.description}"></td>
         <td th:text="${row.dueDate}"></td>
         <td class="equipment" th:text="${row.equipment}"></td>
-        <td><input class="datetime start" type="text"/> </td>
-        <td><input class="datetime end" type="text"/></td>
+        <td><input class="datetime start" type="text" readonly/> </td>
+        <td><input class="datetime end" type="text" readonly/></td>
       </tr> 
       
     </tbody>
@@ -51,7 +51,7 @@
   <div th:insert="fragments/WorkRecordingHeader :: WorkRecordingFooter"></div>
   <script type="text/javascript" th:src="@{/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js}"></script>
   <script th:src="@{/bootstrap-datepicker-1.9.0-dist/locales/bootstrap-datepicker.ru.min.js}" charset="UTF-8"></script>
-  <script type="text/javascript" th:src="@{/libs/bootstrap-datetimepicker.min.js}"></script>
+  <script type="text/javascript" th:src="@{/libs/bootstrap-datetimepicker.js}"></script>
   <script type="text/javascript" th:src="@{/libs/locales/bootstrap-datetimepicker.ru.js}"></script>
   <script type="text/javascript" th:src="@{/libs/work_recording/add_work_record.js}"></script>
 </body>

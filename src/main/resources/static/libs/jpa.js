@@ -145,7 +145,6 @@ function init() {
       const ADDRESS = $(item).attr("address");
       sendPost(ADDRESS, {}, function (data) {
         table[item.classList[0]] = data;
-        console.log(`.select2.${item.classList[0]}`);
         $(`.select2.${item.classList[0]}`).select2({
           data: data,
         });
@@ -553,9 +552,6 @@ function drawTh() {
           nameSize = "4rem";
         }
         $(pattern).css("min-width", nameSize);
-        console.log(item.text);
-
-        console.log(nameSize);
         addItem2(item, pattern);
       }
     });
@@ -789,7 +785,6 @@ function updateByShop() {
   const SELECTED_SHOPS = $("#trainings-shop").val().split(",");
   //clear selection
   for (const i of $("tbody>tr")) {
-    console.log($(i).attr("shop"));
     if (
       SELECTED_SHOPS.includes($(i).attr("shop")) ||
       SELECTED_SHOP == $(i).attr("shop") ||

@@ -11,7 +11,6 @@ xmlns:th="http://www.thymeleaf.org">
     <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
     <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/styles/styles.css}">
-    <link rel="stylesheet" media="handheld" th:href="@{/styles/smallscreen.css}" type="text/css">
     <title th:text="${header.apTitle}"></title>
 </head>
 <body>
@@ -19,7 +18,8 @@ xmlns:th="http://www.thymeleaf.org">
 <div>
     <p class="bordered" style="display: inline;">Показать:</p>
     <select id="show" class="bordered" onChange="window.location.href=this.value" style="display: inline;">
-        <option value="personal" selected><a href="/action_plan/personal">Личные</a></option>
+        <option th:text="${current}" selected="true"></option>
+        <option value="/action_plan/personal">Личные</option>
         <option th:each="view : ${views}" th:value="'/action_plan/' + ${view}" th:text="${viewsCaptions.get(view)}"></option>
     </select>
     <a class="bordered" th:each="shop: ${shops}" th:href="'/action_plan/shop/' + ${shop.first}" >
@@ -35,38 +35,38 @@ xmlns:th="http://www.thymeleaf.org">
 <table id="action_plan_table" class="table table-striped table-bordered w-auto container filter">
     <thead>
         <tr>
-            <th th:text="${header.id}"></th>
-            <th th:text="${header.pmNum}"></th>
-            <th th:text="${header.type}"></th>
+            <th th:text="${header.id}" class="priority-5"></th>
+            <th th:text="${header.pmNum}" class="priority-5"></th>
+            <th th:text="${header.type}" class="priority-5"></th>
             <th lass="description" th:text="${header.description}"></th>
             <th th:text="${header.dueDate}"></th>
             <th th:text="${header.equipment}"></th>
-            <th class="letterID" th:text="${header.executor}"></th>
-            <th class="letterID" th:text="${header.responsible}"></th>
-            <th class="letterID" th:text="${header.owner}"></th>
-            <th th:text="${header.priorityIconPath}"></th>
-            <th th:text="${header.activityTypeIconPath}"></th>
-            <th th:text="${header.instruction}"></th>
+            <th class="letterID priority-5" th:text="${header.executor}"></th>
+            <th class="letterID priority-5" th:text="${header.responsible}"></th>
+            <th class="letterID priority-5" th:text="${header.owner}"></th>
+            <th th:text="${header.priorityIconPath}" class="priority-5"></th>
+            <th th:text="${header.activityTypeIconPath}" class="priority-5"></th>
+            <th class="td-instruction" th:text="${header.instruction}"></th>
         </tr>
     </thead>
     <tbody>
         <tr th:each="row : ${action_plan_rows}">
-            <td class="id" th:text="${row.id}"></td>
-            <td th:text="${row.pmNum}"></td>
-            <td th:text="${row.type}"></td>
+            <td class="id priority-5" th:text="${row.id}"></td>
+            <td th:text="${row.pmNum}" class="priority-5"></td>
+            <td th:text="${row.type}" class="priority-5"></td>
             <td class="description" th:text="${row.description}"></td>
             <td class="date" th:text="${row.dueDate}"></td>
             <td class="equipment" th:text="${row.equipment}"></td>
-            <td class="letterID owner-button"><div class="worker-id execution" th:status="${row.flagOtv}" th:text="${row.executor}"></div></td>
-            <td class="letterID"><div class="worker-id" th:status="${row.flagOft}" th:text="${row.responsible}"></div></td>
-            <td class="letterID"><div class="worker-id" th:status="${row.flagTm}" th:text="${row.owner}"></div></td>
-            <td class="td-center">
+            <td class="letterID owner-button priority-5"><div class="worker-id execution" th:status="${row.flagOtv}" th:text="${row.executor}"></div></td>
+            <td class="letterID priority-5"><div class="worker-id" th:status="${row.flagOft}" th:text="${row.responsible}"></div></td>
+            <td class="letterID priority-5"><div class="worker-id" th:status="${row.flagTm}" th:text="${row.owner}"></div></td>
+            <td class="td-center priority-5">
                 <img class="center" th:src="${row.priorityIconPath}" alt="">
             </td>
-            <td class="td-center">
+            <td class="td-center priority-5">
                 <img class="center" th:src="${row.activityTypeIconPath}" alt="">
             </td>
-            <td  class="td-center">
+            <td  class="td-center td-instruction">
                 <a class="instruction" onclick="openInstruction(this)" th:lnk="${row.instruction}" target="_blank">
                 <img class="center" src="/images/document.png">
                 </a>

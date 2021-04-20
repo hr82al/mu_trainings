@@ -33,6 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -130,8 +131,11 @@ public class addWorkRecordController {
   private String getUserLettersByUserName(String userName) {
     WorkRecordingUsers user = workRecordingUsers.getIdByLogin(userName);
     Long id = user.getId();
-    HmmrMuStaff staff = hmmrMuStaff.getUserLettersIdByUserId(id);
-    return staff.getUserLettersId();
+    Optional<HmmrMuStaff> staff = hmmrMuStaff.findByUserId(id);
+    if (!staff.isEmpty()) {
+      return staff.get().getUserLettersId();
+    }
+    return null;
   }
 
   private String getCurrentUserLettersId() {

@@ -21,6 +21,6 @@ public interface HmmrMuStaffRepository extends CrudRepository<HmmrMuStaff, Long>
 
   Optional<HmmrMuStaff> findByUserId(Long id);
 
-  HmmrMuStaff getUserLettersIdByUserId(Long id);
+  Optional<HmmrMuStaff> findIdByUserId(Long id);
 
 }

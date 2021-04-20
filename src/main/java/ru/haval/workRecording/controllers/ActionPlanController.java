@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ru.haval.workRecording.ActionPlanHeader;
@@ -52,7 +54,7 @@ public class ActionPlanController {
 
   private Map<String, String[]> views = new HashMap<>();
   private Map<String, String> viewsCaptions = new HashMap<>();
-  private List<Pair<String, String>> shops = new ArrayList<>();
+  private Map<String, Pair<String, String>> shops = new HashMap<>();
   private Map<String, String> shopsLettersMap = new HashMap<>();
   {
     views.put("Administrator", new String[] { "executed_last_year", "executed_previous_year", "without_executor" });
@@ -64,19 +66,19 @@ public class ActionPlanController {
     viewsCaptions.put("executed_previous_year", "Выполненные за предыдущий год");
     viewsCaptions.put("all", "Все цеха");
     viewsCaptions.put("without_executor", "Задачи без исполнителя");
-    shops.add(Pair.of("assembly", "Цех сборки"));
-    shops.add(Pair.of("logistics", "Цех логистики"));
-    shops.add(Pair.of("paint", "Цех покраски"));
-    shops.add(Pair.of("stamp", "Цех штамповки"));
-    shops.add(Pair.of("welding", "Цех сварки"));
-    shops.add(Pair.of("jig", "Кондукторы"));
+    shops.put("A", Pair.of("assembly", "Цех сборки"));
+    shops.put("L", Pair.of("logistics", "Цех логистики"));
+    shops.put("P", Pair.of("paint", "Цех покраски"));
+    shops.put("S", Pair.of("stamp", "Цех штамповки"));
+    shops.put("W", Pair.of("welding", "Цех сварки"));
+    shops.put("J", Pair.of("jig", "Кондукторы"));
     shopsLettersMap.put("assembly", "A");
     shopsLettersMap.put("logistics", "L");
     shopsLettersMap.put("paint", "P");
-    shopsLettersMap.put("stamp", "S");
     shopsLettersMap.put("welding", "W");
     shopsLettersMap.put("jig", "J");
   }
+  private String[] userShops;
 
   /**
    * Shows main window the action plan table. This is initial method at the action
@@ -88,19 +90,31 @@ public class ActionPlanController {
   @GetMapping(path = "/personal")
   public String showActionPlanPersonalTask(@RequestHeader("accept-language") String language, Model model) {
     // TODO set language by header
-    initCurrentUserLetterId();
+
     showPersonalTasks(model);
     return "work_recording/action_plan";
   }
 
   private void initPage(Model model) {
+    initCurrentUserLetterId();
     model.addAttribute("header", header);
     model.addAttribute("viewsCaptions", viewsCaptions);
     List<String> roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
         .map(r -> r.getAuthority()).collect(Collectors.toList());
     currentRole = roles.get(0);
     model.addAttribute("views", views.get(currentRole));
-    model.addAttribute("shops", shops);
+    if (currentRole.equals("Administrator")) {
+      var list = shops.values().toArray();
+      model.addAttribute("shops", list);
+    } else {
+      List<Pair<String, String>> shopList = new ArrayList<>();
+      for (String shop : userShops) {
+        shopList.add(shops.get(shop));
+      }
+      shopList.add(shops.get("J"));
+      model.addAttribute("shops", shopList);
+    }
+
   }
 
   /**
@@ -110,6 +124,7 @@ public class ActionPlanController {
    */
   private void showPersonalTasks(Model model) {
     initPage(model);
+    model.addAttribute("current", "Личные");
     // for administrator shows all not executed current tasks
     if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
         .anyMatch(r -> r.getAuthority().equals("Administrator"))) {
@@ -129,6 +144,7 @@ public class ActionPlanController {
 
   private void showAllTasks(Model model) {
     initPage(model);
+    model.addAttribute("current", "Все");
     model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findByDelRecIsFalse());
   }
 
@@ -141,6 +157,7 @@ public class ActionPlanController {
 
   private void showExecutedLastYear(Model model) {
     initPage(model);
+    model.addAttribute("current", "Выполненные за последний год");
     LocalDate date = LocalDate.now();
     model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findByYear(date.getYear()));
   }
@@ -154,6 +171,7 @@ public class ActionPlanController {
 
   private void showTasksWithoutExecutor(Model model) {
     initPage(model);
+    model.addAttribute("current", "Задачи без исполнителя");
     if (currentRole.equals("Administrator")) {
       model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findWithoutExecutor());
     } else {
@@ -171,6 +189,7 @@ public class ActionPlanController {
 
   private void showExecutedPreviousYear(Model model) {
     initPage(model);
+    model.addAttribute("current", "Выполненные за предыдущий год");
     final int year = LocalDate.now().getYear() - 1;
     model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findByYear(year));
   }
@@ -179,12 +198,18 @@ public class ActionPlanController {
   public String showActionPlanShop(@RequestHeader("accept-language") String language,
       @PathVariable(value = "shop") String shop, Model model) {
     // TODO set language
-    showShop(model, shopsLettersMap.get(shop));
+    if (Arrays.stream(userShops).anyMatch(shopsLettersMap.get(shop)::equals) || currentRole.equals("Administrator")
+        || shop.equals("jig")) {
+      showShop(model, shopsLettersMap.get(shop));
+    } else {
+      return "redirect:/action_plan/personal";
+    }
     return "work_recording/action_plan";
   }
 
   private void showShop(Model model, String shop) {
     initPage(model);
+    model.addAttribute("current", "Цех: " + shop);
     model.addAttribute("action_plan_rows", actionPlanExtendedRepository.findByShopAndDelRecIsFalse(shop));
   }
 
@@ -199,7 +224,10 @@ public class ActionPlanController {
         .getUsername();
     WorkRecordingUsers user = workRecordingUsers.getIdByLogin(CURRENT_USER);
     Long id = user.getId();
-    HmmrMuStaff staff = hmmrMuStaff.getUserLettersIdByUserId(id);
-    currentUserLetterId = staff.getUserLettersId();
+    Optional<HmmrMuStaff> staff = hmmrMuStaff.findByUserId(id);
+    if (!staff.isEmpty()) {
+      userShops = staff.get().getShop().split(",");
+      currentUserLetterId = staff.get().getUserLettersId();
+    }
   }
 }
