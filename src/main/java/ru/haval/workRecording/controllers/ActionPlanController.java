@@ -77,6 +77,7 @@ public class ActionPlanController {
     shopsLettersMap.put("paint", "P");
     shopsLettersMap.put("welding", "W");
     shopsLettersMap.put("jig", "J");
+    shopsLettersMap.put("stamp", "S");
   }
   private String[] userShops;
 
