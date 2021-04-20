@@ -153,7 +153,7 @@ function addWork(p) {
       },
       body: JSON.stringify(list),
     }).then((data) => {
-      window.location.replace("/action_plan");
+      window.location.replace("/action_plan/personal");
     });
   }
 }
