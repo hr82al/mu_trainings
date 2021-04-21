@@ -236,6 +236,5 @@ public class addWorkRecordController {
     workRecord.setWrWorkTime(Long.parseLong(wrWorkTime));
     workRecordingRepository.save(workRecord);
     actionPlanRepository.setFlags(actionPlanId, "1", "0", "0");
-
   }
 }

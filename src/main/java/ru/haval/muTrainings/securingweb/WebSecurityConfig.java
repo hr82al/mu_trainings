@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // .permitAll().anyRequest().authenticated().and().formLogin().and().logout().permitAll();
         http.authorizeRequests()
                 .antMatchers("/muTrainings", "/trainings", "/positions", "/departments", "/trainingsNamesList",
-                        "/positionsTrainings", "/positionsTrainings", "/employee/**")
+                        "/positionsTrainings", "/positionsTrainings", "/employee/**", "/reports/**")
                 .hasAnyAuthority("Administrator", "Engeneer", "Team Lead").antMatchers("/action_plan/**")
                 .authenticated()
                 .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css", "/styles/bootstrap.min.css",

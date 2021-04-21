@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    
+    <link rel="stylesheet" th:href="@{/styles/select2.min.css}">
+    <link rel="stylesheet" th:href="@{/styles/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/styles/styles.css}">
+    <title>Отчёты</title>
+</head>
+<body>
+<div th:insert="fragments/WorkRecordingHeader :: WorkRecordingHeader"></div>
+<input id="year" type="number" style="margin: 1rem;" />
+<input type="button" id="year-button" class="btn btn-primary" value="Показать" onclick="showYear(this)"/>
+<script>
+    var year = document.getElementById("year");
+    year.value = new Date().getFullYear();
+    function showYear(p) {
+        window.location.replace(`/reports/counters/${year.value}`);
+    }
+</script>
+<table class="table table-striped table-bordered w-auto container filter">
+    <tr><th colspan="14">
+        <h3 style="text-align: center;">План</h3>
+    </th></tr>
+    <tr th:each="row : ${total}">
+        <td th:each="cell : ${row}" th:text="${cell}"></td>
+    </tr>
+    <tr>
+        <th colspan="14">
+            <h3 style="text-align: center;">Фактически выполнено по плану</h3>
+        </th>
+    </tr>
+    <tr th:each="row : ${completed}">
+        <td th:each="cell : ${row}" th:text="${cell}"></td>
+    </tr>
+    <tr>
+        <th colspan="14">
+            <h3 style="text-align: center;">Процент выполнения</h3>
+        </th>
+    </tr>
+    <tr th:each="row : ${percents}">
+        <td th:each="cell : ${row}" th:text="${cell}"></td>
+    </tr>
+    <tr>
+        <th colspan="14">
+            <h3 style="text-align: center;">Всего выполнено (в том числи запланированные в других месяцах работы)</h3>
+        </th>
+    </tr>
+    <tr th:each="row : ${all_work}">
+        <td th:each="cell : ${row}" th:text="${cell}"></td>
+    </tr>
+</table>
+
+<div th:insert="fragments/WorkRecordingHeader :: WorkRecordingFooter"></div>
+</body>
+</html>

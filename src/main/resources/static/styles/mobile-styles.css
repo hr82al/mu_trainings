@@ -29,11 +29,12 @@
   min-width: 100% !important;
 }
 .date {
-  max-width: 7rem;
+  max-width: 6rem;
 }
 .equipment {
-  max-width: 10rem;
+  max-width: 9rem;
 }
+
 .td-instruction {
   min-width: 2.8rem;
   min-height: 2.8rem;

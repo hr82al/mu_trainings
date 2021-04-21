@@ -41,7 +41,7 @@ xmlns:th="http://www.thymeleaf.org">
             <th lass="description" th:text="${header.description}"></th>
             <th th:text="${header.dueDate}"></th>
             <th th:text="${header.equipment}"></th>
-            <th class="letterID priority-5" th:text="${header.executor}"></th>
+            <th class="letterID" th:text="${header.executor}"></th>
             <th class="letterID priority-5" th:text="${header.responsible}"></th>
             <th class="letterID priority-5" th:text="${header.owner}"></th>
             <th th:text="${header.priorityIconPath}" class="priority-5"></th>
@@ -57,7 +57,7 @@ xmlns:th="http://www.thymeleaf.org">
             <td class="description" th:text="${row.description}"></td>
             <td class="date" th:text="${row.dueDate}"></td>
             <td class="equipment" th:text="${row.equipment}"></td>
-            <td class="letterID owner-button priority-5"><div class="worker-id execution" th:status="${row.flagOtv}" th:text="${row.executor}"></div></td>
+            <td class="letterID owner-button"><div class="worker-id execution" th:status="${row.flagOtv}" th:text="${row.executor}"></div></td>
             <td class="letterID priority-5"><div class="worker-id" th:status="${row.flagOft}" th:text="${row.responsible}"></div></td>
             <td class="letterID priority-5"><div class="worker-id" th:status="${row.flagTm}" th:text="${row.owner}"></div></td>
             <td class="td-center priority-5">
