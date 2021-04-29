@@ -133,14 +133,12 @@ function sendPost(uri, data) {
 
 function addWork(p) {
   const WORK_DESCRIPTION = $("#work-description").val();
-  console.log(WORK_DESCRIPTION);
   let list = [];
   for (let i of $("#add_record_table>tbody>tr")) {
     let record = {};
     record.id = i.id;
     record.startDateTime = $(i).find(".start").val();
     record.endDateTime = $(i).find(".end").val();
-    console.log(record);
     list.push(record);
   }
   if (WORK_DESCRIPTION.length > 0 && list.length > 0) {

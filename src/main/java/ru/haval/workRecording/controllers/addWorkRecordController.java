@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import ru.haval.workRecording.AddWorkRecordHeader;
 import ru.haval.workRecording.accessingdatajpa.ActionPlanRepository;
+import ru.haval.workRecording.accessingdatajpa.ActionPlan;
 import ru.haval.workRecording.accessingdatajpa.ActionPlanExtended;
 import ru.haval.workRecording.accessingdatajpa.ActionPlanExtendedRepository;
-import ru.haval.workRecording.accessingdatajpa.DataForNewWorkRecord;
 import ru.haval.workRecording.accessingdatajpa.DataForNewWorkRecordRepository;
 import ru.haval.workRecording.accessingdatajpa.HmmrMuStaff;
 import ru.haval.workRecording.accessingdatajpa.HmmrMuStaffRepository;
+import ru.haval.workRecording.accessingdatajpa.HmmrPlantStructure;
+import ru.haval.workRecording.accessingdatajpa.HmmrPlantStructureRepository;
+import ru.haval.workRecording.accessingdatajpa.HmmrPm;
+import ru.haval.workRecording.accessingdatajpa.HmmrPmRepository;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingUsers;
 import ru.haval.workRecording.accessingdatajpa.WorkRecordingUsersRepository;
 import ru.haval.workRecording.accessingdatajpa.HmmrWorkRecording;
@@ -52,6 +56,10 @@ public class addWorkRecordController {
   DataForNewWorkRecordRepository dataForNewWorkRecord;
   @Autowired
   HmmrWorkRecordingRepository workRecordingRepository;
+  @Autowired
+  HmmrPmRepository pmRepository;
+  @Autowired
+  HmmrPlantStructureRepository plantStructureRepository;
 
   private List<Long> ids;
   private List<ActionPlanExtended> selected;
@@ -150,28 +158,39 @@ public class addWorkRecordController {
     LocalTime endTime = end.toLocalTime();
     LocalDate endDate = end.toLocalDate();
     final long DURATION = 60;
-    // total work duration
-    // double commonWorkTime = 0;
     LocalTime currentTime = LocalTime.now();
     currentTime = LocalTime.of(currentTime.getHour(), currentTime.getMinute());
     LocalDate currentDate = LocalDate.now();
     LocalTime currentTimeEnd = currentTime.plusMinutes(DURATION);
     String wrWorkTime = String.valueOf(ChronoUnit.MINUTES.between(start, end));
-    DataForNewWorkRecord dataForNewRecord = dataForNewWorkRecord.findByActionPlanId(actionPlanId);
+
     HmmrWorkRecording workRecord = new HmmrWorkRecording();
     workRecord.setActionPlanId(actionPlanId);
-    workRecord.setUserId(dataForNewRecord.getUserId());
-    workRecord.setShop(dataForNewRecord.getShop());
-    workRecord.setGroup(dataForNewRecord.getGroup());
-    workRecord.setLine(dataForNewRecord.getLine());
-    workRecord.setStation(dataForNewRecord.getStation());
-    workRecord.setEquipment(dataForNewRecord.getEquipment());
-    workRecord.setEquipmentFull(dataForNewRecord.getEquipmentFull());
-    workRecord.setRecordType(dataForNewRecord.getRecordType());
+    Optional<ActionPlan> actionPlanOptional = actionPlanRepository.findById(actionPlanId);
+    if (actionPlanOptional.isEmpty()) {
+      return;
+    }
+    ActionPlan actionPlan = actionPlanOptional.get();
+    Optional<HmmrPm> hmmrPmOptional = pmRepository.findById(actionPlanOptional.get().getPmNum());
+    Optional<HmmrMuStaff> hmmrMuStaffOptional = hmmrMuStaff.findByUserLettersId(actionPlanOptional.get().getOtv());
+    Optional<HmmrPlantStructure> plantStructureOptional = plantStructureRepository
+        .findById(Long.parseLong(hmmrPmOptional.get().getEqId()));
+    if (plantStructureOptional.isEmpty()) {
+      return;
+    }
+    HmmrPlantStructure plantStructure = plantStructureOptional.get();
+    workRecord.setUserId(hmmrMuStaffOptional.get().getUserId());
+    workRecord.setShop(plantStructure.getFl03ShopS());
+    workRecord.setGroup(plantStructure.getFl04GroupS());
+    workRecord.setLine(plantStructure.getFl05LineS());
+    workRecord.setStation(plantStructure.getFl06StationS());
+    workRecord.setEquipment(plantStructure.getFl07EquipmentS());
+    workRecord.setEquipmentFull(actionPlan.getEquipment());
+    workRecord.setRecordType(actionPlan.getType());
     workRecord.setCommonWorkTime(0.0);
-    workRecord.setTaskRespId(dataForNewRecord.getTaskRespId());
+    workRecord.setTaskRespId(actionPlan.getOtv());
     workRecord.setWrExecutorConfirmed("Confirmed WR");
-    workRecord.setTaskDescription(dataForNewRecord.getDescription());
+    workRecord.setTaskDescription(actionPlan.getDescription());
     workRecord.setTaskReport(taskReport);
     workRecord.setWrBeginDate(startDate);
     workRecord.setActualDate_2(currentDate);
@@ -232,8 +251,9 @@ public class addWorkRecordController {
     workRecord.setHours2_7(currentTimeEnd.toString());
     workRecord.setHours2_8(currentTimeEnd.toString());
     workRecord.setHours2_9(currentTimeEnd.toString());
-    workRecord.setActivityType(dataForNewRecord.getActivityType());
+    workRecord.setActivityType(actionPlan.getIconAt());
     workRecord.setWrWorkTime(Long.parseLong(wrWorkTime));
+
     workRecordingRepository.save(workRecord);
     actionPlanRepository.setFlags(actionPlanId, "1", "0", "0");
   }

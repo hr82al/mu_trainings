@@ -17,5 +17,4 @@ public class dbContractions {
     tmp.put("P", "Paint");
     shops = Collections.unmodifiableMap(tmp);
   }
-
 }

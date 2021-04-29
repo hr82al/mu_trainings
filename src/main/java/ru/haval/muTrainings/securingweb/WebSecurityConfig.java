@@ -18,15 +18,6 @@ import ru.haval.muTrainings.authentication.UserDetailServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // http.csrf().disable();
-        // http.authorizeRequests()
-        // .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css",
-        // "/styles/bootstrap.min.css",
-        // "/libs/jquery-3.5.1.min.js", "/libs/select2.min.js",
-        // "/libs/bootstrap.bundle.min.js",
-        // "/libs/jquery.editable.min.js", "/styles/bootstrap.min.css.map",
-        // "/styles/styles.css")
-        // .permitAll().anyRequest().authenticated().and().formLogin().and().logout().permitAll();
         http.authorizeRequests()
                 .antMatchers("/muTrainings", "/trainings", "/positions", "/departments", "/trainingsNamesList",
                         "/positionsTrainings", "/positionsTrainings", "/employee/**", "/reports/**")
@@ -36,13 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/libs/jquery-3.5.1.min.js", "/libs/select2.min.js", "/libs/bootstrap.bundle.min.js",
                         "/styles/styles.css", "/favicon.ico")
                 .permitAll().and().formLogin().loginPage("/login").and().logout().permitAll();
-        /*
-         * .antMatchers("/", "/images/haval_logo.jpg", "/styles/select2.min.css",
-         * "/styles/bootstrap.min.css", "/libs/jquery-3.5.1.min.js",
-         * "/libs/select2.min.js", "/libs/bootstrap.bundle.min.js",
-         * "/libs/jquery.editable.min.js", "/styles/bootstrap.min.css.map",
-         * "/styles/styles.css").permitAll() . hasAnyAuthority()
-         */
     }
 
     @Bean

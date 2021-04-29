@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class DataForNewWorkRecord {
   @Id
-  private Long userId;
+  private String userId;
   private String shop;
   private String group;
   private String line;

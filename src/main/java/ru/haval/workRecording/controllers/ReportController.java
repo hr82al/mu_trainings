@@ -1,7 +1,6 @@
 package ru.haval.workRecording.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,16 +19,32 @@ import java.util.Locale;
 
 @Controller
 @RequestMapping(path = "/reports")
-public class Report {
+public class ReportController {
   @Autowired
   ReportsRepository report;
 
+  /**
+   * Shows the page with percents of execution for every shop and every month in
+   * the action plan for given year
+   * 
+   * @param model
+   * @param year
+   * @return
+   */
   @GetMapping(path = "/counters/{year}")
   public String showCounters(Model model, @PathVariable(value = "year") int year) {
     countTotalWorks(model, year);
     return "/work_recording/reports/counters";
   }
 
+  /**
+   * Shows the page with percents of execution for every shop and every month in
+   * the action plan for current year
+   * 
+   * @param model
+   * @param year
+   * @return
+   */
   @GetMapping(path = "/counters")
   public String showCounters(Model model) {
     int year = LocalDate.now().getYear();
@@ -37,6 +52,15 @@ public class Report {
     return "/work_recording/reports/counters";
   }
 
+  /**
+   * Prepare tables: total planned quantity, actual quantity of completed works,
+   * percentage completion plan, quantity of works completed in corresponding
+   * period (it includes works planned in other periods) Table consists of periods
+   * for the year and all 12 months
+   * 
+   * @param model
+   * @param year
+   */
   private void countTotalWorks(Model model, int year) {
     List<List<String>> totalForYear = report.getTotalPlanedWorks(Integer.toString(year));
     List<List<String>> totalCompletedPlannedForThisYear = report.getCompletedPlannedWorksTotal(Integer.toString(year));
@@ -79,6 +103,14 @@ public class Report {
     model.addAttribute("all_work", assembleTotalTable(totalCompletedInYear, totalCompetedForMonths));
   }
 
+  /**
+   * Make a table with information for all shops for every period of time.
+   * 
+   * @param totalYear  contains all numbers for every shop
+   * @param totalMonth contains all numbers for every shop for every period of
+   *                   time.
+   * @return table 2 x 2 with header and content
+   */
   private List<List<String>> assembleTotalTable(List<List<String>> totalYear, List<List<List<String>>> totalMonth) {
     List<List<String>> table = new ArrayList<>();
     List<String> head = new ArrayList<>();
